@@ -28,10 +28,7 @@ public class Main {
 		new PaletteShower(ClusterListConversionService.convertToHashSet(c.clusterToEnd(histogram)), "K-Means")
 				.visualizePalette();
 
-		new OneDimHistogramVisualizer("yo", histogram, Channel.R);
-		new OneDimHistogramVisualizer("yo", histogram, Channel.G);
-		new OneDimHistogramVisualizer("yo", histogram, Channel.B);
-		
+		new OneDimHistogramVisualizer("Channel Histograms", histogram);	
 	}
 
 }

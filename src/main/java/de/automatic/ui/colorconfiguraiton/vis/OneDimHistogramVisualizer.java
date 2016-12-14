@@ -1,5 +1,7 @@
 package de.automatic.ui.colorconfiguraiton.vis;
 
+import java.awt.GridLayout;
+
 import javax.swing.JFrame;
 
 import org.jfree.chart.ChartFactory;
@@ -16,9 +18,20 @@ public class OneDimHistogramVisualizer extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	public OneDimHistogramVisualizer(String title, Histogram histogram, Channel channel) {
+	public OneDimHistogramVisualizer(String title, Histogram histogram) {
 		super(title);
+		this.setLayout(new GridLayout(3, 1));
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		this.add(getChartPanel("R", histogram, Channel.R));
+		this.add(getChartPanel("G", histogram, Channel.G));
+		this.add(getChartPanel("B", histogram, Channel.B));
+
+		pack();
+		setVisible(true);
+	}
+
+	private ChartPanel getChartPanel(String title, Histogram histogram, Channel channel) {
 		double[] values = new double[histogram.getCountOfPixels()];
 		HistogramDataset dataset = new HistogramDataset();
 		
@@ -34,10 +47,7 @@ public class OneDimHistogramVisualizer extends JFrame {
 				false, false);
 		ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
-		setContentPane(chartPanel);
-
-		pack();
-		setVisible(true);
+		return chartPanel;
 	}
 
 }
