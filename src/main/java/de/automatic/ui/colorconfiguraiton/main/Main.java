@@ -6,10 +6,11 @@ import java.io.IOException;
 import de.automatic.ui.colorconfiguraiton.clustering.FinishingClusterer;
 import de.automatic.ui.colorconfiguraiton.clustering.Kmeans;
 import de.automatic.ui.colorconfiguraiton.clustering.StepByStepClusterer;
+import de.automatic.ui.colorconfiguraiton.entities.Channel;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 import de.automatic.ui.colorconfiguraiton.process.ImageReader;
 import de.automatic.ui.colorconfiguraiton.services.ClusterListConversionService;
-import de.automatic.ui.colorconfiguraiton.vis.HistogramVisualizer;
+import de.automatic.ui.colorconfiguraiton.vis.OneDimHistogramVisualizer;
 import de.automatic.ui.colorconfiguraiton.vis.PaletteShower;
 
 public class Main {
@@ -19,7 +20,7 @@ public class Main {
 	public static void main(String[] args) {
 		Histogram histogram = null;
 		try {
-			histogram = (new ImageReader(new File("resources/HS.png"))).getHistogram();
+			histogram = (new ImageReader(new File("resources/kanye_small.jpg"))).getHistogram();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -27,7 +28,10 @@ public class Main {
 		new PaletteShower(ClusterListConversionService.convertToHashSet(c.clusterToEnd(histogram)), "K-Means")
 				.visualizePalette();
 
-		new HistogramVisualizer("yo", histogram);
+		new OneDimHistogramVisualizer("yo", histogram, Channel.R);
+		new OneDimHistogramVisualizer("yo", histogram, Channel.G);
+		new OneDimHistogramVisualizer("yo", histogram, Channel.B);
+		
 	}
 
 }

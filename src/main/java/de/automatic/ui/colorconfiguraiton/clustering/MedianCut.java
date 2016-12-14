@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import de.automatic.ui.colorconfiguraiton.entities.Channels;
+import de.automatic.ui.colorconfiguraiton.entities.Channel;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
 import de.automatic.ui.colorconfiguraiton.entities.Cube;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
@@ -56,16 +56,16 @@ public class MedianCut implements StepByStepClusterer {
 		return cubes;
 	}
 
-	private void sortHistogram(Cube cube, Channels colorWithLongestDistance) {
+	private void sortHistogram(Cube cube, Channel colorWithLongestDistance) {
 		switch (colorWithLongestDistance) {
 		case R:
-			cube.getHistogram().sort(Channels.R);
+			cube.getHistogram().sort(Channel.R);
 			break;
 		case G:
-			cube.getHistogram().sort(Channels.G);
+			cube.getHistogram().sort(Channel.G);
 			break;
 		case B:
-			cube.getHistogram().sort(Channels.B);
+			cube.getHistogram().sort(Channel.B);
 			break;
 		default:
 			break;

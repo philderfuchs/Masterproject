@@ -27,7 +27,7 @@ public class Cube extends Cluster implements Comparable<Cluster> {
 		}
 	}
 	
-	public Channels getLongestDistance () {
+	public Channel getLongestDistance () {
 		return this.getCubeDimensions().getLongestDistance();
 	}
 	

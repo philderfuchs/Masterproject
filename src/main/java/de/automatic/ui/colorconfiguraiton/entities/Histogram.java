@@ -28,7 +28,7 @@ public class Histogram {
 		return intValues.contains(rgb);
 	}
 	
-	public void sort(Channels c) {
+	public void sort(Channel c) {
 		switch (c) {
 		case R:
 			Collections.sort(pixelList, new Comparator<Pixel>(){

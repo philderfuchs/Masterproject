@@ -70,18 +70,18 @@ public class CubeDimensions {
 		return rMin;
 	}
 	
-	public Channels getLongestDistance () {
+	public Channel getLongestDistance () {
 		if (this.getRdiff() >= this.getGdiff()) {
 			if (this.getRdiff() >= this.getBdiff()) {
-				return Channels.R;
+				return Channel.R;
 			} else {
-				return Channels.B;
+				return Channel.B;
 			}
 		} else {
 			if (this.getGdiff() >= this.getBdiff()) {
-				return Channels.G;
+				return Channel.G;
 			} else {
-				return Channels.B;
+				return Channel.B;
 			}
 		}
 	}

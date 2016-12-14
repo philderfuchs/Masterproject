@@ -27,7 +27,7 @@ public class Pixel {
 		this.rgb = ((255&0x0ff)<<24)|((r&0x0ff)<<16)|((g&0x0ff)<<8)|(b&0x0ff);
 	}
 
-	public int get(Channels c) {
+	public int get(Channel c) {
 		switch (c) {
 		case R:
 			return this.r;

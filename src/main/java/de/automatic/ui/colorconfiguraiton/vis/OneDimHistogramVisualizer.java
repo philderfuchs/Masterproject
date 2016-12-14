@@ -8,18 +8,28 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.statistics.HistogramDataset;
 
+import de.automatic.ui.colorconfiguraiton.entities.Channel;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
+import de.automatic.ui.colorconfiguraiton.entities.Pixel;
 
-public class HistogramVisualizer extends JFrame {
+public class OneDimHistogramVisualizer extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	public HistogramVisualizer(String title, Histogram histogram) {
+	public OneDimHistogramVisualizer(String title, Histogram histogram, Channel channel) {
 		super(title);
 
+		double[] values = new double[histogram.getCountOfPixels()];
 		HistogramDataset dataset = new HistogramDataset();
-		double[] values = { 1.0, 2.0, 2.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0};
-		dataset.addSeries("H1", values, 10);
+		
+		int i = 0;
+		for (Pixel p : histogram.getPixelList()) {
+			for(int j = 0; j < p.getCount(); j++) {
+				values[i++] = (double) p.get(channel);
+			}
+		}
+		
+		dataset.addSeries("H1", values, histogram.getLength());
 		JFreeChart chart = ChartFactory.createHistogram(title, "x", "y", dataset, PlotOrientation.VERTICAL, false,
 				false, false);
 		ChartPanel chartPanel = new ChartPanel(chart);
