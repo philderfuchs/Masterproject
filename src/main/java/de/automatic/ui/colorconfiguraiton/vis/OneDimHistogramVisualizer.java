@@ -57,6 +57,7 @@ public class OneDimHistogramVisualizer extends JFrame {
 			ValueMarker marker = new ValueMarker(c.getCenter().get(channel));
 			marker.setPaint(new Color(c.getCenter().get(Channel.R), c.getCenter().get(Channel.G),
 					c.getCenter().get(Channel.B)));
+			marker.setLabel("yo");
 			plot.addDomainMarker(marker);
 		}
 
