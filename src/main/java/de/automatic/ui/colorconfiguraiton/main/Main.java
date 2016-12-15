@@ -17,7 +17,7 @@ import de.automatic.ui.colorconfiguraiton.vis.ThreeDimHistogramVisualizer;
 public class Main {
 
 	static int k = 5;
-	static String file = "resources/macmiller.png";
+	static String file = "resources/kanye_small.jpg";
 
 	public static void main(String[] args) {
 		Histogram histogram = null;

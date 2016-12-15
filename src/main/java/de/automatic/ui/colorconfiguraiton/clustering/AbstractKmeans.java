@@ -30,8 +30,6 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 			this.init(histogram);
 		}
 
-		// clusters already initialized
-		// move clusters
 		for (Cluster c : clusters) {
 			if (c.getHistogram().getLength() == 0) {
 				continue;

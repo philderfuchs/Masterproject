@@ -15,6 +15,14 @@ public class Cluster implements Comparable<Cluster> {
 		return histo;
 	}
 	
+	public double getSquaredDistance(){
+		double squaredDistance = 0;
+		for(Pixel p : histo.getPixelList()) {
+			squaredDistance += this.getSquaredDistance(p, center);
+		}
+		return squaredDistance;
+	}
+	
 	public void setHistogram(Histogram histo) {
 		this.histo = histo;
 	}
@@ -31,6 +39,11 @@ public class Cluster implements Comparable<Cluster> {
 	public int compareTo(Cluster o) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	protected double getSquaredDistance(Pixel p1, Pixel p2) {
+		return Math.sqrt(Math.pow(p1.getR() - p2.getR(), 2) + Math.pow(p1.getG() - p2.getG(), 2)
+				+ Math.pow(p1.getB() - p2.getB(), 2));
 	}
 	
 }
