@@ -18,7 +18,6 @@ public class Kmeans implements StepByStepClusterer, FinishingClusterer {
 
 	public Kmeans(int k) {
 		this.k = k;
-		clusters = new ArrayList<Cluster>();
 		this.finished = false;
 	}
 
@@ -30,49 +29,63 @@ public class Kmeans implements StepByStepClusterer, FinishingClusterer {
 		return clusters;
 	}
 
+	public ArrayList<Cluster> init(Histogram histogram) {
+		this.finished = false;
+		// clusters not yet initialized
+		clusters = new ArrayList<Cluster>();
+		// initialize random clusters
+		for (int i = 0; i < k; i++) {
+			clusters.add(new Cluster(new Histogram(), new Pixel((int) (Math.random() * 255),
+					(int) (Math.random() * 255), (int) (Math.random() * 255), 1)));
+		}
+
+		reassignPixelsToCluster(histogram, clusters);
+
+		return clusters;
+	}
+
 	public ArrayList<Cluster> step(Histogram histogram) {
 
-		if (clusters.size() == 0) {
-			this.finished = false;
-			// clusters not yet initialized
-			// initialize random clusters
-			for (int i = 0; i < k; i++) {
-				clusters.add(new Cluster(new Histogram(), new Pixel((int) (Math.random() * 255),
-						(int) (Math.random() * 255), (int) (Math.random() * 255), 1)));
+		this.finished = true;
+
+		if (this.clusters == null) {
+			this.init(histogram);
+		}
+
+		// clusters already initialized
+		// move clusters
+		for (Cluster c : clusters) {
+			if (c.getHistogram().getLength() == 0) {
+				continue;
 			}
-		} else {
-			this.finished = true;
 
-			// clusters already initialized
-			// move clusters
-			for (Cluster c : clusters) {
-				if (c.getHistogram().getLength() == 0) {
-					continue;
-				}
-
-				long meanR = 0;
-				long meanG = 0;
-				long meanB = 0;
-				for (Pixel p : c.getHistogram().getPixelList()) {
-					meanR += p.getR() * p.getCount();
-					meanG += p.getG() * p.getCount();
-					meanB += p.getB() * p.getCount();
-				}
-				meanR = meanR / c.getHistogram().getCountOfPixels();
-				meanG = meanG / c.getHistogram().getCountOfPixels();
-				meanB = meanB / c.getHistogram().getCountOfPixels();
-				Pixel newMean = new Pixel((int) meanR, (int) meanG, (int) meanB, 1);
-				if (!newMean.sameAs(c.getCenter())) {
-					c.setCenter(newMean);
-					this.finished = false;
-				}
+			long meanR = 0;
+			long meanG = 0;
+			long meanB = 0;
+			for (Pixel p : c.getHistogram().getPixelList()) {
+				meanR += p.getR() * p.getCount();
+				meanG += p.getG() * p.getCount();
+				meanB += p.getB() * p.getCount();
+			}
+			meanR = meanR / c.getHistogram().getCountOfPixels();
+			meanG = meanG / c.getHistogram().getCountOfPixels();
+			meanB = meanB / c.getHistogram().getCountOfPixels();
+			Pixel newMean = new Pixel((int) meanR, (int) meanG, (int) meanB, 1);
+			if (!newMean.sameAs(c.getCenter())) {
+				c.setCenter(newMean);
+				this.finished = false;
 			}
 		}
 
+		reassignPixelsToCluster(histogram, clusters);
+
+		return clusters;
+	}
+
+	private void reassignPixelsToCluster(Histogram histogram, ArrayList<Cluster> clusters) {
 		for (Cluster c : clusters) {
 			c.getHistogram().clear();
 		}
-
 		// put each pixel in the histogram in the closest cluster
 		for (Pixel p : histogram.getPixelList()) {
 			double minDistance = Double.MAX_VALUE;
@@ -86,8 +99,6 @@ public class Kmeans implements StepByStepClusterer, FinishingClusterer {
 			}
 			closestCluster.getHistogram().add(p);
 		}
-
-		return clusters;
 	}
 
 	public int getK() {
