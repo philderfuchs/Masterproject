@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import de.automatic.ui.colorconfiguraiton.clustering.KmeansPlusPlus;
 import de.automatic.ui.colorconfiguraiton.clustering.RandomSeedKmeans;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
@@ -25,7 +26,7 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ArrayList<Cluster> clusters = new RandomSeedKmeans(k).clusterToEnd(histogram);
+		ArrayList<Cluster> clusters = new KmeansPlusPlus(k).clusterToEnd(histogram);
 		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means").visualizePalette();
 
 		// new OneDimHistogramVisualizer("Channel Histograms", histogram,
