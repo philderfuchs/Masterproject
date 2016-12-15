@@ -11,6 +11,7 @@ import de.automatic.ui.colorconfiguraiton.process.ImageReader;
 import de.automatic.ui.colorconfiguraiton.services.ClusterListConversionService;
 import de.automatic.ui.colorconfiguraiton.vis.OneDimHistogramVisualizer;
 import de.automatic.ui.colorconfiguraiton.vis.PaletteShower;
+import de.automatic.ui.colorconfiguraiton.vis.ScatterDemo;
 
 public class Main {
 
@@ -27,7 +28,14 @@ public class Main {
 		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means")
 				.visualizePalette();
 
-		new OneDimHistogramVisualizer("Channel Histograms", histogram, clusters);	
+		new OneDimHistogramVisualizer("Channel Histograms", histogram, clusters);
+		
+		try {
+			new ScatterDemo();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
