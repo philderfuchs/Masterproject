@@ -21,11 +21,10 @@ public class Kmeans implements StepByStepClusterer, FinishingClusterer {
 		clusters = new ArrayList<Cluster>();
 		this.finished = false;
 	}
-	
 
 	@Override
 	public ArrayList<Cluster> clusterToEnd(Histogram histogram) {
-		while(!finished) {
+		while (!finished) {
 			this.step(histogram);
 		}
 		return clusters;
@@ -33,26 +32,18 @@ public class Kmeans implements StepByStepClusterer, FinishingClusterer {
 
 	public ArrayList<Cluster> step(Histogram histogram) {
 
-		
 		if (clusters.size() == 0) {
 			this.finished = false;
 			// clusters not yet initialized
 			// initialize random clusters
 			for (int i = 0; i < k; i++) {
-				clusters.add(new Cluster(
-						new Histogram(),
-						new Pixel(
-								(int) (Math.random() * 255),
-								(int) (Math.random() * 255),
-								(int) (Math.random() * 255),
-								1)
-							)
-						);
+				clusters.add(new Cluster(new Histogram(), new Pixel((int) (Math.random() * 255),
+						(int) (Math.random() * 255), (int) (Math.random() * 255), 1)));
 			}
 		} else {
 			this.finished = true;
 
-			// clusters already initialized			
+			// clusters already initialized
 			// move clusters
 			for (Cluster c : clusters) {
 				if (c.getHistogram().getLength() == 0) {
@@ -71,13 +62,13 @@ public class Kmeans implements StepByStepClusterer, FinishingClusterer {
 				meanG = meanG / c.getHistogram().getCountOfPixels();
 				meanB = meanB / c.getHistogram().getCountOfPixels();
 				Pixel newMean = new Pixel((int) meanR, (int) meanG, (int) meanB, 1);
-				if(!newMean.sameAs(c.getCenter())) {
+				if (!newMean.sameAs(c.getCenter())) {
 					c.setCenter(newMean);
 					this.finished = false;
 				}
 			}
 		}
-		
+
 		for (Cluster c : clusters) {
 			c.getHistogram().clear();
 		}
@@ -95,7 +86,7 @@ public class Kmeans implements StepByStepClusterer, FinishingClusterer {
 			}
 			closestCluster.getHistogram().add(p);
 		}
-		
+
 		return clusters;
 	}
 
@@ -116,9 +107,13 @@ public class Kmeans implements StepByStepClusterer, FinishingClusterer {
 	}
 
 	private double getEucledianDistance(Pixel p1, Pixel p2) {
-		return Math.pow(Math.sqrt(Math.pow(p1.getR() - p2.getR(), 2) + Math.pow(p1.getG() - p2.getG(), 2)
-				+ Math.pow(p1.getB() - p2.getB(), 2)), 2);
+		return (Math.sqrt(Math.pow(p1.getR() - p2.getR(), 2) + Math.pow(p1.getG() - p2.getG(), 2)
+				+ Math.pow(p1.getB() - p2.getB(), 2)));
+	}
 
+	private double getSquaredDistance(Pixel p1, Pixel p2) {
+		return Math.sqrt(Math.pow(p1.getR() - p2.getR(), 2) + Math.pow(p1.getG() - p2.getG(), 2)
+				+ Math.pow(p1.getB() - p2.getB(), 2));
 	}
 
 }

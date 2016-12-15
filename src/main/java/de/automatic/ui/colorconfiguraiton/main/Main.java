@@ -15,21 +15,22 @@ import de.automatic.ui.colorconfiguraiton.vis.ScatterDemo;
 
 public class Main {
 
-	static int k = 8;
-	
+	static int k = 5;
+	static String file = "resources/kanye_small.jpg";
+
 	public static void main(String[] args) {
 		Histogram histogram = null;
 		try {
-			histogram = (new ImageReader(new File("resources/mapei.png"))).getHistogram();
+			histogram = (new ImageReader(new File(file))).getHistogram();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		ArrayList<Cluster> clusters = new Kmeans(k).clusterToEnd(histogram);
-		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means")
-				.visualizePalette();
+		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means").visualizePalette();
 
-//		new OneDimHistogramVisualizer("Channel Histograms", histogram, clusters);
-		
+		// new OneDimHistogramVisualizer("Channel Histograms", histogram,
+		// clusters);
+
 		try {
 			new ScatterDemo(histogram, clusters);
 		} catch (Exception e) {
