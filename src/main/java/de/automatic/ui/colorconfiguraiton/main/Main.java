@@ -15,12 +15,12 @@ import de.automatic.ui.colorconfiguraiton.vis.ScatterDemo;
 
 public class Main {
 
-	static int k = 2;
+	static int k = 8;
 	
 	public static void main(String[] args) {
 		Histogram histogram = null;
 		try {
-			histogram = (new ImageReader(new File("resources/kanye_small.jpg"))).getHistogram();
+			histogram = (new ImageReader(new File("resources/HS.png"))).getHistogram();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -31,7 +31,7 @@ public class Main {
 //		new OneDimHistogramVisualizer("Channel Histograms", histogram, clusters);
 		
 		try {
-			new ScatterDemo(histogram);
+			new ScatterDemo(histogram, clusters);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
