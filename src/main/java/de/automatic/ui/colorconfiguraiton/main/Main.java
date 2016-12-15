@@ -20,7 +20,7 @@ public class Main {
 	public static void main(String[] args) {
 		Histogram histogram = null;
 		try {
-			histogram = (new ImageReader(new File("resources/HS.png"))).getHistogram();
+			histogram = (new ImageReader(new File("resources/mapei.png"))).getHistogram();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

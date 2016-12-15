@@ -38,11 +38,11 @@ public class ScatterDemo extends AbstractAnalysis {
 
 		int i = 0;
 		for (Pixel p : histogram.getPixelList()) {
-			x = ((float) p.get(Channel.R) / 255.0f) - 0.5f;
-			y = ((float) p.get(Channel.G) / 255.0f) - 0.5f;
-			z = ((float) p.get(Channel.B) / 255.0f) - 0.5f;
-			histoPoints[i] = new Coord3d(x, y, z);
-			histoColors[i++] = new Color(x, y, z, 0.25f);
+			x = ((float) p.get(Channel.R) / 255.0f);
+			y = ((float) p.get(Channel.G) / 255.0f);
+			z = ((float) p.get(Channel.B) / 255.0f);
+			histoPoints[i] = new Coord3d(x - 0.5f, y - 0.5f, z - 0.5f);
+			histoColors[i++] = new Color(x - 0.1f, y  - 0.1f, z  - 0.1f, 0.25f);
 		}
 
 		Scatter histoScatter = new Scatter(histoPoints, histoColors);
@@ -52,12 +52,12 @@ public class ScatterDemo extends AbstractAnalysis {
 		
 		i = 0;
 		for (Cluster c : cluster) {
-			x = ((float) c.getCenter().get(Channel.R) / 255.0f) - 0.5f;
-			y = ((float) c.getCenter().get(Channel.G) / 255.0f) - 0.5f;
-			z = ((float) c.getCenter().get(Channel.B) / 255.0f) - 0.5f;
+			x = ((float) c.getCenter().get(Channel.R) / 255.0f);
+			y = ((float) c.getCenter().get(Channel.G) / 255.0f);
+			z = ((float) c.getCenter().get(Channel.B) / 255.0f);
 			
-			clusterPoints[i] = new Coord3d(x, y, z);
-			clusterColors[i++] = new Color(x, y, z, 0.8f);
+			clusterPoints[i] = new Coord3d(x  - 0.5f, y  - 0.5f, z - 0.5f);
+			clusterColors[i++] = new Color(x - 0.1f, y  - 0.1f, z  - 0.1f, 0.8f);
 		}
 
 		Scatter clusterCenterScatter = new Scatter(clusterPoints, clusterColors, 9.0f);
