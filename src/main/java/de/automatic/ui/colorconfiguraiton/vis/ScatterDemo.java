@@ -10,14 +10,21 @@ import org.jzy3d.maths.Coord3d;
 import org.jzy3d.plot3d.primitives.Scatter;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
 
+import de.automatic.ui.colorconfiguraiton.entities.Histogram;
+import de.automatic.ui.colorconfiguraiton.entities.Pixel;
+import de.automatic.ui.colorconfiguraiton.entities.Channel;
+
 public class ScatterDemo extends AbstractAnalysis {
-	
-	public ScatterDemo() throws Exception {
+
+	private Histogram histogram;
+
+	public ScatterDemo(Histogram histogram) throws Exception {
+		this.histogram = histogram;
 		AnalysisLauncher.open(this);
 	}
 
 	public void init() {
-		int size = 500000;
+		int size = histogram.getLength();
 		float x;
 		float y;
 		float z;
@@ -29,13 +36,14 @@ public class ScatterDemo extends AbstractAnalysis {
 		Random r = new Random();
 		r.setSeed(0);
 
-		for (int i = 0; i < size; i++) {
-			x = r.nextFloat() - 0.5f;
-			y = r.nextFloat() - 0.5f;
-			z = r.nextFloat() - 0.5f;
+		int i = 0;
+		for (Pixel p : histogram.getPixelList()) {
+			x = ((float) p.get(Channel.R) / 255.0f) - 0.5f;
+			y = ((float) p.get(Channel.G) / 255.0f) - 0.5f;
+			z = ((float) p.get(Channel.B) / 255.0f) - 0.5f;
 			points[i] = new Coord3d(x, y, z);
 			a = 0.25f;
-			colors[i] = new Color(x, y, z, a);
+			colors[i++] = new Color(x, y, z, a);
 		}
 
 		Scatter scatter = new Scatter(points, colors);

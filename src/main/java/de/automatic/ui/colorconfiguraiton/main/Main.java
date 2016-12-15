@@ -20,7 +20,7 @@ public class Main {
 	public static void main(String[] args) {
 		Histogram histogram = null;
 		try {
-			histogram = (new ImageReader(new File("resources/HS.png"))).getHistogram();
+			histogram = (new ImageReader(new File("resources/kanye_small.jpg"))).getHistogram();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -28,10 +28,10 @@ public class Main {
 		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means")
 				.visualizePalette();
 
-		new OneDimHistogramVisualizer("Channel Histograms", histogram, clusters);
+//		new OneDimHistogramVisualizer("Channel Histograms", histogram, clusters);
 		
 		try {
-			new ScatterDemo();
+			new ScatterDemo(histogram);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
