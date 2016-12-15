@@ -12,12 +12,12 @@ import de.automatic.ui.colorconfiguraiton.process.ImageReader;
 import de.automatic.ui.colorconfiguraiton.services.ClusterListConversionService;
 import de.automatic.ui.colorconfiguraiton.vis.OneDimHistogramVisualizer;
 import de.automatic.ui.colorconfiguraiton.vis.PaletteShower;
-import de.automatic.ui.colorconfiguraiton.vis.ScatterDemo;
+import de.automatic.ui.colorconfiguraiton.vis.ThreeDimHistogramVisualizer;
 
 public class Main {
 
 	static int k = 5;
-	static String file = "resources/kanye_small.jpg";
+	static String file = "resources/macmiller.png";
 
 	public static void main(String[] args) {
 		Histogram histogram = null;
@@ -33,7 +33,7 @@ public class Main {
 		// clusters);
 
 		try {
-			new ScatterDemo(histogram, clusters);
+			new ThreeDimHistogramVisualizer(histogram, clusters);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
