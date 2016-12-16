@@ -19,11 +19,12 @@ import de.automatic.ui.colorconfiguraiton.vis.ThreeDimHistogramVisualizer;
 
 public class Main {
 
-	static int k = 5;
-	static String file = "resources/NS.png";
+	static int k = 4;
+	static String file = "resources/kanye_small.jpg";
 
 	public static void main(String[] args) {
 
+		// for (int i = 0; i < 20; i++) {
 		Histogram histogram = null;
 		try {
 			histogram = (new ImageReader(new File(file))).getHistogram();
@@ -33,6 +34,7 @@ public class Main {
 		AbstractKmeans clusterer = new KmeansPlusPlus(k);
 		ArrayList<Cluster> clusters = clusterer.clusterToEnd(histogram);
 		System.out.println("Number of Steps: " + clusterer.getStepCount());
+		// }
 
 		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means").visualizePalette();
 

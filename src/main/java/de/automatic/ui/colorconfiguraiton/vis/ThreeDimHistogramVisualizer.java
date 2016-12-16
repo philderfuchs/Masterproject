@@ -51,7 +51,7 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 			// histogram.getCountOfPixels());
 
 			histoPoints[i] = new Coord3d(x - 0.5f, y - 0.5f, z - 0.5f);
-			histoColors[i] = new Color(x - 0.1f, y - 0.1f, z - 0.1f);
+			histoColors[i] = new Color(x - 0.1f, y - 0.1f, z - 0.1f, 0.3f);
 		}
 
 		Scatter histoScatter = new Scatter(histoPoints, histoColors);

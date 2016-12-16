@@ -1,6 +1,7 @@
 package de.automatic.ui.colorconfiguraiton.clustering;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 import de.automatic.ui.colorconfiguraiton.entities.Channel;
@@ -26,7 +27,8 @@ public class KmeansPlusPlus extends AbstractKmeans {
 				histogram.get(seedIndex).get(Channel.B), 1);
 
 		boolean foundSeed;
-
+		Collections.shuffle(histogram.getPixelList());
+		
 		for (int i = 0; i < k; i++) {
 			// System.out.println("Init-Seed Index: " + seedIndex);
 
