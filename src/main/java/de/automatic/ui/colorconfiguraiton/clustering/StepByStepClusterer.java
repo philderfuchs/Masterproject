@@ -7,6 +7,8 @@ import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 
 public interface StepByStepClusterer {
 
+	public ArrayList<Cluster> init(Histogram histogram);
+
 	public ArrayList<Cluster> step(Histogram histogram);
 	
 }

@@ -10,10 +10,12 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 	protected ArrayList<Cluster> clusters;
 	protected boolean finished;
 
+	protected int stepCount = 0;
+
 	@Override
 	public ArrayList<Cluster> clusterToEnd(Histogram histogram) {
 		this.init(histogram);
-		
+
 		while (!finished) {
 			this.step(histogram);
 		}
@@ -23,7 +25,7 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 	public abstract ArrayList<Cluster> init(Histogram histogram);
 
 	public ArrayList<Cluster> step(Histogram histogram) {
-
+		stepCount++;
 		this.finished = true;
 
 		if (this.clusters == null) {
@@ -101,6 +103,10 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 	protected double getSquaredDistance(Pixel p1, Pixel p2) {
 		return Math.sqrt(Math.pow(p1.getR() - p2.getR(), 2) + Math.pow(p1.getG() - p2.getG(), 2)
 				+ Math.pow(p1.getB() - p2.getB(), 2));
+	}
+
+	public int getStepCount() {
+		return stepCount;
 	}
 
 }

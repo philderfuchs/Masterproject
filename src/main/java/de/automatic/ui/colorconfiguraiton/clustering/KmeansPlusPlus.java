@@ -44,7 +44,6 @@ public class KmeansPlusPlus extends AbstractKmeans {
 					for (Pixel p : c.getHistogram().getPixelList()) {
 						double prob = this.getSquaredDistance(p, c.getCenter()) / accSquaredDistances;
 						if (r.nextDouble() <= prob) {
-							System.out.println("chosen");
 							center = new Pixel(p.get(Channel.R), p.get(Channel.G), p.get(Channel.B), 1);
 							foundSeed = true;
 							break outer;
