@@ -33,18 +33,25 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 		float z;
 		float a;
 
-		Coord3d[] histoPoints = new Coord3d[histogram.getLength()];
-		Color[] histoColors = new Color[histogram.getLength()];
+//		int size = Math.min(histogram.getLength(), 100000);
+		int size = histogram.getLength();
 
-		int i = 0;
-		for (Pixel p : histogram.getPixelList()) {
+
+		Coord3d[] histoPoints = new Coord3d[size];
+		Color[] histoColors = new Color[size];
+
+		// int i = 0;
+		// for (Pixel p : histogram.getPixelList()) {
+		for (int i = 0; i < size; i++) {
+			Pixel p = histogram.getPixelList().get(i);
 			x = ((float) p.get(Channel.R) / 255.0f);
 			y = ((float) p.get(Channel.G) / 255.0f);
 			z = ((float) p.get(Channel.B) / 255.0f);
-			a = ((float) p.getCount()) / ((float) histogram.getCountOfPixels());
+			// a = ((float) p.getCount()) / ((float)
+			// histogram.getCountOfPixels());
 
 			histoPoints[i] = new Coord3d(x - 0.5f, y - 0.5f, z - 0.5f);
-			histoColors[i++] = new Color(x - 0.1f, y - 0.1f, z - 0.1f, a + 0.3f);
+			histoColors[i] = new Color(x - 0.1f, y - 0.1f, z - 0.1f);
 		}
 
 		Scatter histoScatter = new Scatter(histoPoints, histoColors);
@@ -52,13 +59,15 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 		Coord3d[] clusterPoints = new Coord3d[clusters.size()];
 		Color[] clusterColors = new Color[clusters.size()];
 
-		i = 0;
+		int i = 0;
 		for (Cluster c : clusters) {
 			x = ((float) c.getCenter().get(Channel.R) / 255.0f);
 			y = ((float) c.getCenter().get(Channel.G) / 255.0f);
 			z = ((float) c.getCenter().get(Channel.B) / 255.0f);
+			a = 0.8f;
+
 			clusterPoints[i] = new Coord3d(x - 0.5f, y - 0.5f, z - 0.5f);
-			clusterColors[i++] = new Color(x - 0.1f, y - 0.1f, z - 0.1f, 0.8f);
+			clusterColors[i++] = new Color(x - 0.1f, y - 0.1f, z - 0.1f);
 		}
 
 		Scatter clusterCenterScatter = new Scatter(clusterPoints, clusterColors, 9.0f);

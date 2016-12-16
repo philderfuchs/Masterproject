@@ -20,7 +20,7 @@ import de.automatic.ui.colorconfiguraiton.vis.ThreeDimHistogramVisualizer;
 public class Main {
 
 	static int k = 5;
-	static String file = "resources/HS.png";
+	static String file = "resources/NS.png";
 
 	public static void main(String[] args) {
 
@@ -30,23 +30,21 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		AbstractKmeans clusterer = new RandomSeedKmeans(k);
+		AbstractKmeans clusterer = new KmeansPlusPlus(k);
 		ArrayList<Cluster> clusters = clusterer.clusterToEnd(histogram);
 		System.out.println("Number of Steps: " + clusterer.getStepCount());
 
-		// new
-		// PaletteShower(ClusterListConversionService.convertToHashSet(clusters),
-		// "K-Means").visualizePalette();
+		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means").visualizePalette();
 
 		// new OneDimHistogramVisualizer("Channel Histograms", histogram,
 		// clusters);
 
-		// try {
-		// new ThreeDimHistogramVisualizer(histogram, clusters);
-		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+		try {
+			new ThreeDimHistogramVisualizer(histogram, clusters);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
