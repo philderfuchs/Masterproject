@@ -22,7 +22,6 @@ public class KmeansPlusPlus extends AbstractKmeans {
 		this.finished = false;
 		Random r = new Random();
 		clusters = new ClusterContainer();
-		double accSquaredDistances;
 		int seedIndex = r.nextInt(histogram.getLength());
 		Pixel center = new Pixel(histogram.get(seedIndex).get(Channel.R), histogram.get(seedIndex).get(Channel.G),
 				histogram.get(seedIndex).get(Channel.B), 1);
@@ -35,17 +34,12 @@ public class KmeansPlusPlus extends AbstractKmeans {
 
 			clusters.add(new Cluster(new Histogram(), center));
 			this.reassignPixelsToCluster(histogram, clusters);
-
-			accSquaredDistances = 0;
-			for (Cluster c : clusters) {
-				accSquaredDistances += c.getSquaredDistance();
-			}
 			
 			foundSeed = false;
 			outer: while (!foundSeed) {
 				for (Cluster c : clusters) {
 					for (Pixel p : c.getHistogram().getPixelList()) {
-						double prob = this.getSquaredDistance(p, c.getCenter()) / accSquaredDistances;
+						double prob = this.getSquaredDistance(p, c.getCenter()) / clusters.getError();
 						if (r.nextDouble() <= prob) {
 							center = new Pixel(p.get(Channel.R), p.get(Channel.G), p.get(Channel.B), 1);
 							foundSeed = true;

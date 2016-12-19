@@ -4,7 +4,7 @@ public class Cluster implements Comparable<Cluster> {
 
 	private Histogram histo;
 	private Pixel center;
-	
+		
 	public Cluster(Histogram histo, Pixel center) {
 		super();
 		this.histo = histo;
@@ -15,12 +15,12 @@ public class Cluster implements Comparable<Cluster> {
 		return histo;
 	}
 	
-	public double getSquaredDistance(){
-		double squaredDistance = 0;
+	public double getError(){
+		double error = 0;
 		for(Pixel p : histo.getPixelList()) {
-			squaredDistance += this.getSquaredDistance(p, center);
+			error += this.getSquaredDistance(p, center);
 		}
-		return squaredDistance;
+		return error;
 	}
 	
 	public void setHistogram(Histogram histo) {
