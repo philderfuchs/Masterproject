@@ -3,6 +3,7 @@ package de.automatic.ui.colorconfiguraiton.clustering;
 import java.util.ArrayList;
 
 import de.automatic.ui.colorconfiguraiton.entities.*;
+import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
 
 public abstract class AbstractKmeans implements StepByStepClusterer, FinishingClusterer {
 
@@ -69,7 +70,7 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 			double minDistance = Double.MAX_VALUE;
 			Cluster closestCluster = null;
 			for (Cluster c : clusters) {
-				double currentDistance = getEucledianDistance(p, c.getCenter());
+				double currentDistance = ErrorCalculationService.getEucledianDistance(p, c.getCenter());
 				if (currentDistance < minDistance) {
 					minDistance = currentDistance;
 					closestCluster = c;
@@ -89,16 +90,6 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 
 	public ClusterContainer getClusters() {
 		return clusters;
-	}
-
-	protected double getEucledianDistance(Pixel p1, Pixel p2) {
-		return (Math.sqrt(Math.pow(p1.getR() - p2.getR(), 2) + Math.pow(p1.getG() - p2.getG(), 2)
-				+ Math.pow(p1.getB() - p2.getB(), 2)));
-	}
-
-	protected double getSquaredDistance(Pixel p1, Pixel p2) {
-		return Math.sqrt(Math.pow(p1.getR() - p2.getR(), 2) + Math.pow(p1.getG() - p2.getG(), 2)
-				+ Math.pow(p1.getB() - p2.getB(), 2));
 	}
 
 	public int getStepCount() {

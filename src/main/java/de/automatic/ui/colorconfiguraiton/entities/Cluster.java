@@ -1,5 +1,7 @@
 package de.automatic.ui.colorconfiguraiton.entities;
 
+import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
+
 public class Cluster implements Comparable<Cluster> {
 
 	private Histogram histo;
@@ -18,7 +20,7 @@ public class Cluster implements Comparable<Cluster> {
 	public double getError(){
 		double error = 0;
 		for(Pixel p : histo.getPixelList()) {
-			error += this.getSquaredDistance(p, center);
+			error += ErrorCalculationService.getSquaredDistance(p, center);
 		}
 		return error;
 	}
@@ -39,11 +41,6 @@ public class Cluster implements Comparable<Cluster> {
 	public int compareTo(Cluster o) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-	
-	protected double getSquaredDistance(Pixel p1, Pixel p2) {
-		return Math.sqrt(Math.pow(p1.getR() - p2.getR(), 2) + Math.pow(p1.getG() - p2.getG(), 2)
-				+ Math.pow(p1.getB() - p2.getB(), 2));
 	}
 	
 }

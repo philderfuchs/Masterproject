@@ -20,5 +20,14 @@ public class ClusterContainer extends ArrayList<Cluster> {
 		}
 		return error;
 	}
+	
+	public double getMaxDistance() {
+		for (Cluster c : this) {
+			for(Pixel p: c.getHistogram().getPixelList()) {
+				
+			}
+		}
+		return 0;
+	}
 
 }

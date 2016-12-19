@@ -9,6 +9,7 @@ import de.automatic.ui.colorconfiguraiton.entities.Cluster;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 import de.automatic.ui.colorconfiguraiton.entities.Pixel;
+import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
 
 public class KmeansPlusPlus extends AbstractKmeans {
 
@@ -39,7 +40,7 @@ public class KmeansPlusPlus extends AbstractKmeans {
 			outer: while (!foundSeed) {
 				for (Cluster c : clusters) {
 					for (Pixel p : c.getHistogram().getPixelList()) {
-						double prob = this.getSquaredDistance(p, c.getCenter()) / clusters.getError();
+						double prob = ErrorCalculationService.getSquaredDistance(p, c.getCenter()) / clusters.getError();
 						if (r.nextDouble() <= prob) {
 							center = new Pixel(p.get(Channel.R), p.get(Channel.G), p.get(Channel.B), 1);
 							foundSeed = true;
