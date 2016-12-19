@@ -7,13 +7,13 @@ import de.automatic.ui.colorconfiguraiton.entities.*;
 public abstract class AbstractKmeans implements StepByStepClusterer, FinishingClusterer {
 
 	protected int k;
-	protected ArrayList<Cluster> clusters;
+	protected ClusterContainer clusters;
 	protected boolean finished;
 
 	protected int stepCount = 0;
 
 	@Override
-	public ArrayList<Cluster> clusterToEnd(Histogram histogram) {
+	public ClusterContainer clusterToEnd(Histogram histogram) {
 		this.init(histogram);
 
 		while (!finished) {
@@ -22,9 +22,9 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 		return clusters;
 	}
 
-	public abstract ArrayList<Cluster> init(Histogram histogram);
+	public abstract ClusterContainer init(Histogram histogram);
 
-	public ArrayList<Cluster> step(Histogram histogram) {
+	public ClusterContainer step(Histogram histogram) {
 		stepCount++;
 		this.finished = true;
 
@@ -60,7 +60,7 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 		return clusters;
 	}
 
-	protected void reassignPixelsToCluster(Histogram histogram, ArrayList<Cluster> clusters) {
+	protected void reassignPixelsToCluster(Histogram histogram, ClusterContainer clusters) {
 		for (Cluster c : clusters) {
 			c.getHistogram().clear();
 		}
@@ -87,12 +87,8 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 		this.k = k;
 	}
 
-	public ArrayList<Cluster> getClusters() {
+	public ClusterContainer getClusters() {
 		return clusters;
-	}
-
-	public void setClusters(ArrayList<Cluster> clusters) {
-		this.clusters = clusters;
 	}
 
 	protected double getEucledianDistance(Pixel p1, Pixel p2) {

@@ -15,13 +15,14 @@ import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 import de.automatic.ui.colorconfiguraiton.entities.Pixel;
 import de.automatic.ui.colorconfiguraiton.entities.Channel;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
+import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 
 public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 
 	private Histogram histogram;
 	private ArrayList<Cluster> clusters;
 
-	public ThreeDimHistogramVisualizer(Histogram histogram, ArrayList<Cluster> clusters) throws Exception {
+	public ThreeDimHistogramVisualizer(Histogram histogram, ClusterContainer clusters) throws Exception {
 		this.histogram = histogram;
 		this.clusters = clusters;
 		AnalysisLauncher.open(this);

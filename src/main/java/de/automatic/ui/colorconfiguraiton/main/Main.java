@@ -11,6 +11,7 @@ import de.automatic.ui.colorconfiguraiton.clustering.RandomSeedKmeans;
 import de.automatic.ui.colorconfiguraiton.clustering.StepByStepClusterer;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
+import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 import de.automatic.ui.colorconfiguraiton.process.ImageReader;
 import de.automatic.ui.colorconfiguraiton.services.ClusterListConversionService;
 import de.automatic.ui.colorconfiguraiton.vis.OneDimHistogramVisualizer;
@@ -32,7 +33,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		AbstractKmeans clusterer = new KmeansPlusPlus(k);
-		ArrayList<Cluster> clusters = clusterer.clusterToEnd(histogram);
+		ClusterContainer clusters = clusterer.clusterToEnd(histogram);
 		System.out.println("Number of Steps: " + clusterer.getStepCount());
 		// }
 

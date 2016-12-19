@@ -11,10 +11,10 @@ public class RandomSeedKmeans extends AbstractKmeans implements StepByStepCluste
 		this.finished = false;
 	}
 
-	public ArrayList<Cluster> init(Histogram histogram) {
+	public ClusterContainer init(Histogram histogram) {
 		this.finished = false;
 		// clusters not yet initialized
-		clusters = new ArrayList<Cluster>();
+		clusters = new ClusterContainer();
 		// initialize random clusters
 		for (int i = 0; i < k; i++) {
 			clusters.add(new Cluster(new Histogram(), new Pixel((int) (Math.random() * 255),

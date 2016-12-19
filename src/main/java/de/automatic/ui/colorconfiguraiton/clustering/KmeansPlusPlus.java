@@ -6,6 +6,7 @@ import java.util.Random;
 
 import de.automatic.ui.colorconfiguraiton.entities.Channel;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
+import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 import de.automatic.ui.colorconfiguraiton.entities.Pixel;
 
@@ -16,11 +17,11 @@ public class KmeansPlusPlus extends AbstractKmeans {
 		this.finished = false;
 	}
 
-	public ArrayList<Cluster> init(Histogram histogram) {
+	public ClusterContainer init(Histogram histogram) {
 
 		this.finished = false;
 		Random r = new Random();
-		clusters = new ArrayList<Cluster>();
+		clusters = new ClusterContainer();
 		double accSquaredDistances;
 		int seedIndex = r.nextInt(histogram.getLength());
 		Pixel center = new Pixel(histogram.get(seedIndex).get(Channel.R), histogram.get(seedIndex).get(Channel.G),
