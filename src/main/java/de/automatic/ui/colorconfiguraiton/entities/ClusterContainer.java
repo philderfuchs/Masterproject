@@ -2,6 +2,8 @@ package de.automatic.ui.colorconfiguraiton.entities;
 
 import java.util.ArrayList;
 
+import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
+
 public class ClusterContainer extends ArrayList<Cluster> {
 
 	private double error;
@@ -20,14 +22,19 @@ public class ClusterContainer extends ArrayList<Cluster> {
 		}
 		return error;
 	}
-	
-	public double getMaxDistance() {
+
+	public double getMaxSquaredDistance() {
+		double maxDistance = Double.MIN_VALUE;
 		for (Cluster c : this) {
-			for(Pixel p: c.getHistogram().getPixelList()) {
-				
+			for (Pixel p : c.getHistogram().getPixelList()) {
+				double currentDistance = ErrorCalculationService.getSquaredDistance(p, c.getCenter());
+				if (currentDistance > maxDistance) {
+					maxDistance = currentDistance;
+				}
 			}
 		}
-		return 0;
+		System.out.println("MaxDistance: " + maxDistance);
+		return maxDistance;
 	}
 
 }
