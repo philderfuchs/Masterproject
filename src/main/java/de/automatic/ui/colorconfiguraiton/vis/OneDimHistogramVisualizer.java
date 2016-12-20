@@ -53,13 +53,13 @@ public class OneDimHistogramVisualizer extends JFrame {
 
 		XYPlot plot = (XYPlot) chart.getPlot();
 
-		for (Cluster c : clusters) {
-			ValueMarker marker = new ValueMarker(c.getCenter().get(channel));
-			marker.setPaint(new Color(c.getCenter().get(Channel.R), c.getCenter().get(Channel.G),
-					c.getCenter().get(Channel.B)));
-			marker.setLabel("yo");
-			plot.addDomainMarker(marker);
-		}
+//		for (Cluster c : clusters) {
+//			ValueMarker marker = new ValueMarker(c.getCenter().get(channel));
+//			marker.setPaint(new Color(c.getCenter().get(Channel.R), c.getCenter().get(Channel.G),
+//					c.getCenter().get(Channel.B)));
+//			marker.setLabel("yo");
+//			plot.addDomainMarker(marker);
+//		}
 
 		ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
