@@ -8,7 +8,7 @@ public class Pixel {
 	private int b;
 	private int count;
 	private int rgb;
-	
+
 	public Pixel(int r, int g, int b, int rgb, int count) {
 
 		this.r = r;
@@ -24,7 +24,16 @@ public class Pixel {
 		this.g = g;
 		this.b = b;
 		this.count = count;
-		this.rgb = ((255&0x0ff)<<24)|((r&0x0ff)<<16)|((g&0x0ff)<<8)|(b&0x0ff);
+		this.rgb = ((255 & 0x0ff) << 24) | ((r & 0x0ff) << 16) | ((g & 0x0ff) << 8) | (b & 0x0ff);
+	}
+
+	public Pixel(Pixel p) {
+
+		this.r = p.get(Channel.R);
+		this.g = p.get(Channel.G);
+		this.b = p.get(Channel.B);
+		this.count = p.count;
+		this.rgb = p.getRgb();
 	}
 
 	public int get(Channel c) {
