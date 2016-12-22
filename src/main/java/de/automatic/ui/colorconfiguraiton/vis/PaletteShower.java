@@ -48,7 +48,7 @@ public class PaletteShower {
 			int lengthOfQuader = windowLength / palette.size();
 			int x = 0;
 			for(Sample pixel: palette){
-				Color c = new Color(pixel.getC1(), pixel.getC2(), pixel.getC3());
+				Color c = new Color((int) pixel.getC1(), (int) pixel.getC2(), (int) pixel.getC3());
 				g.setColor(c);
 				g.fillRect(x*lengthOfQuader, 0, lengthOfQuader, windowHeight);
 				x++;

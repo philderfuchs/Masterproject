@@ -1,9 +1,9 @@
 package de.automatic.ui.colorconfiguraiton.entities;
 
 public class RgbSample implements Sample {
-	private int r;
-	private int g;
-	private int b;
+	private double r;
+	private double g;
+	private double b;
 	private int count;
 
 	public RgbSample(int r, int g, int b, int count) {
@@ -22,7 +22,7 @@ public class RgbSample implements Sample {
 		this.count = p.getCount();
 	}
 
-	public int get(Channels c) {
+	public double get(Channels c) {
 		switch (c) {
 		case C1:
 			return this.r;
@@ -40,7 +40,7 @@ public class RgbSample implements Sample {
 		return p.getC1() == this.r && p.getC2() == this.g && p.getC3() == this.b;
 	}
 
-	public int getC1() {
+	public double getC1() {
 		return r;
 	}
 
@@ -48,7 +48,7 @@ public class RgbSample implements Sample {
 		this.r = r;
 	}
 
-	public int getC2() {
+	public double getC2() {
 		return g;
 	}
 
@@ -56,7 +56,7 @@ public class RgbSample implements Sample {
 		this.g = g;
 	}
 
-	public int getC3() {
+	public double getC3() {
 		return b;
 	}
 
