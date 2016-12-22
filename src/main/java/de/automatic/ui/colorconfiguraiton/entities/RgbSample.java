@@ -6,7 +6,7 @@ public class RgbSample implements Sample {
 	private double b;
 	private int count;
 
-	public RgbSample(int r, int g, int b, int count) {
+	public RgbSample(double r, double g, double b, int count) {
 
 		this.r = r;
 		this.g = g;
@@ -44,7 +44,7 @@ public class RgbSample implements Sample {
 		return r;
 	}
 
-	public void setC1(int r) {
+	public void setC1(double r) {
 		this.r = r;
 	}
 
@@ -52,7 +52,7 @@ public class RgbSample implements Sample {
 		return g;
 	}
 
-	public void setC2(int g) {
+	public void setC2(double g) {
 		this.g = g;
 	}
 
@@ -60,7 +60,7 @@ public class RgbSample implements Sample {
 		return b;
 	}
 
-	public void setC3(int b) {
+	public void setC3(double b) {
 		this.b = b;
 	}
 

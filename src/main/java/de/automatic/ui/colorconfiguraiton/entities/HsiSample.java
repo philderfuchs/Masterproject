@@ -1,13 +1,13 @@
 package de.automatic.ui.colorconfiguraiton.entities;
 
-public class HsiSample {
+public class HsiSample implements Sample {
 
 	private double h;
 	private double s;
 	private double i;
 	private int count;
 
-	public HsiSample(int r, int g, int b, int count) {
+	public HsiSample(double r, double g, double b, int count) {
 		this.h = r;
 		this.s = g;
 		this.i = b;
@@ -43,7 +43,7 @@ public class HsiSample {
 		return h;
 	}
 
-	public void setC1(int r) {
+	public void setC1(double r) {
 		this.h = r;
 	}
 
@@ -51,7 +51,7 @@ public class HsiSample {
 		return s;
 	}
 
-	public void setC2(int g) {
+	public void setC2(double g) {
 		this.s = g;
 	}
 
@@ -59,7 +59,7 @@ public class HsiSample {
 		return i;
 	}
 
-	public void setC3(int b) {
+	public void setC3(double b) {
 		this.i = b;
 	}
 
