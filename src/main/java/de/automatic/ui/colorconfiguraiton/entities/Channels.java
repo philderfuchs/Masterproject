@@ -1,5 +1,5 @@
 package de.automatic.ui.colorconfiguraiton.entities;
 
-public enum RgbChannels {
-	R, G, B;
+public enum Channels {
+	C1, C2, C3;
 }

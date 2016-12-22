@@ -8,16 +8,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
+import de.automatic.ui.colorconfiguraiton.entities.Sample;
 
 
 public class PaletteShower {
 	
-	HashSet<RgbSample> palette;
+	HashSet<Sample> palette;
 	int windowLength = 400;
 	int windowHeight = 200;
 	String title;
 
-	public PaletteShower(HashSet<RgbSample> palette, String title) {
+	public PaletteShower(HashSet<Sample> palette, String title) {
 		this.palette = palette;
 		this.title = title;
 	}
@@ -46,7 +47,7 @@ public class PaletteShower {
 			
 			int lengthOfQuader = windowLength / palette.size();
 			int x = 0;
-			for(RgbSample pixel: palette){
+			for(Sample pixel: palette){
 				Color c = new Color(pixel.getC1(), pixel.getC2(), pixel.getC3());
 				g.setColor(c);
 				g.fillRect(x*lengthOfQuader, 0, lengthOfQuader, windowHeight);

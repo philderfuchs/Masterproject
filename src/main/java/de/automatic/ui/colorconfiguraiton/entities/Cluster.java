@@ -2,12 +2,12 @@ package de.automatic.ui.colorconfiguraiton.entities;
 
 import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
 
-public class Cluster implements Comparable<Cluster> {
+public class Cluster {
 
 	private Histogram histo;
-	private RgbSample center;
+	private Sample center;
 		
-	public Cluster(Histogram histo, RgbSample center) {
+	public Cluster(Histogram histo, Sample center) {
 		super();
 		this.histo = histo;
 		this.center = center;
@@ -19,7 +19,7 @@ public class Cluster implements Comparable<Cluster> {
 	
 	public double getError(){
 		double error = 0;
-		for(RgbSample p : histo.getPixelList()) {
+		for(Sample p : histo.getPixelList()) {
 			error += ErrorCalculationService.getSquaredDistance(p, center);
 		}
 		return error;
@@ -29,18 +29,12 @@ public class Cluster implements Comparable<Cluster> {
 		this.histo = histo;
 	}
 	
-	public RgbSample getCenter() {
+	public Sample getCenter() {
 		return center;
 	}
 	
 	public void setCenter(RgbSample center) {
 		this.center = center;
-	}
-
-	@Override
-	public int compareTo(Cluster o) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 	
 }

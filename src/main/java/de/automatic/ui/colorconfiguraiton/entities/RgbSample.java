@@ -1,6 +1,6 @@
 package de.automatic.ui.colorconfiguraiton.entities;
 
-public class RgbSample {
+public class RgbSample implements Sample {
 	private int r;
 	private int g;
 	private int b;
@@ -14,21 +14,21 @@ public class RgbSample {
 		this.count = count;
 	}
 
-	public RgbSample(RgbSample p) {
+	public RgbSample(Sample p) {
 
-		this.r = p.get(RgbChannels.R);
-		this.g = p.get(RgbChannels.G);
-		this.b = p.get(RgbChannels.B);
-		this.count = p.count;
+		this.r = p.get(Channels.C1);
+		this.g = p.get(Channels.C2);
+		this.b = p.get(Channels.C3);
+		this.count = p.getCount();
 	}
 
-	public int get(RgbChannels c) {
+	public int get(Channels c) {
 		switch (c) {
-		case R:
+		case C1:
 			return this.r;
-		case G:
+		case C2:
 			return this.g;
-		case B:
+		case C3:
 			return this.b;
 		default:
 			break;
@@ -36,7 +36,7 @@ public class RgbSample {
 		return 0;
 	}
 
-	public boolean sameAs(RgbSample p) {
+	public boolean sameAs(Sample p) {
 		return p.getC1() == this.r && p.getC2() == this.g && p.getC3() == this.b;
 	}
 

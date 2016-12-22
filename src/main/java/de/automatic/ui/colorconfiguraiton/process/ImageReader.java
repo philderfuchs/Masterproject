@@ -38,7 +38,7 @@ public class ImageReader {
 			}
 		}
 		
-		ArrayList<RgbSample> pixelList = new ArrayList<RgbSample>();
+		ArrayList<Sample> pixelList = new ArrayList<Sample>();
 		for (Integer i : pixelMap.keySet()) {
 			Color c = new Color(i);
 			pixelList.add(new RgbSample(c.getRed(), c.getGreen(), c.getBlue(), pixelMap.get(i)));
