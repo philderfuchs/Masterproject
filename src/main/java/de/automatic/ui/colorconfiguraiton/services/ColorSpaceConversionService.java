@@ -2,7 +2,7 @@ package de.automatic.ui.colorconfiguraiton.services;
 
 import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
 
-public class ColosSpaceConversionService {
+public class ColorSpaceConversionService {
 
 	public static HsiSample toHsi(double r, double b, double g, int count) {
 

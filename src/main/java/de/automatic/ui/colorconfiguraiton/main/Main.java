@@ -34,14 +34,16 @@ public class Main {
 
 		Histogram histogram = null;
 		try {
-			histogram = (new ImageReader(new File(file))).getHistogram();
+			histogram = (new ImageReader(new File(file))).getRgbHistogram();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		ClusterContainer clusters = null;
 
-		AbstractKmeans clusterer = new KmeansPlusPlus(k);
-		ClusterContainer clusters = clusterer.clusterToEnd(histogram);
-		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means").visualizePalette();
+//		AbstractKmeans clusterer = new KmeansPlusPlus(k);
+//		clusters = clusterer.clusterToEnd(histogram);
+//		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means").visualizePalette();
 
 		// new OneDimHistogramVisualizer("Channel Histograms", histogram,
 		// clusters);

@@ -35,9 +35,7 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 		float z;
 		float a;
 
-//		int size = Math.min(histogram.getLength(), 100000);
 		int size = histogram.getLength();
-
 
 		Coord3d[] histoPoints = new Coord3d[size];
 		Color[] histoColors = new Color[size];
@@ -58,25 +56,26 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 
 		Scatter histoScatter = new Scatter(histoPoints, histoColors);
 
-		Coord3d[] clusterPoints = new Coord3d[clusters.size()];
-		Color[] clusterColors = new Color[clusters.size()];
-
-		int i = 0;
-		for (Cluster c : clusters) {
-			x = ((float) c.getCenter().get(Channels.C1) / 255.0f);
-			y = ((float) c.getCenter().get(Channels.C2) / 255.0f);
-			z = ((float) c.getCenter().get(Channels.C3) / 255.0f);
-			a = 0.8f;
-
-			clusterPoints[i] = new Coord3d(x - 0.5f, y - 0.5f, z - 0.5f);
-			clusterColors[i++] = new Color(x - 0.1f, y - 0.1f, z - 0.1f);
-		}
-
-		Scatter clusterCenterScatter = new Scatter(clusterPoints, clusterColors, 9.0f);
-
-		chart = AWTChartComponentFactory.chart(Quality.Advanced, "newt");
+		chart = initializeChart(Quality.Advanced);
 		chart.getScene().add(histoScatter);
-		chart.getScene().add(clusterCenterScatter);
 
+		if (clusters != null) {
+			Coord3d[] clusterPoints = new Coord3d[clusters.size()];
+			Color[] clusterColors = new Color[clusters.size()];
+
+			int i = 0;
+			for (Cluster c : clusters) {
+				x = ((float) c.getCenter().get(Channels.C1) / 255.0f);
+				y = ((float) c.getCenter().get(Channels.C2) / 255.0f);
+				z = ((float) c.getCenter().get(Channels.C3) / 255.0f);
+				a = 0.8f;
+
+				clusterPoints[i] = new Coord3d(x - 0.5f, y - 0.5f, z - 0.5f);
+				clusterColors[i++] = new Color(x - 0.1f, y - 0.1f, z - 0.1f);
+			}
+
+			Scatter clusterCenterScatter = new Scatter(clusterPoints, clusterColors, 9.0f);
+			chart.getScene().add(clusterCenterScatter);
+		}
 	}
 }
