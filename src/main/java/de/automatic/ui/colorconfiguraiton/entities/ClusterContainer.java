@@ -26,7 +26,7 @@ public class ClusterContainer extends ArrayList<Cluster> {
 	public double getMaxSquaredDistance() {
 		double maxDistance = Double.MIN_VALUE;
 		for (Cluster c : this) {
-			for (Pixel p : c.getHistogram().getPixelList()) {
+			for (RgbPixel p : c.getHistogram().getPixelList()) {
 				double currentDistance = ErrorCalculationService.getSquaredDistance(p, c.getCenter());
 				if (currentDistance > maxDistance) {
 					maxDistance = currentDistance;

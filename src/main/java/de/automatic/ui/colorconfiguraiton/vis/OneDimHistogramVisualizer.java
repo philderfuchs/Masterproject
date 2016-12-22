@@ -16,7 +16,7 @@ import org.jfree.data.statistics.HistogramDataset;
 
 import de.automatic.ui.colorconfiguraiton.entities.Channel;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
-import de.automatic.ui.colorconfiguraiton.entities.Pixel;
+import de.automatic.ui.colorconfiguraiton.entities.RgbPixel;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
 
 public class OneDimHistogramVisualizer extends JFrame {
@@ -41,7 +41,7 @@ public class OneDimHistogramVisualizer extends JFrame {
 		HistogramDataset dataset = new HistogramDataset();
 
 		int i = 0;
-		for (Pixel p : histogram.getPixelList()) {
+		for (RgbPixel p : histogram.getPixelList()) {
 			for (int j = 0; j < p.getCount(); j++) {
 				values[i++] = (double) p.get(channel);
 			}

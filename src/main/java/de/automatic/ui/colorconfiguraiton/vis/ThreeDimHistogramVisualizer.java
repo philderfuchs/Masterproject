@@ -12,7 +12,7 @@ import org.jzy3d.plot3d.primitives.Scatter;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
 
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
-import de.automatic.ui.colorconfiguraiton.entities.Pixel;
+import de.automatic.ui.colorconfiguraiton.entities.RgbPixel;
 import de.automatic.ui.colorconfiguraiton.entities.Channel;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
@@ -44,7 +44,7 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 		// int i = 0;
 		// for (Pixel p : histogram.getPixelList()) {
 		for (int i = 0; i < size; i++) {
-			Pixel p = histogram.getPixelList().get(i);
+			RgbPixel p = histogram.getPixelList().get(i);
 			x = ((float) p.get(Channel.R) / 255.0f);
 			y = ((float) p.get(Channel.G) / 255.0f);
 			z = ((float) p.get(Channel.B) / 255.0f);

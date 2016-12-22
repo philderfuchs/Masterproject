@@ -10,7 +10,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
-import de.automatic.ui.colorconfiguraiton.entities.Pixel;
+import de.automatic.ui.colorconfiguraiton.entities.RgbPixel;
 
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;

@@ -38,10 +38,10 @@ public class ImageReader {
 			}
 		}
 		
-		ArrayList<Pixel> pixelList = new ArrayList<Pixel>();
+		ArrayList<RgbPixel> pixelList = new ArrayList<RgbPixel>();
 		for (Integer i : pixelMap.keySet()) {
 			Color c = new Color(i);
-			pixelList.add(new Pixel(c.getRed(), c.getGreen(), c.getBlue(), i, pixelMap.get(i)));
+			pixelList.add(new RgbPixel(c.getRed(), c.getGreen(), c.getBlue(), pixelMap.get(i)));
 		}
 		Histogram histogram = new Histogram (pixelList);
 				

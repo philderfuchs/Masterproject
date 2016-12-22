@@ -8,34 +8,24 @@ import java.util.Collections;
 
 public class Histogram {
 
-	private ArrayList<Pixel> pixelList;
-	private HashSet<Integer> intValues;
+	private ArrayList<RgbPixel> pixelList;
 
 	public Histogram() {
-		pixelList = new ArrayList<Pixel>();
-		intValues = new HashSet<Integer>();
+		pixelList = new ArrayList<RgbPixel>();
 	}
 
-	public Histogram(ArrayList<Pixel> histogram) {
+	public Histogram(ArrayList<RgbPixel> histogram) {
 		this.pixelList = histogram;
-		intValues = new HashSet<Integer>();
-		for(Pixel p : histogram) {
-			intValues.add(p.getRgb());
-		}
-	}
-	
-	public boolean contains(int rgb) {
-		return intValues.contains(rgb);
 	}
 	
 	public void sort(Channel c) {
 		switch (c) {
 		case R:
-			Collections.sort(pixelList, new Comparator<Pixel>(){
-		        public int compare(Pixel  p1, Pixel  p2) {
-		        	if (p1.getR() > p2.getR()) {
+			Collections.sort(pixelList, new Comparator<RgbPixel>(){
+		        public int compare(RgbPixel  p1, RgbPixel  p2) {
+		        	if (p1.getC1() > p2.getC1()) {
 		        		return 1;
-		        	} else if(p1.getR() == p2.getR()) {
+		        	} else if(p1.getC1() == p2.getC1()) {
 		        		return 0;
 		        	} else {
 		        		return -1;
@@ -44,11 +34,11 @@ public class Histogram {
 			});
 			break;
 		case G:
-			Collections.sort(pixelList, new Comparator<Pixel>(){
-		        public int compare(Pixel  p1, Pixel  p2) {
-		        	if (p1.getG() > p2.getG()) {
+			Collections.sort(pixelList, new Comparator<RgbPixel>(){
+		        public int compare(RgbPixel  p1, RgbPixel  p2) {
+		        	if (p1.getC2() > p2.getC2()) {
 		        		return 1;
-		        	} else if(p1.getG() == p2.getG()) {
+		        	} else if(p1.getC2() == p2.getC2()) {
 		        		return 0;
 		        	} else {
 		        		return -1;
@@ -57,11 +47,11 @@ public class Histogram {
 			});
 			break;
 		case B:
-			Collections.sort(pixelList, new Comparator<Pixel>(){
-		        public int compare(Pixel  p1, Pixel  p2) {
-		        	if (p1.getB() > p2.getB()) {
+			Collections.sort(pixelList, new Comparator<RgbPixel>(){
+		        public int compare(RgbPixel  p1, RgbPixel  p2) {
+		        	if (p1.getC3() > p2.getC3()) {
 		        		return 1;
-		        	} else if(p1.getB() == p2.getB()) {
+		        	} else if(p1.getC3() == p2.getC3()) {
 		        		return 0;
 		        	} else {
 		        		return -1;
@@ -74,9 +64,8 @@ public class Histogram {
 		}
 	}
 	
-	public void add(Pixel p) {
+	public void add(RgbPixel p) {
 		this.pixelList.add(p);
-		intValues.add(p.getRgb());
 	}
 	
 	public int getLength() {
@@ -85,31 +74,27 @@ public class Histogram {
 	
 	public int getCountOfPixels() {
 		int count = 0;
-		for (Pixel p : pixelList) {
+		for (RgbPixel p : pixelList) {
 			count+=p.getCount();
 		}
 		return count;
 	}
 	
-	public Pixel get(int index){
+	public RgbPixel get(int index){
 		return pixelList.get(index);
 	}
 
-	public ArrayList<Pixel> getPixelList() {
+	public ArrayList<RgbPixel> getPixelList() {
 		return pixelList;
 	}
 
-	public void setHistogram(ArrayList<Pixel> histogram) {
+	public void setHistogram(ArrayList<RgbPixel> histogram) {
 		this.pixelList = histogram;
-		intValues = new HashSet<Integer>();
-		for(Pixel p : histogram) {
-			intValues.add(p.getRgb());
-		}
+
 	}
 	
 	public void clear(){
 		this.pixelList.clear();
-		this.intValues.clear();
 	}
 
 }

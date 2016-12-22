@@ -1,16 +1,16 @@
 package de.automatic.ui.colorconfiguraiton.services;
 
-import de.automatic.ui.colorconfiguraiton.entities.Pixel;
+import de.automatic.ui.colorconfiguraiton.entities.RgbPixel;
 
 public class ErrorCalculationService {
 	
-	public static double getSquaredDistance(Pixel p1, Pixel p2) {
-		return Math.sqrt(Math.pow(p1.getR() - p2.getR(), 2) + Math.pow(p1.getG() - p2.getG(), 2)
-				+ Math.pow(p1.getB() - p2.getB(), 2));
+	public static double getSquaredDistance(RgbPixel p1, RgbPixel p2) {
+		return Math.sqrt(Math.pow(p1.getC1() - p2.getC1(), 2) + Math.pow(p1.getC2() - p2.getC2(), 2)
+				+ Math.pow(p1.getC3() - p2.getC3(), 2));
 	}
 	
-	public static double getEucledianDistance(Pixel p1, Pixel p2) {
-		return (Math.sqrt(Math.pow(p1.getR() - p2.getR(), 2) + Math.pow(p1.getG() - p2.getG(), 2)
-				+ Math.pow(p1.getB() - p2.getB(), 2)));
+	public static double getEucledianDistance(RgbPixel p1, RgbPixel p2) {
+		return (Math.sqrt(Math.pow(p1.getC1() - p2.getC1(), 2) + Math.pow(p1.getC2() - p2.getC2(), 2)
+				+ Math.pow(p1.getC3() - p2.getC3(), 2)));
 	}
 }

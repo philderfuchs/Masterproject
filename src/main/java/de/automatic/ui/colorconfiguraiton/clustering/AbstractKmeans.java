@@ -41,15 +41,15 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 			long meanR = 0;
 			long meanG = 0;
 			long meanB = 0;
-			for (Pixel p : c.getHistogram().getPixelList()) {
-				meanR += p.getR() * p.getCount();
-				meanG += p.getG() * p.getCount();
-				meanB += p.getB() * p.getCount();
+			for (RgbPixel p : c.getHistogram().getPixelList()) {
+				meanR += p.getC1() * p.getCount();
+				meanG += p.getC2() * p.getCount();
+				meanB += p.getC3() * p.getCount();
 			}
 			meanR = meanR / c.getHistogram().getCountOfPixels();
 			meanG = meanG / c.getHistogram().getCountOfPixels();
 			meanB = meanB / c.getHistogram().getCountOfPixels();
-			Pixel newMean = new Pixel((int) meanR, (int) meanG, (int) meanB, 1);
+			RgbPixel newMean = new RgbPixel((int) meanR, (int) meanG, (int) meanB, 1);
 			if (!newMean.sameAs(c.getCenter())) {
 				c.setCenter(newMean);
 				this.finished = false;
@@ -66,7 +66,7 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 			c.getHistogram().clear();
 		}
 		// put each pixel in the histogram in the closest cluster
-		for (Pixel p : histogram.getPixelList()) {
+		for (RgbPixel p : histogram.getPixelList()) {
 			double minDistance = Double.MAX_VALUE;
 			Cluster closestCluster = null;
 			for (Cluster c : clusters) {

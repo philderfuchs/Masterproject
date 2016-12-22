@@ -13,7 +13,7 @@ import de.automatic.ui.colorconfiguraiton.clustering.KmeansPlusPlus;
 import de.automatic.ui.colorconfiguraiton.clustering.RandomSeedKmeans;
 import de.automatic.ui.colorconfiguraiton.clustering.StepByStepClusterer;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
-import de.automatic.ui.colorconfiguraiton.entities.Pixel;
+import de.automatic.ui.colorconfiguraiton.entities.RgbPixel;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 import de.automatic.ui.colorconfiguraiton.process.ImageReader;

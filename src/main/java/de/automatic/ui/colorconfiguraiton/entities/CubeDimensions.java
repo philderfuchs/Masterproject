@@ -22,35 +22,35 @@ public class CubeDimensions {
 		bMin = 256;
 		bMax = 0;
 
-		for (Pixel p : histogram.getPixelList()) {
-			if (p.getR() < rMin) {
-				rMin = p.getR();
+		for (RgbPixel p : histogram.getPixelList()) {
+			if (p.getC1() < rMin) {
+				rMin = p.getC1();
 			}
 
-			if (p.getR() > rMax) {
-				rMax = p.getR();
+			if (p.getC1() > rMax) {
+				rMax = p.getC1();
 			}
 
-			if (p.getG() < gMin) {
-				gMin = p.getG();
+			if (p.getC2() < gMin) {
+				gMin = p.getC2();
 			}
 
-			if (p.getG() > gMax) {
-				gMax = p.getG();
+			if (p.getC2() > gMax) {
+				gMax = p.getC2();
 			}
 
-			if (p.getB() < bMin) {
-				bMin = p.getB();
+			if (p.getC3() < bMin) {
+				bMin = p.getC3();
 			}
 
-			if (p.getB() > bMax) {
-				bMax = p.getB();
+			if (p.getC3() > bMax) {
+				bMax = p.getC3();
 			}
 		}
 	}
 
-	public Pixel getCenter() {
-		return new Pixel(getrMin() + (getrMax() - getrMin()) / 2, getgMin() + (getgMax() - getgMin()) / 2,
+	public RgbPixel getCenter() {
+		return new RgbPixel(getrMin() + (getrMax() - getrMin()) / 2, getgMin() + (getgMax() - getgMin()) / 2,
 				getbMin() + (getbMax() - getbMin()) / 2, 1);
 	}
 	
