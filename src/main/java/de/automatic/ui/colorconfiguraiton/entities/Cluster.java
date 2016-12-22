@@ -5,9 +5,9 @@ import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
 public class Cluster implements Comparable<Cluster> {
 
 	private Histogram histo;
-	private RgbPixel center;
+	private RgbSample center;
 		
-	public Cluster(Histogram histo, RgbPixel center) {
+	public Cluster(Histogram histo, RgbSample center) {
 		super();
 		this.histo = histo;
 		this.center = center;
@@ -19,7 +19,7 @@ public class Cluster implements Comparable<Cluster> {
 	
 	public double getError(){
 		double error = 0;
-		for(RgbPixel p : histo.getPixelList()) {
+		for(RgbSample p : histo.getPixelList()) {
 			error += ErrorCalculationService.getSquaredDistance(p, center);
 		}
 		return error;
@@ -29,11 +29,11 @@ public class Cluster implements Comparable<Cluster> {
 		this.histo = histo;
 	}
 	
-	public RgbPixel getCenter() {
+	public RgbSample getCenter() {
 		return center;
 	}
 	
-	public void setCenter(RgbPixel center) {
+	public void setCenter(RgbSample center) {
 		this.center = center;
 	}
 

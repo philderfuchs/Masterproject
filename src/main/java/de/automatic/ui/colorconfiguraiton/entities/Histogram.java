@@ -8,21 +8,21 @@ import java.util.Collections;
 
 public class Histogram {
 
-	private ArrayList<RgbPixel> pixelList;
+	private ArrayList<RgbSample> pixelList;
 
 	public Histogram() {
-		pixelList = new ArrayList<RgbPixel>();
+		pixelList = new ArrayList<RgbSample>();
 	}
 
-	public Histogram(ArrayList<RgbPixel> histogram) {
+	public Histogram(ArrayList<RgbSample> histogram) {
 		this.pixelList = histogram;
 	}
 	
-	public void sort(Channel c) {
+	public void sort(RgbChannels c) {
 		switch (c) {
 		case R:
-			Collections.sort(pixelList, new Comparator<RgbPixel>(){
-		        public int compare(RgbPixel  p1, RgbPixel  p2) {
+			Collections.sort(pixelList, new Comparator<RgbSample>(){
+		        public int compare(RgbSample  p1, RgbSample  p2) {
 		        	if (p1.getC1() > p2.getC1()) {
 		        		return 1;
 		        	} else if(p1.getC1() == p2.getC1()) {
@@ -34,8 +34,8 @@ public class Histogram {
 			});
 			break;
 		case G:
-			Collections.sort(pixelList, new Comparator<RgbPixel>(){
-		        public int compare(RgbPixel  p1, RgbPixel  p2) {
+			Collections.sort(pixelList, new Comparator<RgbSample>(){
+		        public int compare(RgbSample  p1, RgbSample  p2) {
 		        	if (p1.getC2() > p2.getC2()) {
 		        		return 1;
 		        	} else if(p1.getC2() == p2.getC2()) {
@@ -47,8 +47,8 @@ public class Histogram {
 			});
 			break;
 		case B:
-			Collections.sort(pixelList, new Comparator<RgbPixel>(){
-		        public int compare(RgbPixel  p1, RgbPixel  p2) {
+			Collections.sort(pixelList, new Comparator<RgbSample>(){
+		        public int compare(RgbSample  p1, RgbSample  p2) {
 		        	if (p1.getC3() > p2.getC3()) {
 		        		return 1;
 		        	} else if(p1.getC3() == p2.getC3()) {
@@ -64,7 +64,7 @@ public class Histogram {
 		}
 	}
 	
-	public void add(RgbPixel p) {
+	public void add(RgbSample p) {
 		this.pixelList.add(p);
 	}
 	
@@ -74,21 +74,21 @@ public class Histogram {
 	
 	public int getCountOfPixels() {
 		int count = 0;
-		for (RgbPixel p : pixelList) {
+		for (RgbSample p : pixelList) {
 			count+=p.getCount();
 		}
 		return count;
 	}
 	
-	public RgbPixel get(int index){
+	public RgbSample get(int index){
 		return pixelList.get(index);
 	}
 
-	public ArrayList<RgbPixel> getPixelList() {
+	public ArrayList<RgbSample> getPixelList() {
 		return pixelList;
 	}
 
-	public void setHistogram(ArrayList<RgbPixel> histogram) {
+	public void setHistogram(ArrayList<RgbSample> histogram) {
 		this.pixelList = histogram;
 
 	}

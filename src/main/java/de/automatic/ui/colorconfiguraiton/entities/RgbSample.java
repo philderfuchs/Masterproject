@@ -1,12 +1,12 @@
 package de.automatic.ui.colorconfiguraiton.entities;
 
-public class RgbPixel {
+public class RgbSample {
 	private int r;
 	private int g;
 	private int b;
 	private int count;
 
-	public RgbPixel(int r, int g, int b, int count) {
+	public RgbSample(int r, int g, int b, int count) {
 
 		this.r = r;
 		this.g = g;
@@ -14,15 +14,15 @@ public class RgbPixel {
 		this.count = count;
 	}
 
-	public RgbPixel(RgbPixel p) {
+	public RgbSample(RgbSample p) {
 
-		this.r = p.get(Channel.R);
-		this.g = p.get(Channel.G);
-		this.b = p.get(Channel.B);
+		this.r = p.get(RgbChannels.R);
+		this.g = p.get(RgbChannels.G);
+		this.b = p.get(RgbChannels.B);
 		this.count = p.count;
 	}
 
-	public int get(Channel c) {
+	public int get(RgbChannels c) {
 		switch (c) {
 		case R:
 			return this.r;
@@ -36,7 +36,7 @@ public class RgbPixel {
 		return 0;
 	}
 
-	public boolean sameAs(RgbPixel p) {
+	public boolean sameAs(RgbSample p) {
 		return p.getC1() == this.r && p.getC2() == this.g && p.getC3() == this.b;
 	}
 

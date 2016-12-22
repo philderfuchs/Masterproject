@@ -14,9 +14,9 @@ import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.statistics.HistogramDataset;
 
-import de.automatic.ui.colorconfiguraiton.entities.Channel;
+import de.automatic.ui.colorconfiguraiton.entities.RgbChannels;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
-import de.automatic.ui.colorconfiguraiton.entities.RgbPixel;
+import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
 
 public class OneDimHistogramVisualizer extends JFrame {
@@ -28,20 +28,20 @@ public class OneDimHistogramVisualizer extends JFrame {
 		this.setLayout(new GridLayout(3, 1));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		this.add(getChartPanel("R", histogram, Channel.R, clusters));
-		this.add(getChartPanel("G", histogram, Channel.G, clusters));
-		this.add(getChartPanel("B", histogram, Channel.B, clusters));
+		this.add(getChartPanel("R", histogram, RgbChannels.R, clusters));
+		this.add(getChartPanel("G", histogram, RgbChannels.G, clusters));
+		this.add(getChartPanel("B", histogram, RgbChannels.B, clusters));
 
 		pack();
 		setVisible(true);
 	}
 
-	private ChartPanel getChartPanel(String title, Histogram histogram, Channel channel, ArrayList<Cluster> clusters) {
+	private ChartPanel getChartPanel(String title, Histogram histogram, RgbChannels channel, ArrayList<Cluster> clusters) {
 		double[] values = new double[histogram.getCountOfPixels()];
 		HistogramDataset dataset = new HistogramDataset();
 
 		int i = 0;
-		for (RgbPixel p : histogram.getPixelList()) {
+		for (RgbSample p : histogram.getPixelList()) {
 			for (int j = 0; j < p.getCount(); j++) {
 				values[i++] = (double) p.get(channel);
 			}

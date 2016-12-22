@@ -7,11 +7,11 @@ import java.util.Random;
 import org.apache.commons.math3.distribution.EnumeratedDistribution;
 import org.apache.commons.math3.util.Pair;
 
-import de.automatic.ui.colorconfiguraiton.entities.Channel;
+import de.automatic.ui.colorconfiguraiton.entities.RgbChannels;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
-import de.automatic.ui.colorconfiguraiton.entities.RgbPixel;
+import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
 
 public class KmeansPlusPlus extends AbstractKmeans {
@@ -27,8 +27,8 @@ public class KmeansPlusPlus extends AbstractKmeans {
 		Random r = new Random();
 		clusters = new ClusterContainer();
 		int seedIndex = r.nextInt(histogram.getLength());
-		RgbPixel center = new RgbPixel(histogram.get(seedIndex).get(Channel.R), histogram.get(seedIndex).get(Channel.G),
-				histogram.get(seedIndex).get(Channel.B), 1);
+		RgbSample center = new RgbSample(histogram.get(seedIndex).get(RgbChannels.R), histogram.get(seedIndex).get(RgbChannels.G),
+				histogram.get(seedIndex).get(RgbChannels.B), 1);
 
 		// boolean foundSeed;
 		// Collections.shuffle(histogram.getPixelList());
@@ -39,7 +39,7 @@ public class KmeansPlusPlus extends AbstractKmeans {
 			clusters.add(new Cluster(new Histogram(), center));
 			this.reassignPixelsToCluster(histogram, clusters);
 
-			center = new RgbPixel(this.chooseNewSeedApache(clusters));
+			center = new RgbSample(this.chooseNewSeedApache(clusters));
 
 		}
 
@@ -48,24 +48,24 @@ public class KmeansPlusPlus extends AbstractKmeans {
 		return clusters;
 	}
 
-	private RgbPixel chooseNewSeedApache(ClusterContainer clusters) {
-		List<Pair<RgbPixel, Double>> itemWeights = new ArrayList<Pair<RgbPixel, Double>>();
+	private RgbSample chooseNewSeedApache(ClusterContainer clusters) {
+		List<Pair<RgbSample, Double>> itemWeights = new ArrayList<Pair<RgbSample, Double>>();
 		for (Cluster c : clusters) {
-			for (RgbPixel p : c.getHistogram().getPixelList()) {
+			for (RgbSample p : c.getHistogram().getPixelList()) {
 				itemWeights
-						.add(new Pair<RgbPixel, Double>(p, ErrorCalculationService.getSquaredDistance(p, c.getCenter())));
+						.add(new Pair<RgbSample, Double>(p, ErrorCalculationService.getSquaredDistance(p, c.getCenter())));
 			}
 		}
 
-		return new EnumeratedDistribution<RgbPixel>(itemWeights).sample();
+		return new EnumeratedDistribution<RgbSample>(itemWeights).sample();
 	}
 
-	private RgbPixel chooseNewSeedOwn(ClusterContainer clusters) {
+	private RgbSample chooseNewSeedOwn(ClusterContainer clusters) {
 		Random r = new Random();
 		double error = clusters.getError();
 		while (true) {
 			for (Cluster c : clusters) {
-				for (RgbPixel p : c.getHistogram().getPixelList()) {
+				for (RgbSample p : c.getHistogram().getPixelList()) {
 					double prob = ErrorCalculationService.getSquaredDistance(p, c.getCenter()) / error;
 					double random = r.nextDouble();
 					if (random <= prob) {

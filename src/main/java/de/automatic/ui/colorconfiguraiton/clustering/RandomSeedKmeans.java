@@ -17,7 +17,7 @@ public class RandomSeedKmeans extends AbstractKmeans implements StepByStepCluste
 		clusters = new ClusterContainer();
 		// initialize random clusters
 		for (int i = 0; i < k; i++) {
-			clusters.add(new Cluster(new Histogram(), new RgbPixel((int) (Math.random() * 255),
+			clusters.add(new Cluster(new Histogram(), new RgbSample((int) (Math.random() * 255),
 					(int) (Math.random() * 255), (int) (Math.random() * 255), 1)));
 		}
 

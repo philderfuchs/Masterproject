@@ -12,8 +12,8 @@ import org.jzy3d.plot3d.primitives.Scatter;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
 
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
-import de.automatic.ui.colorconfiguraiton.entities.RgbPixel;
-import de.automatic.ui.colorconfiguraiton.entities.Channel;
+import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
+import de.automatic.ui.colorconfiguraiton.entities.RgbChannels;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 
@@ -44,10 +44,10 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 		// int i = 0;
 		// for (Pixel p : histogram.getPixelList()) {
 		for (int i = 0; i < size; i++) {
-			RgbPixel p = histogram.getPixelList().get(i);
-			x = ((float) p.get(Channel.R) / 255.0f);
-			y = ((float) p.get(Channel.G) / 255.0f);
-			z = ((float) p.get(Channel.B) / 255.0f);
+			RgbSample p = histogram.getPixelList().get(i);
+			x = ((float) p.get(RgbChannels.R) / 255.0f);
+			y = ((float) p.get(RgbChannels.G) / 255.0f);
+			z = ((float) p.get(RgbChannels.B) / 255.0f);
 			// a = ((float) p.getCount()) / ((float)
 			// histogram.getCountOfPixels());
 
@@ -62,9 +62,9 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 
 		int i = 0;
 		for (Cluster c : clusters) {
-			x = ((float) c.getCenter().get(Channel.R) / 255.0f);
-			y = ((float) c.getCenter().get(Channel.G) / 255.0f);
-			z = ((float) c.getCenter().get(Channel.B) / 255.0f);
+			x = ((float) c.getCenter().get(RgbChannels.R) / 255.0f);
+			y = ((float) c.getCenter().get(RgbChannels.G) / 255.0f);
+			z = ((float) c.getCenter().get(RgbChannels.B) / 255.0f);
 			a = 0.8f;
 
 			clusterPoints[i] = new Coord3d(x - 0.5f, y - 0.5f, z - 0.5f);

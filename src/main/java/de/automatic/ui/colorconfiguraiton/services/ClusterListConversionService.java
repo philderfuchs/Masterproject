@@ -5,12 +5,12 @@ import java.util.HashSet;
 
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
-import de.automatic.ui.colorconfiguraiton.entities.RgbPixel;
+import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 
 public class ClusterListConversionService {
 	
-	public static HashSet<RgbPixel> convertToHashSet(ClusterContainer clusters){
-		HashSet<RgbPixel> pixelSet = new HashSet<>();
+	public static HashSet<RgbSample> convertToHashSet(ClusterContainer clusters){
+		HashSet<RgbSample> pixelSet = new HashSet<>();
 		for (Cluster c : clusters) {
 			pixelSet.add(c.getCenter());
 		}

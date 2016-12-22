@@ -22,7 +22,7 @@ public class CubeDimensions {
 		bMin = 256;
 		bMax = 0;
 
-		for (RgbPixel p : histogram.getPixelList()) {
+		for (RgbSample p : histogram.getPixelList()) {
 			if (p.getC1() < rMin) {
 				rMin = p.getC1();
 			}
@@ -49,8 +49,8 @@ public class CubeDimensions {
 		}
 	}
 
-	public RgbPixel getCenter() {
-		return new RgbPixel(getrMin() + (getrMax() - getrMin()) / 2, getgMin() + (getgMax() - getgMin()) / 2,
+	public RgbSample getCenter() {
+		return new RgbSample(getrMin() + (getrMax() - getrMin()) / 2, getgMin() + (getgMax() - getgMin()) / 2,
 				getbMin() + (getbMax() - getbMin()) / 2, 1);
 	}
 	
@@ -70,18 +70,18 @@ public class CubeDimensions {
 		return rMin;
 	}
 	
-	public Channel getLongestDistance () {
+	public RgbChannels getLongestDistance () {
 		if (this.getRdiff() >= this.getGdiff()) {
 			if (this.getRdiff() >= this.getBdiff()) {
-				return Channel.R;
+				return RgbChannels.R;
 			} else {
-				return Channel.B;
+				return RgbChannels.B;
 			}
 		} else {
 			if (this.getGdiff() >= this.getBdiff()) {
-				return Channel.G;
+				return RgbChannels.G;
 			} else {
-				return Channel.B;
+				return RgbChannels.B;
 			}
 		}
 	}
