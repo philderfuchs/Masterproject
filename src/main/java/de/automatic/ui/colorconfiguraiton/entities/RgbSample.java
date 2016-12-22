@@ -14,7 +14,7 @@ public class RgbSample implements Sample {
 		this.count = count;
 	}
 
-	public RgbSample(Sample p) {
+	public RgbSample(RgbSample p) {
 
 		this.r = p.get(Channels.C1);
 		this.g = p.get(Channels.C2);

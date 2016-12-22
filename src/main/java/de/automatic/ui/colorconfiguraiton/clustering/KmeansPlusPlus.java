@@ -28,7 +28,7 @@ public class KmeansPlusPlus extends AbstractKmeans {
 		Random r = new Random();
 		clusters = new ClusterContainer();
 		int seedIndex = r.nextInt(histogram.getLength());
-		Sample center = new RgbSample(histogram.get(seedIndex));
+		Sample center = new RgbSample((RgbSample) histogram.get(seedIndex));
 
 		// boolean foundSeed;
 		// Collections.shuffle(histogram.getPixelList());
@@ -39,7 +39,7 @@ public class KmeansPlusPlus extends AbstractKmeans {
 			clusters.add(new Cluster(new Histogram(), center));
 			this.reassignPixelsToCluster(histogram, clusters);
 
-			center = new RgbSample(this.chooseNewSeedApache(clusters));
+			center = new RgbSample((RgbSample) this.chooseNewSeedApache(clusters));
 
 		}
 
