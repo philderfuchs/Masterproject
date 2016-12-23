@@ -25,7 +25,7 @@ public class ColorSpaceConversionService {
 			} else if (max == b) {
 				h = 60.0 * ((r - g) / c + 4);
 			}
-			s = 1.0 - min / i;
+			s = i == 0 ? 0 : 1.0 - min / i;
 		}
 
 		// double s = Math.sqrt(Math.pow(r - i, 2) + Math.pow(g - i, 2) +

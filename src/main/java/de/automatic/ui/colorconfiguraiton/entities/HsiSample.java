@@ -6,9 +6,15 @@ public class HsiSample implements Sample {
 	private double s;
 	private double i;
 	private int count;
-	
+
+	@Override
+	public boolean equals(Object o) {
+		HsiSample other = (HsiSample) o;
+		return h == other.getC1() && s == other.getC2() && i == other.getC3();
+	}
+
 	public String toString() {
-		return h + " | " + s + " | " + i; 
+		return h + " | " + s + " | " + i;
 	}
 
 	public HsiSample(double h, double s, double i, int count) {

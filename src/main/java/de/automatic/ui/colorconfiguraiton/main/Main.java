@@ -35,7 +35,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		System.out.println(ColorSpaceConversionService.toHsi(1, 90, 1, 0));
+		System.out.println(ColorSpaceConversionService.toHsi(0.75, 0.75, 0, 0));
 
 		Histogram histogram = null;
 		try {
