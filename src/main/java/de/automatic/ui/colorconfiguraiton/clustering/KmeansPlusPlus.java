@@ -13,6 +13,7 @@ import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Sample;
+import de.automatic.ui.colorconfiguraiton.entities.SampleFactory;
 import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
 
 public class KmeansPlusPlus extends AbstractKmeans {
@@ -28,7 +29,7 @@ public class KmeansPlusPlus extends AbstractKmeans {
 		Random r = new Random();
 		clusters = new ClusterContainer();
 		int seedIndex = r.nextInt(histogram.getLength());
-		Sample center = new RgbSample((RgbSample) histogram.get(seedIndex));
+		Sample center = SampleFactory.createSample((histogram.get(seedIndex)));
 
 		// boolean foundSeed;
 		// Collections.shuffle(histogram.getPixelList());
@@ -39,8 +40,7 @@ public class KmeansPlusPlus extends AbstractKmeans {
 			clusters.add(new Cluster(new Histogram(), center));
 			this.reassignPixelsToCluster(histogram, clusters);
 
-			center = new RgbSample((RgbSample) this.chooseNewSeedApache(clusters));
-
+			center = SampleFactory.createSample(this.chooseNewSeedApache(clusters));
 		}
 
 		reassignPixelsToCluster(histogram, clusters);
