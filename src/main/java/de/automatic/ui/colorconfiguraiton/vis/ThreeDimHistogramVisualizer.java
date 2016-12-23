@@ -46,21 +46,13 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 		// for (Pixel p : histogram.getPixelList()) {
 		for (int i = 0; i < size; i++) {
 			Sample p = histogram.getPixelList().get(i);
-			if (p instanceof HsiSample) {
 
-				x = (float) ColorSpaceConversionService.getX((HsiSample) p);
-				y = (float) ColorSpaceConversionService.getY((HsiSample) p);
-				z = (float) (p.getC3());
-				histoPoints[i] = new Coord3d(x, y, z);
-				histoColors[i] = new Color(0, 0, 0, 0.3f);
+			x = (float) ColorSpaceConversionService.getX(p);
+			y = (float) ColorSpaceConversionService.getY(p);
+			z = (float) ColorSpaceConversionService.getZ(p);
+			histoPoints[i] = new Coord3d(x, y, z);
+			histoColors[i] = new Color(x - 0.1f, y - 0.1f, z - 0.1f, 0.3f);
 
-			} else if (p instanceof RgbSample) {
-				x = ((float) p.get(Channels.C1) / 255.0f);
-				y = ((float) p.get(Channels.C2) / 255.0f);
-				z = ((float) p.get(Channels.C3) / 255.0f);
-				histoPoints[i] = new Coord3d(x - 0.5f, y - 0.5f, z - 0.5f);
-				histoColors[i] = new Color(x - 0.1f, y - 0.1f, z - 0.1f, 0.3f);
-			}
 			// a = ((float) p.getCount()) / ((float)
 			// histogram.getCountOfPixels());
 
@@ -77,12 +69,12 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 
 			int i = 0;
 			for (Cluster c : clusters) {
-				x = ((float) c.getCenter().get(Channels.C1) / 255.0f);
-				y = ((float) c.getCenter().get(Channels.C2) / 255.0f);
-				z = ((float) c.getCenter().get(Channels.C3) / 255.0f);
+				x = ((float) ColorSpaceConversionService.getX(c.getCenter()));
+				y = ((float) ColorSpaceConversionService.getY(c.getCenter()));
+				z = ((float) ColorSpaceConversionService.getZ(c.getCenter()));
 				a = 0.8f;
 
-				clusterPoints[i] = new Coord3d(x - 0.5f, y - 0.5f, z - 0.5f);
+				clusterPoints[i] = new Coord3d(x, y, z);
 				clusterColors[i++] = new Color(x - 0.1f, y - 0.1f, z - 0.1f);
 			}
 
