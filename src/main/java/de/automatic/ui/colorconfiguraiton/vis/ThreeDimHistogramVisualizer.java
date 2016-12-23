@@ -12,6 +12,7 @@ import org.jzy3d.plot3d.primitives.Scatter;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
 
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
+import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Sample;
 import de.automatic.ui.colorconfiguraiton.entities.Channels;
@@ -44,14 +45,32 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 		// for (Pixel p : histogram.getPixelList()) {
 		for (int i = 0; i < size; i++) {
 			Sample p = histogram.getPixelList().get(i);
-			x = ((float) p.get(Channels.C1) / 255.0f);
-			y = ((float) p.get(Channels.C2) / 255.0f);
-			z = ((float) p.get(Channels.C3) / 255.0f);
+			if (p instanceof HsiSample) {
+
+				x = (float) (Math.cos(Math.toRadians(p.getC1())) * p.getC2());
+//				if(p.getC1() > 90 && p.getC1() < 270) {
+//					x = -1 * x;
+//				}
+				y = (float) (Math.sin(Math.toRadians(p.getC1())) * p.getC2());
+//				if(p.getC1() > 180) {
+//					y = -1 * y;
+//				}
+
+				
+				z = (float) (p.getC3()) - 0.5f;
+				histoPoints[i] = new Coord3d(x, y, z);
+				histoColors[i] = new Color(0, 0, 0, 0.3f);
+
+			} else if (p instanceof RgbSample) {
+				x = ((float) p.get(Channels.C1) / 255.0f);
+				y = ((float) p.get(Channels.C2) / 255.0f);
+				z = ((float) p.get(Channels.C3) / 255.0f);
+				histoPoints[i] = new Coord3d(x - 0.5f, y - 0.5f, z - 0.5f);
+				histoColors[i] = new Color(x - 0.1f, y - 0.1f, z - 0.1f, 0.3f);
+			}
 			// a = ((float) p.getCount()) / ((float)
 			// histogram.getCountOfPixels());
 
-			histoPoints[i] = new Coord3d(x - 0.5f, y - 0.5f, z - 0.5f);
-			histoColors[i] = new Color(x - 0.1f, y - 0.1f, z - 0.1f, 0.3f);
 		}
 
 		Scatter histoScatter = new Scatter(histoPoints, histoColors);

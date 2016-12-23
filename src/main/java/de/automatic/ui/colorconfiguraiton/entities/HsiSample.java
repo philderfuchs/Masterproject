@@ -6,11 +6,15 @@ public class HsiSample implements Sample {
 	private double s;
 	private double i;
 	private int count;
+	
+	public String toString() {
+		return h + " | " + s + " | " + i; 
+	}
 
-	public HsiSample(double r, double g, double b, int count) {
-		this.h = r;
-		this.s = g;
-		this.i = b;
+	public HsiSample(double h, double s, double i, int count) {
+		this.h = h;
+		this.s = s;
+		this.i = i;
 		this.count = count;
 	}
 
