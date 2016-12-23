@@ -28,10 +28,10 @@ import de.automatic.ui.colorconfiguraiton.vis.ThreeDimHistogramVisualizer;
 
 public class Main {
 
-	static int k = 5;
+	static int k = 8;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/kanye_small.jpg";
+	static String file = "resources/HS.png";
 
 	public static void main(String[] args) {
 

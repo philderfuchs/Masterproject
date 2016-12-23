@@ -10,7 +10,7 @@ public class ColorSpaceConversionService {
 		if (s instanceof RgbSample) {
 			return s.getC1() / 255.0;
 		} else if (s instanceof HsiSample) {
-			if (s.getC1() == 0.0 || s.getC1() == 180.0) {
+			if (s.getC1() == 0 || s.getC1() == 180) {
 				return s.getC2();
 			} else if (s.getC1() == 90.0 || s.getC1() == 270.0) {
 				return 0.0;
@@ -96,7 +96,7 @@ public class ColorSpaceConversionService {
 		double c = max - min;
 
 		double i = (r + g + b) / 3.0;
-		double s = i == 0 ? 0 : 1.0 - min * 3.0 / (r + g + b);
+		double s = i == 0 ? 0 : 1.0 - min / i;
 
 		double h = 0;
 		if (c != 0) {
