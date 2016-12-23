@@ -38,22 +38,22 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 				continue;
 			}
 
-			long meanR = 0;
-			long meanG = 0;
-			long meanB = 0;
+			double meanC1 = 0;
+			double meanC2 = 0;
+			double meanC3 = 0;
 			for (Sample p : c.getHistogram().getPixelList()) {
-				meanR += p.getC1() * p.getCount();
-				meanG += p.getC2() * p.getCount();
-				meanB += p.getC3() * p.getCount();
+				meanC1 += p.getC1() * p.getCount();
+				meanC2 += p.getC2() * p.getCount();
+				meanC3 += p.getC3() * p.getCount();
 			}
-			meanR = meanR / c.getHistogram().getCountOfPixels();
-			meanG = meanG / c.getHistogram().getCountOfPixels();
-			meanB = meanB / c.getHistogram().getCountOfPixels();
+			meanC1 = meanC1 / c.getHistogram().getCountOfPixels();
+			meanC2 = meanC2 / c.getHistogram().getCountOfPixels();
+			meanC3 = meanC3 / c.getHistogram().getCountOfPixels();
 			Sample newMean = null;
 			if (c.getCenter() instanceof RgbSample) {
-				newMean = SampleFactory.createSample("RGB", meanR, meanG, meanB, 1);
+				newMean = SampleFactory.createSample("RGB", meanC1, meanC2, meanC3, 1);
 			} else if (c.getCenter() instanceof HsiSample) {
-				newMean = SampleFactory.createSample("HSI", meanR, meanG, meanB, 1);
+				newMean = SampleFactory.createSample("HSI", meanC1, meanC2, meanC3, 1);
 			}
 			if (!newMean.equals(c.getCenter())) {
 				c.setCenter(newMean);

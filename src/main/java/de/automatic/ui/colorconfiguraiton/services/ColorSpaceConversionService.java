@@ -67,12 +67,11 @@ public class ColorSpaceConversionService {
 			s = i == 0 ? 0 : 1.0 - min / i;
 		}
 
-		// double s = Math.sqrt(Math.pow(r - i, 2) + Math.pow(g - i, 2) +
-		// Math.pow(b - i, 2));
-		// double h = Math.toDegrees(Math.acos(((g - i) - (b - i)) / (s *
-		// Math.sqrt(2.0))));
-
 		return new HsiSample(h, s, i, count);
+	}
+	
+	public static RgbSample toRgb(double h, double s, double i, int count) {
+		return null;
 	}
 
 }

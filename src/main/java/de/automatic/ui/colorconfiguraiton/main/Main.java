@@ -37,7 +37,7 @@ public class Main {
 
 		Histogram histogram = null;
 		try {
-			histogram = (new ImageReader(new File(file))).getRgbHistogram();
+			histogram = (new ImageReader(new File(file))).getHsiHistogram();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
