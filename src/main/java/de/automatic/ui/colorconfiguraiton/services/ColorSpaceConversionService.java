@@ -34,13 +34,42 @@ public class ColorSpaceConversionService {
 			}
 		}
 	}
-	
+
 	public static double getZ(Sample s) {
 		if (s instanceof RgbSample) {
 			return s.getC3() / 255.0;
 		} else {
 			return s.getC3();
 		}
+	}
+
+	public static RgbSample toRgb(double h, double s, double i, int count) {
+		double hr = Math.toRadians(h);
+		System.out.println(h);
+		System.out.println(hr);
+		double x = i * (1.0 - s);
+
+		if (hr <= 2.0 / 3.0 * Math.PI) {
+			System.out.println("yo1");
+			double y = i * (1.0 + s * Math.cos(hr) / Math.cos(Math.PI / 3.0 - hr));
+			double z = 3.0 * i - (x + y);
+			return new RgbSample(y * 255.0, z * 255.0, x * 255.0, count);
+		} else if (hr <= 4.0 / 3.0 * Math.PI) {
+			hr -= (2.0 / 3.0) * Math.PI;
+			System.out.println("yo2");
+			System.out.println(hr);
+			double y = i * (1.0 + s * Math.cos(hr) / Math.cos(Math.PI / 3.0 - hr));
+			double z = 3.0 * i - (x + y);
+			return new RgbSample(x * 255.0, y * 255.0, z * 255.0, count);
+		} else {
+			hr -= (4.0 / 3.0) * Math.PI;
+			System.out.println(hr);
+			System.out.println("yo3");
+			double y = i * (1.0 + s * Math.cos(hr) / Math.cos(Math.PI / 3.0 - hr));
+			double z = 3.0 * i - (x + y);
+			return new RgbSample(z * 255.0, x * 255.0, y * 255.0, count);
+		}
+
 	}
 
 	public static HsiSample toHsi(double r, double g, double b, int count) {
@@ -68,10 +97,6 @@ public class ColorSpaceConversionService {
 		}
 
 		return new HsiSample(h, s, i, count);
-	}
-	
-	public static RgbSample toRgb(double h, double s, double i, int count) {
-		return null;
 	}
 
 }

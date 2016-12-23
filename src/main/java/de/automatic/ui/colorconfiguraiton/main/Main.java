@@ -31,7 +31,7 @@ public class Main {
 	static int k = 5;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/HS.png";
+	static String file = "resources/asap.jpg";
 
 	public static void main(String[] args) {
 

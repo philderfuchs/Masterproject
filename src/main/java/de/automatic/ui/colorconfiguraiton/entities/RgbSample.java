@@ -5,6 +5,10 @@ public class RgbSample implements Sample {
 	private double g;
 	private double b;
 	private int count;
+	
+	public String toString() {
+		return r + " | " + g + " | " + b;
+	}
 
 	public RgbSample(double r, double g, double b, int count) {
 
