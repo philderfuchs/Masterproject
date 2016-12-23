@@ -22,6 +22,13 @@ public class ColorSpaceConversionServiceTest {
 
 		// red
 		assertEquals(new HsiSample(0.0, 1.0, 1.0/3.0, 0), ColorSpaceConversionService.toHsi(1.0 * 255.0, 0.0 * 255.0, 0.0 * 255.0, 0));
+		
+		// green
+		assertEquals(new HsiSample(120.0, 1.0, 1.0/3.0, 0), ColorSpaceConversionService.toHsi(0.0 * 255.0, 1.0 * 255.0, 0.0 * 255.0, 0));
+		
+		// blue
+		assertEquals(new HsiSample(240.0, 1.0, 1.0/3.0, 0), ColorSpaceConversionService.toHsi(0.0 * 255.0, 0.0 * 255.0, 1.0 * 255.0, 0));
+
 
 		// #BFBF00
 		assertEquals(new HsiSample(60.0, 1.0, 0.5, 0), ColorSpaceConversionService.toHsi(0.75 * 255.0, 0.75 * 255.0, 0.0 * 255.0, 0));
@@ -29,6 +36,10 @@ public class ColorSpaceConversionServiceTest {
 		// #008000
 		assertEquals(new HsiSample(120.0, 1.0, 0.167, 0), ColorSpaceConversionService.toHsi(0.0 * 255.0, 0.5 * 255.0, 0.0 * 255.0, 0));
 
+		// #008000
+		assertEquals(new HsiSample(180.0, 0.4, 0.833, 0), ColorSpaceConversionService.toHsi(0.5 * 255.0, 1.0 * 255.0, 1.0 * 255.0, 0));
+
+		
 	}
 	
 }
