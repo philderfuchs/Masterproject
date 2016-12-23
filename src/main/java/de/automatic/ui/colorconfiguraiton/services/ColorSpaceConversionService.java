@@ -4,6 +4,26 @@ import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
 
 public class ColorSpaceConversionService {
 
+	public static double getX(HsiSample s) {
+		if (s.getC1() == 0.0 || s.getC1() == 180.0) {
+			return s.getC2();
+		} else if (s.getC1() == 90.0 || s.getC1() == 270.0) {
+			return 0.0;
+		} else {
+			return Math.cos(Math.toRadians(s.getC1())) * s.getC2();
+		} 
+	}
+	
+	public static double getY(HsiSample s) {
+		if (s.getC1() == 0.0 || s.getC1() == 180.0) {
+			return 0.0;
+		} else if (s.getC1() == 90.0 || s.getC1() == 270.0) {
+			return s.getC2();
+		} else {
+			return Math.sin(Math.toRadians(s.getC1())) * s.getC2();
+		} 
+	}
+
 	public static HsiSample toHsi(double r, double g, double b, int count) {
 		r /= 255;
 		g /= 255;
@@ -15,7 +35,7 @@ public class ColorSpaceConversionService {
 
 		double h = 0;
 		double s = 0;
-		
+
 		double i = (r + g + b) / 3.0;
 		if (c != 0) {
 			if (max == r) {

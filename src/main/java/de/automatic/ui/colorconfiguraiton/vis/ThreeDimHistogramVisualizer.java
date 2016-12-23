@@ -15,6 +15,7 @@ import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Sample;
+import de.automatic.ui.colorconfiguraiton.services.ColorSpaceConversionService;
 import de.automatic.ui.colorconfiguraiton.entities.Channels;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
@@ -47,16 +48,8 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 			Sample p = histogram.getPixelList().get(i);
 			if (p instanceof HsiSample) {
 
-				x = (float) (Math.cos(Math.toRadians(p.getC1())) * p.getC2());
-//				if(p.getC1() > 90 && p.getC1() < 270) {
-//					x = -1 * x;
-//				}
-				y = (float) (Math.sin(Math.toRadians(p.getC1())) * p.getC2());
-//				if(p.getC1() > 180) {
-//					y = -1 * y;
-//				}
-
-				
+				x = (float) ColorSpaceConversionService.getX((HsiSample) p);
+				y = (float) ColorSpaceConversionService.getY((HsiSample) p);
 				z = (float) (p.getC3()) - 0.5f;
 				histoPoints[i] = new Coord3d(x, y, z);
 				histoColors[i] = new Color(0, 0, 0, 0.3f);
