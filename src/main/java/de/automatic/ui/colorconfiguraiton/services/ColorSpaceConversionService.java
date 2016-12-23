@@ -82,9 +82,6 @@ public class ColorSpaceConversionService {
 			g = x * 255.0;
 			b = y * 255.0;
 		}
-		r = Math.min(Math.max(r, 0), 255);
-		g = Math.min(Math.max(g, 0), 255);
-		b = Math.min(Math.max(b, 0), 255);
 		return new RgbSample(r, g, b, count);
 
 	}
