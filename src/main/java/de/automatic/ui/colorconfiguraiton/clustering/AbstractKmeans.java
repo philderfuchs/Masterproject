@@ -7,6 +7,8 @@ import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
 
 public abstract class AbstractKmeans implements StepByStepClusterer, FinishingClusterer {
 
+	protected int maxStepCount = 30;
+	
 	protected int k;
 	protected ClusterContainer clusters;
 	protected boolean finished;
@@ -26,6 +28,7 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 	public abstract ClusterContainer init(Histogram histogram);
 
 	public ClusterContainer step(Histogram histogram) {
+		System.out.println("step");
 		stepCount++;
 		this.finished = true;
 
@@ -58,6 +61,9 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 			if (!newMean.equals(c.getCenter())) {
 				c.setCenter(newMean);
 				this.finished = false;
+			}
+			if(stepCount == maxStepCount) {
+				this.finished = true;
 			}
 		}
 
