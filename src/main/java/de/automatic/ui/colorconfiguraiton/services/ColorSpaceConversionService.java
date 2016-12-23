@@ -82,38 +82,61 @@ public class ColorSpaceConversionService {
 			g = x * 255.0;
 			b = y * 255.0;
 		}
-		r =  Math.min(Math.max(r, 0), 255);
-		g =  Math.min(Math.max(g, 0), 255);
-		b =  Math.min(Math.max(b, 0), 255);
+		r = Math.min(Math.max(r, 0), 255);
+		g = Math.min(Math.max(g, 0), 255);
+		b = Math.min(Math.max(b, 0), 255);
 		return new RgbSample(r, g, b, count);
 
 	}
 
 	public static HsiSample toHsi(double r, double g, double b, int count) {
-		r /= 255;
-		g /= 255;
-		b /= 255;
+		r /= 255.0;
+		g /= 255.0;
+		b /= 255.0;
 
 		double max = Math.max(Math.max(r, g), b);
 		double min = Math.min(Math.min(r, g), b);
 		double c = max - min;
 
-		double h = 0;
-		double s = 0;
-
 		double i = (r + g + b) / 3.0;
+		double s = i == 0 ? 0 : 1.0 - min * 3.0 / (r + g + b);
+
+		double h = 0;
 		if (c != 0) {
-			if (max == r) {
-				h = 60.0 * (((g - b) / c) % 6);
-			} else if (max == g) {
-				h = 60.0 * ((b - r) / c + 2);
-			} else if (max == b) {
-				h = 60.0 * ((r - g) / c + 4);
-			}
-			s = i == 0 ? 0 : 1.0 - min / i;
+			h = Math.toDegrees(
+					Math.acos((0.5 * ((r - g) + (r - b))) / Math.sqrt(Math.pow((r - g), 2) + (r - b) * (g - b))));
+			if (b / i > g / i)
+				h = 360.0 - h;
 		}
 
 		return new HsiSample(h, s, i, count);
 	}
+
+	// public static HsiSample toHsi(double r, double g, double b, int count) {
+	// r /= 255.0;
+	// g /= 255.0;
+	// b /= 255.0;
+	//
+	// double max = Math.max(Math.max(r, g), b);
+	// double min = Math.min(Math.min(r, g), b);
+	// double c = max - min;
+	//
+	// double h = 0;
+	// double s = 0;
+	//
+	// double i = (r + g + b) / 3.0;
+	// if (c != 0) {
+	// if (max == r) {
+	// h = 60.0 * (((g - b) / c) % 6);
+	// } else if (max == g) {
+	// h = 60.0 * ((b - r) / c + 2);
+	// } else if (max == b) {
+	// h = 60.0 * ((r - g) / c + 4);
+	// }
+	// s = i == 0 ? 0 : 1.0 - min / i;
+	// }
+	//
+	// return new HsiSample(h, s, i, count);
+	// }
 
 }
