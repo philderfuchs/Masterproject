@@ -50,7 +50,7 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 
 				x = (float) ColorSpaceConversionService.getX((HsiSample) p);
 				y = (float) ColorSpaceConversionService.getY((HsiSample) p);
-				z = (float) (p.getC3()) - 0.5f;
+				z = (float) (p.getC3());
 				histoPoints[i] = new Coord3d(x, y, z);
 				histoColors[i] = new Color(0, 0, 0, 0.3f);
 

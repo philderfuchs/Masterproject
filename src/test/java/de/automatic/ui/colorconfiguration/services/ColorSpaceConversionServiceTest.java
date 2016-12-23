@@ -12,13 +12,13 @@ public class ColorSpaceConversionServiceTest {
 	@Test
 	public void test1() {
 		System.out.println(ColorSpaceConversionService
-				.getX(new HsiSample(120.0, 1.0, 1.0/3.0, 0)));
+				.getX(new HsiSample(0.0, 0.0, 1.0/3.0, 0)));
 	}
 
 	@Test
 	public void test2() {
 		System.out.println(ColorSpaceConversionService
-				.getY(new HsiSample(150.0, 1.0, 1.0/3.0, 0)));
+				.getY(new HsiSample(0.0, 0.0, 1.0/3.0, 0)));
 	}
 
 	@Test

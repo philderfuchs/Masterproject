@@ -35,20 +35,18 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		System.out.println(ColorSpaceConversionService.toHsi(0.75, 0.75, 0, 0));
-
 		Histogram histogram = null;
 		try {
-			histogram = (new ImageReader(new File(file))).getHsiHistogram();
+			histogram = (new ImageReader(new File(file))).getRgbHistogram();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		ClusterContainer clusters = null;
 
-//		AbstractKmeans clusterer = new KmeansPlusPlus(k);
-//		clusters = clusterer.clusterToEnd(histogram);
-//		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means").visualizePalette();
+		AbstractKmeans clusterer = new KmeansPlusPlus(k);
+		clusters = clusterer.clusterToEnd(histogram);
+		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means").visualizePalette();
 
 		// new OneDimHistogramVisualizer("Channel Histograms", histogram,
 		// clusters);

@@ -1,27 +1,46 @@
 package de.automatic.ui.colorconfiguraiton.services;
 
 import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
+import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
+import de.automatic.ui.colorconfiguraiton.entities.Sample;
 
 public class ColorSpaceConversionService {
 
-	public static double getX(HsiSample s) {
-		if (s.getC1() == 0.0 || s.getC1() == 180.0) {
-			return s.getC2();
-		} else if (s.getC1() == 90.0 || s.getC1() == 270.0) {
-			return 0.0;
+	public static double getX(Sample s) {
+		if (s instanceof RgbSample) {
+			return s.getC1() / 255.0;
+		} else if (s instanceof HsiSample) {
+			if (s.getC1() == 0.0 || s.getC1() == 180.0) {
+				return s.getC2();
+			} else if (s.getC1() == 90.0 || s.getC1() == 270.0) {
+				return 0.0;
+			} else {
+				return Math.cos(Math.toRadians(s.getC1())) * s.getC2();
+			}
+		}
+		return 0.0;
+	}
+
+	public static double getY(Sample s) {
+		if (s instanceof RgbSample) {
+			return s.getC2() / 255.0;
 		} else {
-			return Math.cos(Math.toRadians(s.getC1())) * s.getC2();
-		} 
+			if (s.getC1() == 0.0 || s.getC1() == 180.0) {
+				return 0.0;
+			} else if (s.getC1() == 90.0 || s.getC1() == 270.0) {
+				return s.getC2();
+			} else {
+				return Math.sin(Math.toRadians(s.getC1())) * s.getC2();
+			}
+		}
 	}
 	
-	public static double getY(HsiSample s) {
-		if (s.getC1() == 0.0 || s.getC1() == 180.0) {
-			return 0.0;
-		} else if (s.getC1() == 90.0 || s.getC1() == 270.0) {
-			return s.getC2();
+	public static double getZ(Sample s) {
+		if (s instanceof RgbSample) {
+			return s.getC3() / 255.0;
 		} else {
-			return Math.sin(Math.toRadians(s.getC1())) * s.getC2();
-		} 
+			return s.getC3();
+		}
 	}
 
 	public static HsiSample toHsi(double r, double g, double b, int count) {
