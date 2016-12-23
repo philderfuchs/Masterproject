@@ -12,4 +12,14 @@ public class SampleFactory {
 		}
 	}
 	
+	public static Sample createSample(String s, double c1, double c2, double c3, int count) {
+		if (s.equals("RGB")) {
+			return new RgbSample(c1, c2, c3, count);
+		} else if (s.equals("HSI")) {
+			return new HsiSample(c1, c2, c3, count);
+		} else {
+			return null;
+		}
+	}
+	
 }

@@ -36,8 +36,10 @@ public class RgbSample implements Sample {
 		return 0;
 	}
 
-	public boolean sameAs(Sample p) {
-		return p.getC1() == this.r && p.getC2() == this.g && p.getC3() == this.b;
+	@Override
+	public boolean equals(Object o) {
+		RgbSample other = (RgbSample) o;
+		return other.getC1() == this.r && other.getC2() == this.g && other.getC3() == this.b;
 	}
 
 	public double getC1() {

@@ -33,7 +33,7 @@ public class Cluster {
 		return center;
 	}
 	
-	public void setCenter(RgbSample center) {
+	public void setCenter(Sample center) {
 		this.center = center;
 	}
 	

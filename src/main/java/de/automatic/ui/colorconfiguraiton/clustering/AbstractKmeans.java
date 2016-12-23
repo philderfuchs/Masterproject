@@ -49,8 +49,8 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 			meanR = meanR / c.getHistogram().getCountOfPixels();
 			meanG = meanG / c.getHistogram().getCountOfPixels();
 			meanB = meanB / c.getHistogram().getCountOfPixels();
-			RgbSample newMean = new RgbSample((int) meanR, (int) meanG, (int) meanB, 1);
-			if (!newMean.sameAs(c.getCenter())) {
+			Sample newMean = SampleFactory.createSample("RGB", meanR, meanG, meanB, 1);
+			if (!newMean.equals(c.getCenter())) {
 				c.setCenter(newMean);
 				this.finished = false;
 			}
