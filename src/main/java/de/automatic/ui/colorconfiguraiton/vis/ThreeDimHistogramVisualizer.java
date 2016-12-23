@@ -51,7 +51,9 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 			y = (float) ColorSpaceConversionService.getY(p);
 			z = (float) ColorSpaceConversionService.getZ(p);
 			histoPoints[i] = new Coord3d(x, y, z);
-			histoColors[i] = new Color(x - 0.1f, y - 0.1f, z - 0.1f, 0.3f);
+			RgbSample rgbSample = ColorSpaceConversionService.toRgb(p);
+			histoColors[i] = new Color((float) rgbSample.getC1() / 255.0f - 0.1f,
+					(float) rgbSample.getC2() / 255.0f - 0.1f, (float) rgbSample.getC3() / 255.0f - 0.1f, 0.3f);
 
 		}
 
@@ -71,7 +73,9 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 				z = ((float) ColorSpaceConversionService.getZ(c.getCenter()));
 
 				clusterPoints[i] = new Coord3d(x, y, z);
-				clusterColors[i++] = new Color(x - 0.1f, y - 0.1f, z - 0.1f);
+				RgbSample rgbSample = ColorSpaceConversionService.toRgb(c.getCenter());
+				clusterColors[i++] =  new Color((float) rgbSample.getC1() / 255.0f - 0.1f,
+						(float) rgbSample.getC2() / 255.0f - 0.1f, (float) rgbSample.getC3() / 255.0f - 0.1f);
 			}
 
 			Scatter clusterCenterScatter = new Scatter(clusterPoints, clusterColors, 9.0f);

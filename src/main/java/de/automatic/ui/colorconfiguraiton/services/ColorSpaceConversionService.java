@@ -43,32 +43,49 @@ public class ColorSpaceConversionService {
 		}
 	}
 
+	public static RgbSample toRgb(Sample p) {
+		if (p instanceof RgbSample) {
+			return (RgbSample) p;
+		} else {
+			return toRgb(p.getC1(), p.getC2(), p.getC3(), p.getCount());
+		}
+	}
+
 	public static RgbSample toRgb(double h, double s, double i, int count) {
+		if (s == 0.0) {
+			return new RgbSample(i, i, i, count);
+		}
+
 		double hr = Math.toRadians(h);
-		System.out.println(h);
-		System.out.println(hr);
 		double x = i * (1.0 - s);
 
+		double r, g, b;
+
 		if (hr <= 2.0 / 3.0 * Math.PI) {
-			System.out.println("yo1");
 			double y = i * (1.0 + s * Math.cos(hr) / Math.cos(Math.PI / 3.0 - hr));
 			double z = 3.0 * i - (x + y);
-			return new RgbSample(y * 255.0, z * 255.0, x * 255.0, count);
+			r = y * 255.0;
+			g = z * 255.0;
+			b = x * 255.0;
 		} else if (hr <= 4.0 / 3.0 * Math.PI) {
 			hr -= (2.0 / 3.0) * Math.PI;
-			System.out.println("yo2");
-			System.out.println(hr);
 			double y = i * (1.0 + s * Math.cos(hr) / Math.cos(Math.PI / 3.0 - hr));
 			double z = 3.0 * i - (x + y);
-			return new RgbSample(x * 255.0, y * 255.0, z * 255.0, count);
+			r = x * 255.0;
+			g = y * 255.0;
+			b = z * 255.0;
 		} else {
 			hr -= (4.0 / 3.0) * Math.PI;
-			System.out.println(hr);
-			System.out.println("yo3");
 			double y = i * (1.0 + s * Math.cos(hr) / Math.cos(Math.PI / 3.0 - hr));
 			double z = 3.0 * i - (x + y);
-			return new RgbSample(z * 255.0, x * 255.0, y * 255.0, count);
+			r = z * 255.0;
+			g = x * 255.0;
+			b = y * 255.0;
 		}
+		r =  Math.min(Math.max(r, 0), 255);
+		g =  Math.min(Math.max(g, 0), 255);
+		b =  Math.min(Math.max(b, 0), 255);
+		return new RgbSample(r, g, b, count);
 
 	}
 
