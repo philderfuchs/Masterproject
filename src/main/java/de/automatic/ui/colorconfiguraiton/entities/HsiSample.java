@@ -1,5 +1,7 @@
 package de.automatic.ui.colorconfiguraiton.entities;
 
+import java.text.DecimalFormat;
+
 public class HsiSample implements Sample {
 
 	private double h;
@@ -9,8 +11,10 @@ public class HsiSample implements Sample {
 
 	@Override
 	public boolean equals(Object o) {
+		DecimalFormat df = new DecimalFormat("#.###");
 		HsiSample other = (HsiSample) o;
-		return h == other.getC1() && s == other.getC2() && i == other.getC3();
+		return df.format(h).equals(df.format(other.getC1())) && df.format(s).equals(df.format(other.getC2()))
+				&& df.format(i).equals(df.format(other.getC3()));
 	}
 
 	public String toString() {

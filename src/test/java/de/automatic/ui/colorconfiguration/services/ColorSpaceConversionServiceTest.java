@@ -25,6 +25,9 @@ public class ColorSpaceConversionServiceTest {
 
 		// #BFBF00
 		assertEquals(new HsiSample(60.0, 1.0, 0.5, 0), ColorSpaceConversionService.toHsi(0.75 * 255.0, 0.75 * 255.0, 0.0 * 255.0, 0));
+		
+		// #008000
+		assertEquals(new HsiSample(120.0, 1.0, 0.167, 0), ColorSpaceConversionService.toHsi(0.0 * 255.0, 0.5 * 255.0, 0.0 * 255.0, 0));
 
 	}
 	
