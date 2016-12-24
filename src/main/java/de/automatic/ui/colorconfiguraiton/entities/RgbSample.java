@@ -5,7 +5,7 @@ public class RgbSample implements Sample {
 	private double g;
 	private double b;
 	private int count;
-	
+
 	public String toString() {
 		return r + " | " + g + " | " + b;
 	}
@@ -75,6 +75,21 @@ public class RgbSample implements Sample {
 
 	public void setCount(int count) {
 		this.count = count;
+	}
+
+	@Override
+	public double getC1Normalized() {
+		return r / 255.0;
+	}
+
+	@Override
+	public double getC2Normalized() {
+		return g / 255.0;
+	}
+
+	@Override
+	public double getC3Normalized() {
+		return b / 255.0;
 	}
 
 }

@@ -56,7 +56,7 @@ public class HsiSample implements Sample {
 	public double getC1() {
 		return h;
 	}
-
+	
 	public void setC1(double r) {
 		this.h = r;
 	}
@@ -83,6 +83,21 @@ public class HsiSample implements Sample {
 
 	public void setCount(int count) {
 		this.count = count;
+	}
+
+	@Override
+	public double getC1Normalized() {
+		return h / 360.0;
+	}
+
+	@Override
+	public double getC2Normalized() {
+		return s;
+	}
+
+	@Override
+	public double getC3Normalized() {
+		return i;
 	}
 
 }

@@ -7,8 +7,8 @@ import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
 
 public abstract class AbstractKmeans implements StepByStepClusterer, FinishingClusterer {
 
-	protected int maxStepCount = 30;
-	
+	protected int maxStepCount = 20;
+
 	protected int k;
 	protected ClusterContainer clusters;
 	protected boolean finished;
@@ -45,24 +45,24 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 			double meanC2 = 0;
 			double meanC3 = 0;
 			for (Sample p : c.getHistogram().getPixelList()) {
-				meanC1 += p.getC1() * p.getCount();
-				meanC2 += p.getC2() * p.getCount();
-				meanC3 += p.getC3() * p.getCount();
+				meanC1 += p.getC1Normalized() * (double) p.getCount();
+				meanC2 += p.getC2Normalized() * (double) p.getCount();
+				meanC3 += p.getC3Normalized() * (double) p.getCount();
 			}
-			meanC1 = meanC1 / c.getHistogram().getCountOfPixels();
-			meanC2 = meanC2 / c.getHistogram().getCountOfPixels();
-			meanC3 = meanC3 / c.getHistogram().getCountOfPixels();
+			meanC1 = meanC1 / (double) c.getHistogram().getCountOfPixels();
+			meanC2 = meanC2 / (double) c.getHistogram().getCountOfPixels();
+			meanC3 = meanC3 / (double) c.getHistogram().getCountOfPixels();
 			Sample newMean = null;
 			if (c.getCenter() instanceof RgbSample) {
-				newMean = SampleFactory.createSample("RGB", meanC1, meanC2, meanC3, 1);
+				newMean = SampleFactory.createSampleFromNormalized("RGB", meanC1, meanC2, meanC3, 1);
 			} else if (c.getCenter() instanceof HsiSample) {
-				newMean = SampleFactory.createSample("HSI", meanC1, meanC2, meanC3, 1);
+				newMean = SampleFactory.createSampleFromNormalized("HSI", meanC1, meanC2, meanC3, 1);
 			}
 			if (!newMean.equals(c.getCenter())) {
 				c.setCenter(newMean);
 				this.finished = false;
 			}
-			if(stepCount == maxStepCount) {
+			if (stepCount == maxStepCount) {
 				this.finished = true;
 			}
 		}
