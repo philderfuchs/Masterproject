@@ -10,6 +10,16 @@ public class RgbSample implements Sample {
 		return r + " | " + g + " | " + b;
 	}
 
+	/**
+	 * 
+	 * @param r
+	 *            unnormalized [0, ... ,255]
+	 * @param g
+	 *            unnormalized [0, ... ,255]
+	 * @param b
+	 *            unnormalized [0, ... ,255]
+	 * @param count
+	 */
 	public RgbSample(double r, double g, double b, int count) {
 		this.r = Math.min(Math.max(r, 0), 255);
 		this.g = Math.min(Math.max(g, 0), 255);

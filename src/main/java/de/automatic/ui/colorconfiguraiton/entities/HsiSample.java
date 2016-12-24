@@ -21,6 +21,16 @@ public class HsiSample implements Sample {
 		return h + " | " + s + " | " + i;
 	}
 
+	/**
+	 * 
+	 * @param h
+	 *            unnormalized [0, ..., 360]
+	 * @param s
+	 *            normalized [0, ..., 1]
+	 * @param i
+	 *            normalize [0, ..., 1]
+	 * @param count
+	 */
 	public HsiSample(double h, double s, double i, int count) {
 		this.h = Math.min(Math.max(h, 0), 360);
 		this.s = Math.min(Math.max(s, 0), 1);
@@ -56,7 +66,7 @@ public class HsiSample implements Sample {
 	public double getC1() {
 		return h;
 	}
-	
+
 	public void setC1(double r) {
 		this.h = r;
 	}

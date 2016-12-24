@@ -8,7 +8,7 @@ public class ColorSpaceConversionService {
 
 	public static double getX(Sample s) {
 		if (s instanceof RgbSample) {
-			return s.getC1() / 255.0;
+			return s.getC1Normalized();
 		} else if (s instanceof HsiSample) {
 			if (s.getC1() == 0 || s.getC1() == 180) {
 				return s.getC2();
@@ -23,7 +23,7 @@ public class ColorSpaceConversionService {
 
 	public static double getY(Sample s) {
 		if (s instanceof RgbSample) {
-			return s.getC2() / 255.0;
+			return s.getC2Normalized();
 		} else {
 			if (s.getC1() == 0.0 || s.getC1() == 180.0) {
 				return 0.0;
@@ -37,9 +37,9 @@ public class ColorSpaceConversionService {
 
 	public static double getZ(Sample s) {
 		if (s instanceof RgbSample) {
-			return s.getC3() / 255.0;
+			return s.getC3Normalized();
 		} else {
-			return s.getC3();
+			return s.getC3Normalized();
 		}
 	}
 
@@ -50,6 +50,18 @@ public class ColorSpaceConversionService {
 			return toRgb(p.getC1(), p.getC2(), p.getC3(), p.getCount());
 		}
 	}
+
+	/**
+	 * 
+	 * @param h
+	 *            unnormalized [0, ..., 360]
+	 * @param s
+	 *            normalized, as always [0, ..., 1]
+	 * @param i
+	 *            normalized, as always [0, ..., 1]
+	 * @param count
+	 * @return
+	 */
 
 	public static RgbSample toRgb(double h, double s, double i, int count) {
 		if (s == 0.0) {
@@ -86,6 +98,17 @@ public class ColorSpaceConversionService {
 
 	}
 
+	/**
+	 * 
+	 * @param r
+	 *            unnormalized [0, ... ,255]
+	 * @param g
+	 *            unnormalized [0, ... ,255]
+	 * @param b
+	 *            unnormalized [0, ... ,255]
+	 * @param count
+	 * @return
+	 */
 	public static HsiSample toHsi(double r, double g, double b, int count) {
 
 		r /= 255.0;
@@ -97,7 +120,7 @@ public class ColorSpaceConversionService {
 		double c = max - min;
 
 		double i = (r + g + b) / 3.0;
-//		double s = i == 0 ? 0 : 1.0 - min / i;
+		// double s = i == 0 ? 0 : 1.0 - min / i;
 		double s = i == 0 ? 0 : Math.sqrt(Math.pow(r - i, 2) + Math.pow(g - i, 2) + Math.pow(b - i, 2));
 
 		double h = 0;
