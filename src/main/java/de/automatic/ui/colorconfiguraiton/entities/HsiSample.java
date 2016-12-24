@@ -32,7 +32,7 @@ public class HsiSample implements Sample {
 	 * @param count
 	 */
 	public HsiSample(double h, double s, double i, int count) {
-		this.h = Math.min(Math.max(h, 0), 360);
+		this.h = h % 360.0;
 		this.s = Math.min(Math.max(s, 0), 1);
 		this.i = Math.min(Math.max(i, 0), 1);
 		this.count = count;

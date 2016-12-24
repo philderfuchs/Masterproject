@@ -36,16 +36,14 @@ public class ColorSpaceConversionService {
 	}
 
 	public static double getZ(Sample s) {
-		if (s instanceof RgbSample) {
-			return s.getC3Normalized();
-		} else {
-			return s.getC3Normalized();
-		}
+
+		return s.getC3Normalized();
+
 	}
 
 	public static RgbSample toRgb(Sample p) {
 		if (p instanceof RgbSample) {
-			return (RgbSample) p;
+			return new RgbSample((RgbSample) p);
 		} else {
 			return toRgb(p.getC1(), p.getC2(), p.getC3(), p.getCount());
 		}
@@ -120,11 +118,12 @@ public class ColorSpaceConversionService {
 		double c = max - min;
 
 		double i = (r + g + b) / 3.0;
-		// double s = i == 0 ? 0 : 1.0 - min / i;
-		double s = i == 0 ? 0 : Math.sqrt(Math.pow(r - i, 2) + Math.pow(g - i, 2) + Math.pow(b - i, 2));
+		double s = i == 0 ? 0 : 1.0 - min / i;
+		// double s = i == 0 ? 0 : Math.sqrt(Math.pow(r - i, 2) + Math.pow(g -
+		// i, 2) + Math.pow(b - i, 2));
 
 		double h = 0;
-		if (c != 0) {
+		if (c != 0.0) {
 			h = Math.toDegrees(
 					Math.acos((0.5 * ((r - g) + (r - b))) / Math.sqrt(Math.pow((r - g), 2) + (r - b) * (g - b))));
 			// h = Math.toDegrees(Math.acos(((2 * r - g - b) / (2 *

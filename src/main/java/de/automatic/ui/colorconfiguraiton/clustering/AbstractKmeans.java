@@ -33,6 +33,7 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 		this.finished = true;
 
 		if (this.clusters == null) {
+			System.out.println("init from step");
 			this.init(histogram);
 		}
 
@@ -56,6 +57,9 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 			if (c.getCenter() instanceof RgbSample) {
 				newMean = SampleFactory.createSampleFromNormalized("RGB", meanC1, meanC2, meanC3, 1);
 			} else if (c.getCenter() instanceof HsiSample) {
+//				System.out.println("C1 " + meanC1 * 360.0);
+//				System.out.println("C2 " + meanC2);
+//				System.out.println("C3 " + meanC3);
 				newMean = SampleFactory.createSampleFromNormalized("HSI", meanC1, meanC2, meanC3, 1);
 			}
 			if (!newMean.equals(c.getCenter())) {

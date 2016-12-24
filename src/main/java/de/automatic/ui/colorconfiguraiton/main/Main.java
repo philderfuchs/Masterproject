@@ -28,10 +28,10 @@ import de.automatic.ui.colorconfiguraiton.vis.ThreeDimHistogramVisualizer;
 
 public class Main {
 
-	static int k = 5;
+	static int k = 8;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/kanye_small.jpg";
+	static String file = "resources/lockitup.png";
 
 	public static void main(String[] args) {
 
@@ -46,9 +46,13 @@ public class Main {
 
 		AbstractKmeans clusterer = new KmeansPlusPlus(k);
 		System.out.println("start clustering");
-		clusters = clusterer.clusterToEnd(histogram);
+		clusters = clusterer.step(histogram);
 		System.out.println("finished clustering");
 		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means").visualizePalette();
+		
+		for (Cluster c : clusters) {
+			System.out.println("size: " + c.getHistogram().getCountOfPixels());
+		}
 
 		// new OneDimHistogramVisualizer("Channel Histograms", histogram,
 		// clusters);
