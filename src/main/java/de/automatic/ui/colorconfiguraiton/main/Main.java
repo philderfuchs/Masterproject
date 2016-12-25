@@ -31,13 +31,13 @@ public class Main {
 	static int k = 8;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/lockitup.png";
+	static String file = "resources/kanye_small.jpg";
 
 	public static void main(String[] args) {
 
 		Histogram histogram = null;
 		try {
-			histogram = (new ImageReader(new File(file))).getHsiHistogram();
+			histogram = (new ImageReader(new File(file))).getRgbHistogram();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -46,13 +46,9 @@ public class Main {
 
 		AbstractKmeans clusterer = new KmeansPlusPlus(k);
 		System.out.println("start clustering");
-		clusters = clusterer.step(histogram);
+		clusters = clusterer.clusterToEnd(histogram);
 		System.out.println("finished clustering");
 		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means").visualizePalette();
-		
-		for (Cluster c : clusters) {
-			System.out.println("size: " + c.getHistogram().getCountOfPixels());
-		}
 
 		// new OneDimHistogramVisualizer("Channel Histograms", histogram,
 		// clusters);
