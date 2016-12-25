@@ -3,6 +3,7 @@ package de.automatic.ui.colorconfiguraiton.clustering;
 import java.util.ArrayList;
 
 import de.automatic.ui.colorconfiguraiton.entities.*;
+import de.automatic.ui.colorconfiguraiton.services.ColorSpaceConversionService;
 import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
 
 public abstract class AbstractKmeans implements StepByStepClusterer, FinishingClusterer {
@@ -42,25 +43,26 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 				continue;
 			}
 
-			double meanC1 = 0;
-			double meanC2 = 0;
-			double meanC3 = 0;
-			for (Sample p : c.getHistogram().getPixelList()) {
-				meanC1 += p.getC1Normalized() * (double) p.getCount();
-				meanC2 += p.getC2Normalized() * (double) p.getCount();
-				meanC3 += p.getC3Normalized() * (double) p.getCount();
+			double meanX = 0;
+			double meanY = 0;
+			double meanZ = 0;
+			for (Sample s : c.getHistogram().getPixelList()) {
+				CartesianCoordinates coord = ColorSpaceConversionService.toCoordinates(s);
+				meanX += coord.getX() * (double) s.getCount();
+				meanY += coord.getY() * (double) s.getCount();
+				meanZ += coord.getZ() * (double) s.getCount();
 			}
-			meanC1 = meanC1 / (double) c.getHistogram().getCountOfPixels();
-			meanC2 = meanC2 / (double) c.getHistogram().getCountOfPixels();
-			meanC3 = meanC3 / (double) c.getHistogram().getCountOfPixels();
+			meanX = meanX / (double) c.getHistogram().getCountOfPixels();
+			meanY = meanY / (double) c.getHistogram().getCountOfPixels();
+			meanZ = meanZ / (double) c.getHistogram().getCountOfPixels();
 			Sample newMean = null;
 			if (c.getCenter() instanceof RgbSample) {
-				newMean = SampleFactory.createSampleFromNormalized("RGB", meanC1, meanC2, meanC3, 1);
+				newMean = ColorSpaceConversionService.toRgb(new CartesianCoordinates(meanX, meanY, meanZ), 1);
 			} else if (c.getCenter() instanceof HsiSample) {
-//				System.out.println("C1 " + meanC1 * 360.0);
-//				System.out.println("C2 " + meanC2);
-//				System.out.println("C3 " + meanC3);
-				newMean = SampleFactory.createSampleFromNormalized("HSI", meanC1, meanC2, meanC3, 1);
+				// System.out.println("C1 " + meanC1 * 360.0);
+				// System.out.println("C2 " + meanC2);
+				// System.out.println("C3 " + meanC3);
+				newMean = ColorSpaceConversionService.toHsi(new CartesianCoordinates(meanX, meanY, meanZ), 1);
 			}
 			if (!newMean.equals(c.getCenter())) {
 				c.setCenter(newMean);
