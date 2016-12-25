@@ -122,9 +122,8 @@ public class ColorSpaceConversionService {
 		double c = max - min;
 
 		double i = (r + g + b) / 3.0;
-		double s = i == 0 ? 0 : 1.0 - min / i;
-		// double s = i == 0 ? 0 : Math.sqrt(Math.pow(r - i, 2) + Math.pow(g -
-		// i, 2) + Math.pow(b - i, 2));
+//		double s = i == 0 ? 0 : 1.0 - min / i;
+		double s = i == 0 ? 0 : Math.sqrt(Math.pow(r - i, 2) + Math.pow(g - i, 2) + Math.pow(b - i, 2));
 
 		double h = 0;
 		if (c != 0.0) {

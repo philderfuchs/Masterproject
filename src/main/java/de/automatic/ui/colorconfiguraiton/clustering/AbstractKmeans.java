@@ -8,7 +8,7 @@ import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
 
 public abstract class AbstractKmeans implements StepByStepClusterer, FinishingClusterer {
 
-	protected int maxStepCount = 20;
+	protected static int maxStepCount = 40;
 
 	protected int k;
 	protected ClusterContainer clusters;
@@ -48,9 +48,12 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 			double meanZ = 0;
 			for (Sample s : c.getHistogram().getPixelList()) {
 				CartesianCoordinates coord = ColorSpaceConversionService.toCoordinates(s);
-				meanX += coord.getX() * (double) s.getCount();
-				meanY += coord.getY() * (double) s.getCount();
-				meanZ += coord.getZ() * (double) s.getCount();
+				 meanX += coord.getX() * (double) s.getCount();
+				 meanY += coord.getY() * (double) s.getCount();
+				 meanZ += coord.getZ() * (double) s.getCount();
+//				meanX += coord.getX() / c.getHistogram().getLength();
+//				meanY += coord.getY() / c.getHistogram().getLength();
+//				meanZ += coord.getZ() / c.getHistogram().getLength();
 			}
 			meanX = meanX / (double) c.getHistogram().getCountOfPixels();
 			meanY = meanY / (double) c.getHistogram().getCountOfPixels();
