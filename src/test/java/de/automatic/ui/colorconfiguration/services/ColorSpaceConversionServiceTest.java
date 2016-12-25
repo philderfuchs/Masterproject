@@ -34,7 +34,7 @@ public class ColorSpaceConversionServiceTest {
 
 		// System.out.println(ColorSpaceConversionService.toHsi(10, 0, 0, 0));
 		System.out.println(ColorSpaceConversionService.toHsi(10, 10, 0, 0));
-		System.out.println(ColorSpaceConversionService.getX(ColorSpaceConversionService.toHsi(20, 0, 0, 0)));
+//		System.out.println(ColorSpaceConversionService.getX(ColorSpaceConversionService.toHsi(20, 0, 0, 0)));
 
 
 		// // white

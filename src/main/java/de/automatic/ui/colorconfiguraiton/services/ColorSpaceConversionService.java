@@ -1,43 +1,26 @@
 package de.automatic.ui.colorconfiguraiton.services;
 
+import de.automatic.ui.colorconfiguraiton.entities.CartesianCoordinates;
 import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Sample;
 
 public class ColorSpaceConversionService {
 
-	public static double getX(Sample s) {
+	public static CartesianCoordinates toCoordinates(Sample s) {
 		if (s instanceof RgbSample) {
-			return s.getC1Normalized();
+			return new CartesianCoordinates(s.getC1Normalized(), s.getC2Normalized(), s.getC3Normalized());
 		} else if (s instanceof HsiSample) {
 			if (s.getC1() == 0 || s.getC1() == 180) {
-				return s.getC2();
+				return new CartesianCoordinates(s.getC2(), 0.0, s.getC3Normalized());
 			} else if (s.getC1() == 90.0 || s.getC1() == 270.0) {
-				return 0.0;
+				return new CartesianCoordinates(0.0, s.getC2(), s.getC3Normalized());
 			} else {
-				return Math.cos(Math.toRadians(s.getC1())) * s.getC2();
+				return new CartesianCoordinates(Math.cos(Math.toRadians(s.getC1())) * s.getC2(),
+						Math.sin(Math.toRadians(s.getC1())) * s.getC2(), s.getC3Normalized());
 			}
 		}
-		return 0.0;
-	}
-
-	public static double getY(Sample s) {
-		if (s instanceof RgbSample) {
-			return s.getC2Normalized();
-		} else {
-			if (s.getC1() == 0.0 || s.getC1() == 180.0) {
-				return 0.0;
-			} else if (s.getC1() == 90.0 || s.getC1() == 270.0) {
-				return s.getC2();
-			} else {
-				return Math.sin(Math.toRadians(s.getC1())) * s.getC2();
-			}
-		}
-	}
-
-	public static double getZ(Sample s) {
-
-		return s.getC3Normalized();
+		return new CartesianCoordinates(0.0, 0.0, 0.0);
 
 	}
 
