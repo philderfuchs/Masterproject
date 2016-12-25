@@ -6,10 +6,17 @@ import java.awt.Color;
 
 import org.junit.Test;
 
+import de.automatic.ui.colorconfiguraiton.entities.CartesianCoordinates;
 import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
 import de.automatic.ui.colorconfiguraiton.services.ColorSpaceConversionService;
 
 public class ColorSpaceConversionServiceTest {
+
+	@Test
+	public void test0() {
+		System.out.println(ColorSpaceConversionService.toCoordinates(new HsiSample(290.0, 1.0, 0.5, 1)));
+		System.out.println(ColorSpaceConversionService.toHsi(new CartesianCoordinates(0.34, -0.93, 0.5), 1));
+	}
 
 	// @Test
 	// public void test0() {
@@ -33,9 +40,9 @@ public class ColorSpaceConversionServiceTest {
 	public void tes3() {
 
 		// System.out.println(ColorSpaceConversionService.toHsi(10, 0, 0, 0));
-		System.out.println(ColorSpaceConversionService.toHsi(10, 10, 0, 0));
-//		System.out.println(ColorSpaceConversionService.getX(ColorSpaceConversionService.toHsi(20, 0, 0, 0)));
-
+//		System.out.println(ColorSpaceConversionService.toHsi(10, 10, 0, 0));
+		// System.out.println(ColorSpaceConversionService.getX(ColorSpaceConversionService.toHsi(20,
+		// 0, 0, 0)));
 
 		// // white
 		// assertEquals(new HsiSample(0.0, 0.0, 1.0, 0),

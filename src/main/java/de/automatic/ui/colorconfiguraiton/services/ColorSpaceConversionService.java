@@ -7,14 +7,35 @@ import de.automatic.ui.colorconfiguraiton.entities.Sample;
 
 public class ColorSpaceConversionService {
 
+	public static RgbSample toRgb(CartesianCoordinates coord, int count) {
+		return new RgbSample(coord.getX() * 255, coord.getY() * 255, coord.getZ() * 255, count);
+	}
+
+	public static HsiSample toHsi(CartesianCoordinates coord, int count) {
+		double h = Math.toDegrees(Math.atan(coord.getY() / coord.getX()));
+		if (coord.getX() < 0) {
+			h += 180.0;
+		} else if (coord.getX() >= 0 && coord.getY() < 0) {
+			h += 360.0;
+		}
+		double s = Math.sqrt(Math.pow(coord.getX(), 2) + Math.pow(coord.getY(), 2));
+		double i = coord.getZ();
+		return new HsiSample(h, s, i, count);
+
+	}
+
 	public static CartesianCoordinates toCoordinates(Sample s) {
 		if (s instanceof RgbSample) {
 			return new CartesianCoordinates(s.getC1Normalized(), s.getC2Normalized(), s.getC3Normalized());
 		} else if (s instanceof HsiSample) {
-			if (s.getC1() == 0 || s.getC1() == 180) {
+			if (s.getC1() == 0) {
 				return new CartesianCoordinates(s.getC2(), 0.0, s.getC3Normalized());
-			} else if (s.getC1() == 90.0 || s.getC1() == 270.0) {
+			} else if (s.getC1() == 180) {
+				return new CartesianCoordinates(-1.0 * s.getC2(), 0.0, s.getC3Normalized());
+			} else if (s.getC1() == 90.0) {
 				return new CartesianCoordinates(0.0, s.getC2(), s.getC3Normalized());
+			} else if (s.getC1() == 270.0) {
+				return new CartesianCoordinates(0.0, -1.0 * s.getC2(), s.getC3Normalized());
 			} else {
 				return new CartesianCoordinates(Math.cos(Math.toRadians(s.getC1())) * s.getC2(),
 						Math.sin(Math.toRadians(s.getC1())) * s.getC2(), s.getC3Normalized());
