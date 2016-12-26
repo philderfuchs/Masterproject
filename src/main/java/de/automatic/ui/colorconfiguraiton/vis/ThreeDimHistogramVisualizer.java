@@ -46,7 +46,7 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 		// int i = 0;
 		// for (Pixel p : histogram.getPixelList()) {
 		for (int i = 0; i < size; i++) {
-			Sample s = histogram.getPixelList().get(i);
+			Sample s = histogram.getSamples().get(i);
 			CartesianCoordinates coord = ColorSpaceConversionService.toCoordinates(s);
 			histoPoints[i] = new Coord3d(coord.getX(), coord.getY(), coord.getZ());
 			RgbSample rgbSample = ColorSpaceConversionService.toRgb(s);

@@ -7,20 +7,20 @@ import java.util.Collections;
 
 public class Histogram {
 
-	private ArrayList<Sample> pixelList;
+	private ArrayList<Sample> samples;
 
 	public Histogram() {
-		pixelList = new ArrayList<Sample>();
+		samples = new ArrayList<Sample>();
 	}
 
 	public Histogram(ArrayList<Sample> histogram) {
-		this.pixelList = histogram;
+		this.samples = histogram;
 	}
 
 	public void sort(Channels c) {
 		switch (c) {
 		case C1:
-			Collections.sort(pixelList, new Comparator<Sample>() {
+			Collections.sort(samples, new Comparator<Sample>() {
 				public int compare(Sample p1, Sample p2) {
 					if (p1.getC1() > p2.getC1()) {
 						return 1;
@@ -33,7 +33,7 @@ public class Histogram {
 			});
 			break;
 		case C2:
-			Collections.sort(pixelList, new Comparator<Sample>() {
+			Collections.sort(samples, new Comparator<Sample>() {
 				public int compare(Sample p1, Sample p2) {
 					if (p1.getC2() > p2.getC2()) {
 						return 1;
@@ -46,7 +46,7 @@ public class Histogram {
 			});
 			break;
 		case C3:
-			Collections.sort(pixelList, new Comparator<Sample>() {
+			Collections.sort(samples, new Comparator<Sample>() {
 				public int compare(Sample p1, Sample p2) {
 					if (p1.getC3() > p2.getC3()) {
 						return 1;
@@ -64,36 +64,36 @@ public class Histogram {
 	}
 
 	public void add(Sample p) {
-		this.pixelList.add(p);
+		this.samples.add(p);
 	}
 
 	public int getLength() {
-		return pixelList.size();
+		return samples.size();
 	}
 
 	public int getCountOfPixels() {
 		int count = 0;
-		for (Sample p : pixelList) {
+		for (Sample p : samples) {
 			count += p.getCount();
 		}
 		return count;
 	}
 
 	public Sample get(int index) {
-		return pixelList.get(index);
+		return samples.get(index);
 	}
 
-	public ArrayList<Sample> getPixelList() {
-		return pixelList;
+	public ArrayList<Sample> getSamples() {
+		return samples;
 	}
 
 	public void setHistogram(ArrayList<Sample> histogram) {
-		this.pixelList = histogram;
+		this.samples = histogram;
 
 	}
 
 	public void clear() {
-		this.pixelList.clear();
+		this.samples.clear();
 	}
 
 }

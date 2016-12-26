@@ -42,7 +42,7 @@ public class OneDimHistogramVisualizer extends JFrame {
 		HistogramDataset dataset = new HistogramDataset();
 
 		int i = 0;
-		for (Sample p : histogram.getPixelList()) {
+		for (Sample p : histogram.getSamples()) {
 			for (int j = 0; j < p.getCount(); j++) {
 				values[i++] = (double) p.get(channel);
 			}

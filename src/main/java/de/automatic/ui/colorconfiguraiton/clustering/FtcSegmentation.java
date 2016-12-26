@@ -22,12 +22,21 @@ public class FtcSegmentation {
 
 	public void segment(Histogram histogram) {
 		
-		Segmentation segmentation = new Segmentation(Channels.C1);
-		segmentation.add(30.0);
-		segmentation.add(60.0);
-		segmentation.add(120.0);
-		segmentation.add(240.0);
-		visualizeSegmentation(histogram, segmentation);
+//		Segmentation segmentation = new Segmentation(Channels.C1);
+//		segmentation.add(30.0);
+//		segmentation.add(60.0);
+//		segmentation.add(120.0);
+//		segmentation.add(240.0);
+		
+		visualizeSegmentation(histogram, findMinima(histogram));
+	}
+	
+	private Segmentation findMinima(Histogram histo) {
+		histo.sort(Channels.C1);
+		for (Sample s : histo.getSamples()) {
+			
+		}
+		return new Segmentation(Channels.C1);
 	}
 
 	public void visualizeSegmentation(Histogram histogram, Segmentation segmentation) {
@@ -39,7 +48,7 @@ public class FtcSegmentation {
 		HistogramDataset dataset = new HistogramDataset();
 
 		int i = 0;
-		for (Sample p : histogram.getPixelList()) {
+		for (Sample p : histogram.getSamples()) {
 			for (int j = 0; j < p.getCount(); j++) {
 				values[i++] = (double) p.get(Channels.C1);
 			}

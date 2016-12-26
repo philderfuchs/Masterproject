@@ -19,7 +19,7 @@ public class Cluster {
 	
 	public double getError(){
 		double error = 0;
-		for(Sample p : histo.getPixelList()) {
+		for(Sample p : histo.getSamples()) {
 			error += ErrorCalculationService.getSquaredDistance(p, center);
 		}
 		return error;
