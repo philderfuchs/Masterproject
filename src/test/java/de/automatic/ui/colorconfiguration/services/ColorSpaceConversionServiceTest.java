@@ -12,29 +12,17 @@ import de.automatic.ui.colorconfiguraiton.services.ColorSpaceConversionService;
 
 public class ColorSpaceConversionServiceTest {
 
+//	@Test
+//	public void test0() {
+//		System.out.println(ColorSpaceConversionService.toCoordinates(new HsiSample(290.0, 1.0, 0.5, 1)));
+//		System.out.println(ColorSpaceConversionService.toHsi(new CartesianCoordinates(0.34, -0.93, 0.5), 1));
+//	}
+
 	@Test
 	public void test0() {
-		System.out.println(ColorSpaceConversionService.toCoordinates(new HsiSample(290.0, 1.0, 0.5, 1)));
-		System.out.println(ColorSpaceConversionService.toHsi(new CartesianCoordinates(0.34, -0.93, 0.5), 1));
+		System.out.println(ColorSpaceConversionService.toHsi(0.0, 1.0, 1.0 / 3.0, 0));
 	}
 
-	// @Test
-	// public void test0() {
-	// System.out.println(ColorSpaceConversionService.toRgb(120.0, 1.0, 1.0 /
-	// 3.0, 0));
-	// }
-	//
-	// @Test
-	// public void test1() {
-	// System.out.println(ColorSpaceConversionService.getX(new HsiSample(0.0,
-	// 0.0, 1.0 / 3.0, 0)));
-	// }
-	//
-	// @Test
-	// public void test2() {
-	// System.out.println(ColorSpaceConversionService.getY(new HsiSample(0.0,
-	// 0.0, 1.0 / 3.0, 0)));
-	// }
 
 	@Test
 	public void tes3() {

@@ -21,7 +21,6 @@ public class ColorSpaceConversionService {
 		double s = Math.sqrt(Math.pow(coord.getX(), 2) + Math.pow(coord.getY(), 2));
 		double i = coord.getZ();
 		return new HsiSample(h, s, i, count);
-
 	}
 
 	public static CartesianCoordinates toCoordinates(Sample s) {

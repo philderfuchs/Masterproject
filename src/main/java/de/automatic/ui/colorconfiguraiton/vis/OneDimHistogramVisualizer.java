@@ -29,9 +29,9 @@ public class OneDimHistogramVisualizer extends JFrame {
 		this.setLayout(new GridLayout(3, 1));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		this.add(getChartPanel("R", histogram, Channels.C1, clusters));
-		this.add(getChartPanel("G", histogram, Channels.C2, clusters));
-		this.add(getChartPanel("B", histogram, Channels.C3, clusters));
+		this.add(getChartPanel("C1", histogram, Channels.C1, clusters));
+		this.add(getChartPanel("C2", histogram, Channels.C2, clusters));
+		this.add(getChartPanel("C3", histogram, Channels.C3, clusters));
 
 		pack();
 		setVisible(true);
@@ -49,7 +49,7 @@ public class OneDimHistogramVisualizer extends JFrame {
 		}
 
 		dataset.addSeries("H1", values, histogram.getLength());
-		JFreeChart chart = ChartFactory.createHistogram(title, "x", "y", dataset, PlotOrientation.VERTICAL, false,
+		JFreeChart chart = ChartFactory.createHistogram(title, "C", "Count", dataset, PlotOrientation.VERTICAL, false,
 				false, false);
 
 		XYPlot plot = (XYPlot) chart.getPlot();
@@ -63,7 +63,7 @@ public class OneDimHistogramVisualizer extends JFrame {
 //		}
 
 		ChartPanel chartPanel = new ChartPanel(chart);
-		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+		chartPanel.setPreferredSize(new java.awt.Dimension(1000, 270));
 		return chartPanel;
 	}
 
