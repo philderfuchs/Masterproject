@@ -15,48 +15,72 @@ import org.jfree.data.statistics.HistogramDataset;
 
 import de.automatic.ui.colorconfiguraiton.entities.Channels;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
+import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
 import de.automatic.ui.colorconfiguraiton.entities.Sample;
 import de.automatic.ui.colorconfiguraiton.entities.Segmentation;
 
 public class FtcSegmentation {
 
+	private static double threshold = 3.0;
+
 	public void segment(Histogram histogram) {
-		
-//		Segmentation segmentation = new Segmentation(Channels.C1);
-//		segmentation.add(30.0);
-//		segmentation.add(60.0);
-//		segmentation.add(120.0);
-//		segmentation.add(240.0);
-		
+
+		// Segmentation segmentation = new Segmentation(Channels.C1);
+		// segmentation.add(30.0);
+		// segmentation.add(60.0);
+		// segmentation.add(120.0);
+		// segmentation.add(240.0);
+//		histogram = createSampleData();
+
 		visualizeSegmentation(histogram, findMinima(histogram));
 	}
-	
+
 	private Segmentation findMinima(Histogram histo) {
+
+		Segmentation segmentation = new Segmentation(Channels.C1);
+
 		histo.sort(Channels.C1);
-		for (Sample s : histo.getSamples()) {
-			
+		for (int i = 1; i < histo.getLength() - 1; i++) {
+			if (histo.getSamples().get(i + 1).get(Channels.C1)
+					- histo.getSamples().get(i).get(Channels.C1) > threshold) {
+				// too far apart
+				double marker = histo.getSamples().get(i).get(Channels.C1)
+						+ (histo.getSamples().get(i +1).get(Channels.C1) - histo.getSamples().get(i).get(Channels.C1))
+								/ 2.0;
+				segmentation.add(marker);
+
+			} else if (histo.getSamples().get(i).getCount() - histo.getSamples().get(i - 1).getCount() < 0.0) {
+				if (histo.getSamples().get(i + 1).getCount() - histo.getSamples().get(i).getCount() > 0.0) {
+					segmentation.add(histo.getSamples().get(i).get(Channels.C1));
+				} else if (histo.getSamples().get(i + 1).getCount() - histo.getSamples().get(i).getCount() == 0.0) {
+					// maybe plateu
+					int j = i + 1;
+					while (j < histo.getLength() - 1
+							&& histo.getSamples().get(j + 1).getCount() - histo.getSamples().get(j).getCount() == 0.0) {
+						j++;
+					}
+					if (j < histo.getLength() - 1
+							&& histo.getSamples().get(j + 1).getCount() - histo.getSamples().get(j).getCount() > 0.0) {
+						double marker = histo.getSamples().get(i).get(Channels.C1)
+								+ (histo.getSamples().get(j).get(Channels.C1)
+										- histo.getSamples().get(i).get(Channels.C1)) / 2.0;
+						segmentation.add(marker);
+						i = j - 1;
+					}
+				}
+			}
 		}
-		return new Segmentation(Channels.C1);
+		System.out.println(segmentation.size());
+		return segmentation;
+
 	}
 
 	public void visualizeSegmentation(Histogram histogram, Segmentation segmentation) {
-		JFrame frame = new JFrame ("Segmentation Visualization");
-		frame.setLayout(new GridLayout(1, 1));
+		JFrame frame = new JFrame("Segmentation Visualization");
+		frame.setLayout(new GridLayout(2, 1));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		double[] values = new double[histogram.getCountOfPixels()];
-		HistogramDataset dataset = new HistogramDataset();
-
-		int i = 0;
-		for (Sample p : histogram.getSamples()) {
-			for (int j = 0; j < p.getCount(); j++) {
-				values[i++] = (double) p.get(Channels.C1);
-			}
-		}
-
-		dataset.addSeries("H1", values, histogram.getLength());
-		JFreeChart chart = ChartFactory.createHistogram("Segmentation", "C1", "Count", dataset, PlotOrientation.VERTICAL, false,
-				false, false);
+		JFreeChart chart = getChart(histogram);
 
 		XYPlot plot = (XYPlot) chart.getPlot();
 
@@ -69,10 +93,66 @@ public class FtcSegmentation {
 
 		ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(1000, 270));
-		
+
 		frame.add(chartPanel);
+		ChartPanel chartPanel2 = new ChartPanel(getChart(histogram));
+		chartPanel2.setPreferredSize(new java.awt.Dimension(1000, 270));
+		frame.add(chartPanel2);
 		frame.pack();
 		frame.setVisible(true);
 	}
-	
+
+	private JFreeChart getChart(Histogram histogram) {
+		double[] values = new double[histogram.getCountOfPixels()];
+		HistogramDataset dataset = new HistogramDataset();
+
+		int i = 0;
+		for (Sample p : histogram.getSamples()) {
+			for (int j = 0; j < p.getCount(); j++) {
+				values[i++] = (double) p.get(Channels.C1);
+			}
+		}
+
+		dataset.addSeries("H1", values, (int) histogram.getSamples().get(histogram.getLength() - 1).get(Channels.C1));
+		JFreeChart chart = ChartFactory.createHistogram("Segmentation", "C1", "Count", dataset,
+				PlotOrientation.VERTICAL, false, false, false);
+		return chart;
+	}
+
+	private Histogram createSampleData() {
+		Histogram histo = new Histogram();
+		histo.add(new HsiSample(4.0, 0.0, 0.0, 2));
+		histo.add(new HsiSample(5.0, 0.0, 0.0, 3));
+		histo.add(new HsiSample(6.0, 0.0, 0.0, 5));
+		histo.add(new HsiSample(7.0, 0.0, 0.0, 4));
+		histo.add(new HsiSample(8.0, 0.0, 0.0, 6));
+		histo.add(new HsiSample(9.0, 0.0, 0.0, 1));
+
+		histo.add(new HsiSample(12.0, 0.0, 0.0, 1));
+		histo.add(new HsiSample(13.0, 0.0, 0.0, 3));
+		histo.add(new HsiSample(14.0, 0.0, 0.0, 1));
+
+		histo.add(new HsiSample(14.5, 0.0, 0.0, 3));
+		histo.add(new HsiSample(21.0, 0.0, 0.0, 5));
+		histo.add(new HsiSample(22.0, 0.0, 0.0, 7));
+		histo.add(new HsiSample(23.0, 0.0, 0.0, 3));
+		histo.add(new HsiSample(24.0, 0.0, 0.0, 4));
+		histo.add(new HsiSample(25.0, 0.0, 0.0, 3));
+		histo.add(new HsiSample(26.0, 0.0, 0.0, 6));
+		histo.add(new HsiSample(27.0, 0.0, 0.0, 5));
+		histo.add(new HsiSample(28.0, 0.0, 0.0, 7));
+		histo.add(new HsiSample(29.0, 0.0, 0.0, 6));
+		histo.add(new HsiSample(30.0, 0.0, 0.0, 4));
+
+		histo.add(new HsiSample(34.0, 0.0, 0.0, 5));
+		histo.add(new HsiSample(35.0, 0.0, 0.0, 4));
+		histo.add(new HsiSample(36.0, 0.0, 0.0, 4));
+		histo.add(new HsiSample(37.0, 0.0, 0.0, 4));
+		histo.add(new HsiSample(38.0, 0.0, 0.0, 4));
+		histo.add(new HsiSample(39.0, 0.0, 0.0, 4));
+		histo.add(new HsiSample(40.0, 0.0, 0.0, 4));
+		histo.add(new HsiSample(41.0, 0.0, 0.0, 6));
+
+		return histo;
+	}
 }
