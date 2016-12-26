@@ -14,7 +14,7 @@ import de.automatic.ui.colorconfiguraiton.clustering.FtcSegmentation;
 import de.automatic.ui.colorconfiguraiton.clustering.KmeansPlusPlus;
 import de.automatic.ui.colorconfiguraiton.clustering.RandomSeedKmeans;
 import de.automatic.ui.colorconfiguraiton.clustering.StepByStepClusterer;
-import de.automatic.ui.colorconfiguraiton.entities.Histogram;
+import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
@@ -33,12 +33,12 @@ public class Main {
 	static int k = 5;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/djmel.jpg";
+	static String file = "resources/kanye_small.jpg";
 
 	public static void main(String[] args) {
 
 		// for (int i = 0; i < 2; i++) {
-		Histogram histogram = null;
+		SampleList histogram = null;
 		try {
 
 			histogram = i == 0 ? (new ImageReader(new File(file))).getRgbHistogram()
@@ -47,25 +47,25 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		new FtcSegmentation().segment(histogram);
+//		new FtcSegmentation().segment(histogram);
 		
-//		ClusterContainer clusters = null;
+		ClusterContainer clusters = null;
 //
-//		AbstractKmeans clusterer = new KmeansPlusPlus(k);
-//		System.out.println("start clustering");
-//		clusters = clusterer.clusterToEnd(histogram);
-//		System.out.println("finished clustering");
-//		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means").visualizePalette();
+		AbstractKmeans clusterer = new KmeansPlusPlus(k);
+		System.out.println("start clustering");
+		clusters = clusterer.clusterToEnd(histogram);
+		System.out.println("finished clustering");
+		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means").visualizePalette();
 //
 //		 new OneDimHistogramVisualizer("Channel Histograms", histogram,
 //		 clusters);
 
-//		try {
-//			new ThreeDimHistogramVisualizer(histogram, clusters);
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			new ThreeDimHistogramVisualizer(histogram, clusters);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// }
 	}
 

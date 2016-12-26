@@ -15,7 +15,7 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.statistics.HistogramDataset;
 
 import de.automatic.ui.colorconfiguraiton.entities.Channels;
-import de.automatic.ui.colorconfiguraiton.entities.Histogram;
+import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Sample;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
@@ -24,7 +24,7 @@ public class OneDimHistogramVisualizer extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	public OneDimHistogramVisualizer(String title, Histogram histogram, ArrayList<Cluster> clusters) {
+	public OneDimHistogramVisualizer(String title, SampleList histogram, ArrayList<Cluster> clusters) {
 		super(title);
 		this.setLayout(new GridLayout(3, 1));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,18 +37,18 @@ public class OneDimHistogramVisualizer extends JFrame {
 		setVisible(true);
 	}
 
-	private ChartPanel getChartPanel(String title, Histogram histogram, Channels channel, ArrayList<Cluster> clusters) {
+	private ChartPanel getChartPanel(String title, SampleList histogram, Channels channel, ArrayList<Cluster> clusters) {
 		double[] values = new double[histogram.getCountOfPixels()];
 		HistogramDataset dataset = new HistogramDataset();
 
 		int i = 0;
-		for (Sample p : histogram.getSamples()) {
+		for (Sample p : histogram) {
 			for (int j = 0; j < p.getCount(); j++) {
 				values[i++] = (double) p.get(channel);
 			}
 		}
 
-		dataset.addSeries("H1", values, histogram.getLength());
+		dataset.addSeries("H1", values, histogram.size());
 		JFreeChart chart = ChartFactory.createHistogram(title, "C", "Count", dataset, PlotOrientation.VERTICAL, false,
 				false, false);
 

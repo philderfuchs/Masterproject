@@ -20,30 +20,28 @@ public class ImageReader {
 		img = ImageIO.read(file);
 	}
 
-	public Histogram getRgbHistogram() {
+	public SampleList getRgbHistogram() {
 		HashMap<Integer, Integer> pixelMap = getPixelMap();
 
-		ArrayList<Sample> pixelList = new ArrayList<Sample>();
+		SampleList samples = new SampleList();
 		for (Integer i : pixelMap.keySet()) {
 			Color c = new Color(i);
-			pixelList.add(new RgbSample(c.getRed(), c.getGreen(), c.getBlue(), pixelMap.get(i)));
+			samples.add(new RgbSample(c.getRed(), c.getGreen(), c.getBlue(), pixelMap.get(i)));
 		}
-		Histogram histogram = new Histogram(pixelList);
 
-		return histogram;
+		return samples;
 	}
 
-	public Histogram getHsiHistogram() {
+	public SampleList getHsiHistogram() {
 		HashMap<Integer, Integer> pixelMap = getPixelMap();
 
-		ArrayList<Sample> pixelList = new ArrayList<Sample>();
+		SampleList samples = new SampleList();
 		for (Integer i : pixelMap.keySet()) {
 			Color c = new Color(i);
-			pixelList.add(ColorSpaceConversionService.toHsi(c.getRed(), c.getGreen(), c.getBlue(), pixelMap.get(i)));
+			samples.add(ColorSpaceConversionService.toHsi(c.getRed(), c.getGreen(), c.getBlue(), pixelMap.get(i)));
 		}
-		Histogram histogram = new Histogram(pixelList);
 
-		return histogram;
+		return samples;
 	}
 
 	private HashMap<Integer, Integer> getPixelMap() {

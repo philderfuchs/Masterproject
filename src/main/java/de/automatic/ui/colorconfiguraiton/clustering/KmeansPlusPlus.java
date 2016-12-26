@@ -10,7 +10,7 @@ import org.apache.commons.math3.util.Pair;
 import de.automatic.ui.colorconfiguraiton.entities.Channels;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
-import de.automatic.ui.colorconfiguraiton.entities.Histogram;
+import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Sample;
 import de.automatic.ui.colorconfiguraiton.entities.SampleFactory;
@@ -23,12 +23,12 @@ public class KmeansPlusPlus extends AbstractKmeans {
 		this.finished = false;
 	}
 
-	public ClusterContainer init(Histogram histogram) {
+	public ClusterContainer init(SampleList histogram) {
 
 		this.finished = false;
 		Random r = new Random();
 		clusters = new ClusterContainer();
-		int seedIndex = r.nextInt(histogram.getLength());
+		int seedIndex = r.nextInt(histogram.size());
 		Sample center = SampleFactory.createSample((histogram.get(seedIndex)));
 
 		// boolean foundSeed;
@@ -37,7 +37,7 @@ public class KmeansPlusPlus extends AbstractKmeans {
 		for (int i = 0; i < k; i++) {
 			// System.out.println("Init-Seed Index: " + seedIndex);
 
-			clusters.add(new Cluster(new Histogram(), center));
+			clusters.add(new Cluster(new SampleList(), center));
 			this.reassignPixelsToCluster(histogram, clusters);
 
 			center = SampleFactory.createSample(this.chooseNewSeedApache(clusters));
@@ -51,7 +51,7 @@ public class KmeansPlusPlus extends AbstractKmeans {
 	private Sample chooseNewSeedApache(ClusterContainer clusters) {
 		List<Pair<Sample, Double>> itemWeights = new ArrayList<Pair<Sample, Double>>();
 		for (Cluster c : clusters) {
-			for (Sample p : c.getHistogram().getSamples()) {
+			for (Sample p : c.getHistogram()) {
 				itemWeights
 						.add(new Pair<Sample, Double>(p, ErrorCalculationService.getSquaredDistance(p, c.getCenter())));
 			}
@@ -65,7 +65,7 @@ public class KmeansPlusPlus extends AbstractKmeans {
 		double error = clusters.getError();
 		while (true) {
 			for (Cluster c : clusters) {
-				for (Sample p : c.getHistogram().getSamples()) {
+				for (Sample p : c.getHistogram()) {
 					double prob = ErrorCalculationService.getSquaredDistance(p, c.getCenter()) / error;
 					double random = r.nextDouble();
 					if (random <= prob) {

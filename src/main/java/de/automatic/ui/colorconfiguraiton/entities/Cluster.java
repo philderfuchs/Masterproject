@@ -4,29 +4,29 @@ import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
 
 public class Cluster {
 
-	private Histogram histo;
+	private SampleList samples;
 	private Sample center;
 		
-	public Cluster(Histogram histo, Sample center) {
+	public Cluster(SampleList histo, Sample center) {
 		super();
-		this.histo = histo;
+		this.samples = histo;
 		this.center = center;
 	}
 	
-	public Histogram getHistogram() {
-		return histo;
+	public SampleList getHistogram() {
+		return samples;
 	}
 	
 	public double getError(){
 		double error = 0;
-		for(Sample p : histo.getSamples()) {
+		for(Sample p : samples) {
 			error += ErrorCalculationService.getSquaredDistance(p, center);
 		}
 		return error;
 	}
 	
-	public void setHistogram(Histogram histo) {
-		this.histo = histo;
+	public void setHistogram(SampleList histo) {
+		this.samples = histo;
 	}
 	
 	public Sample getCenter() {

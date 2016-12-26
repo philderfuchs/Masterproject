@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
-import de.automatic.ui.colorconfiguraiton.entities.Histogram;
+import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 
 public interface FinishingClusterer {
 
-	public ClusterContainer clusterToEnd(Histogram histogram);
+	public ClusterContainer clusterToEnd(SampleList histogram);
 	
 }

@@ -17,7 +17,7 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 	protected int stepCount = 0;
 
 	@Override
-	public ClusterContainer clusterToEnd(Histogram histogram) {
+	public ClusterContainer clusterToEnd(SampleList histogram) {
 		this.init(histogram);
 
 		while (!finished) {
@@ -26,9 +26,9 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 		return clusters;
 	}
 
-	public abstract ClusterContainer init(Histogram histogram);
+	public abstract ClusterContainer init(SampleList histogram);
 
-	public ClusterContainer step(Histogram histogram) {
+	public ClusterContainer step(SampleList histogram) {
 		System.out.println("step");
 		stepCount++;
 		this.finished = true;
@@ -39,21 +39,21 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 		}
 
 		for (Cluster c : clusters) {
-			if (c.getHistogram().getLength() == 0) {
+			if (c.getHistogram().size() == 0) {
 				continue;
 			}
 
 			double meanX = 0;
 			double meanY = 0;
 			double meanZ = 0;
-			for (Sample s : c.getHistogram().getSamples()) {
+			for (Sample s : c.getHistogram()) {
 				CartesianCoordinates coord = ColorSpaceConversionService.toCoordinates(s);
-				 meanX += coord.getX() * (double) s.getCount();
-				 meanY += coord.getY() * (double) s.getCount();
-				 meanZ += coord.getZ() * (double) s.getCount();
-//				meanX += coord.getX() / c.getHistogram().getLength();
-//				meanY += coord.getY() / c.getHistogram().getLength();
-//				meanZ += coord.getZ() / c.getHistogram().getLength();
+				meanX += coord.getX() * (double) s.getCount();
+				meanY += coord.getY() * (double) s.getCount();
+				meanZ += coord.getZ() * (double) s.getCount();
+				// meanX += coord.getX() / c.getHistogram().getLength();
+				// meanY += coord.getY() / c.getHistogram().getLength();
+				// meanZ += coord.getZ() / c.getHistogram().getLength();
 			}
 			meanX = meanX / (double) c.getHistogram().getCountOfPixels();
 			meanY = meanY / (double) c.getHistogram().getCountOfPixels();
@@ -81,12 +81,12 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 		return clusters;
 	}
 
-	protected void reassignPixelsToCluster(Histogram histogram, ClusterContainer clusters) {
+	protected void reassignPixelsToCluster(SampleList histogram, ClusterContainer clusters) {
 		for (Cluster c : clusters) {
 			c.getHistogram().clear();
 		}
 		// put each pixel in the histogram in the closest cluster
-		for (Sample p : histogram.getSamples()) {
+		for (Sample p : histogram) {
 			double minDistance = Double.MAX_VALUE;
 			Cluster closestCluster = null;
 			for (Cluster c : clusters) {

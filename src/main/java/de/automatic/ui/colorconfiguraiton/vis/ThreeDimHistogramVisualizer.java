@@ -11,7 +11,7 @@ import org.jzy3d.maths.Coord3d;
 import org.jzy3d.plot3d.primitives.Scatter;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
 
-import de.automatic.ui.colorconfiguraiton.entities.Histogram;
+import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Sample;
@@ -23,10 +23,10 @@ import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 
 public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 
-	private Histogram histogram;
+	private SampleList histogram;
 	private ArrayList<Cluster> clusters;
 
-	public ThreeDimHistogramVisualizer(Histogram histogram, ClusterContainer clusters) throws Exception {
+	public ThreeDimHistogramVisualizer(SampleList histogram, ClusterContainer clusters) throws Exception {
 		this.histogram = histogram;
 		this.clusters = clusters;
 		AnalysisLauncher.open(this);
@@ -38,7 +38,7 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 		float z;
 		float a;
 
-		int size = histogram.getLength();
+		int size = histogram.size();
 
 		Coord3d[] histoPoints = new Coord3d[size];
 		Color[] histoColors = new Color[size];
@@ -46,7 +46,7 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 		// int i = 0;
 		// for (Pixel p : histogram.getPixelList()) {
 		for (int i = 0; i < size; i++) {
-			Sample s = histogram.getSamples().get(i);
+			Sample s = histogram.get(i);
 			CartesianCoordinates coord = ColorSpaceConversionService.toCoordinates(s);
 			histoPoints[i] = new Coord3d(coord.getX(), coord.getY(), coord.getZ());
 			RgbSample rgbSample = ColorSpaceConversionService.toRgb(s);
