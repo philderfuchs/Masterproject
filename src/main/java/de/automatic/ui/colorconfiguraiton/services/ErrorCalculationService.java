@@ -6,8 +6,8 @@ import de.automatic.ui.colorconfiguraiton.entities.Sample;
 public class ErrorCalculationService {
 
 	public static double getSquaredDistance(Sample p1, Sample p2) {
-		CartesianCoordinates coordP1 = ColorSpaceConversionService.toCoordinates(p1);
-		CartesianCoordinates coordP2 = ColorSpaceConversionService.toCoordinates(p2);
+		CartesianCoordinates coordP1 = ConversionService.toCoordinates(p1);
+		CartesianCoordinates coordP2 = ConversionService.toCoordinates(p2);
 
 		double dx = coordP1.getX() - coordP2.getX();
 		double dy = coordP1.getY() - coordP2.getY();
@@ -17,8 +17,8 @@ public class ErrorCalculationService {
 	}
 
 	public static double getEucledianDistance(Sample p1, Sample p2) {
-		CartesianCoordinates coordP1 = ColorSpaceConversionService.toCoordinates(p1);
-		CartesianCoordinates coordP2 = ColorSpaceConversionService.toCoordinates(p2);
+		CartesianCoordinates coordP1 = ConversionService.toCoordinates(p1);
+		CartesianCoordinates coordP2 = ConversionService.toCoordinates(p2);
 		
 		double dx = coordP1.getX() - coordP2.getX();
 		double dy = coordP1.getY() - coordP2.getY();

@@ -3,7 +3,7 @@ package de.automatic.ui.colorconfiguraiton.clustering;
 import java.util.ArrayList;
 
 import de.automatic.ui.colorconfiguraiton.entities.*;
-import de.automatic.ui.colorconfiguraiton.services.ColorSpaceConversionService;
+import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
 
 public abstract class AbstractKmeans implements StepByStepClusterer, FinishingClusterer {
@@ -47,7 +47,7 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 			double meanY = 0;
 			double meanZ = 0;
 			for (Sample s : c.getSampleList()) {
-				CartesianCoordinates coord = ColorSpaceConversionService.toCoordinates(s);
+				CartesianCoordinates coord = ConversionService.toCoordinates(s);
 				meanX += coord.getX() * (double) s.getCount();
 				meanY += coord.getY() * (double) s.getCount();
 				meanZ += coord.getZ() * (double) s.getCount();
@@ -60,12 +60,12 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 			meanZ = meanZ / (double) c.getSampleList().getCountOfPixels();
 			Sample newMean = null;
 			if (c.getCenter() instanceof RgbSample) {
-				newMean = ColorSpaceConversionService.toRgb(new CartesianCoordinates(meanX, meanY, meanZ), 1);
+				newMean = ConversionService.toRgb(new CartesianCoordinates(meanX, meanY, meanZ), 1);
 			} else if (c.getCenter() instanceof HsiSample) {
 				// System.out.println("C1 " + meanC1 * 360.0);
 				// System.out.println("C2 " + meanC2);
 				// System.out.println("C3 " + meanC3);
-				newMean = ColorSpaceConversionService.toHsi(new CartesianCoordinates(meanX, meanY, meanZ), 1);
+				newMean = ConversionService.toHsi(new CartesianCoordinates(meanX, meanY, meanZ), 1);
 			}
 			if (!newMean.equals(c.getCenter())) {
 				c.setCenter(newMean);

@@ -10,7 +10,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 import de.automatic.ui.colorconfiguraiton.entities.*;
-import de.automatic.ui.colorconfiguraiton.services.ColorSpaceConversionService;
+import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 
 public class ImageReader {
 
@@ -38,7 +38,7 @@ public class ImageReader {
 		SampleList samples = new SampleList();
 		for (Integer i : pixelMap.keySet()) {
 			Color c = new Color(i);
-			samples.add(ColorSpaceConversionService.toHsi(c.getRed(), c.getGreen(), c.getBlue(), pixelMap.get(i)));
+			samples.add(ConversionService.toHsi(c.getRed(), c.getGreen(), c.getBlue(), pixelMap.get(i)));
 		}
 
 		return samples;

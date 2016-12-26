@@ -15,7 +15,7 @@ import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Sample;
-import de.automatic.ui.colorconfiguraiton.services.ColorSpaceConversionService;
+import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 import de.automatic.ui.colorconfiguraiton.entities.CartesianCoordinates;
 import de.automatic.ui.colorconfiguraiton.entities.Channels;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
@@ -47,9 +47,9 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 		// for (Pixel p : histogram.getPixelList()) {
 		for (int i = 0; i < size; i++) {
 			Sample s = histogram.get(i);
-			CartesianCoordinates coord = ColorSpaceConversionService.toCoordinates(s);
+			CartesianCoordinates coord = ConversionService.toCoordinates(s);
 			histoPoints[i] = new Coord3d(coord.getX(), coord.getY(), coord.getZ());
-			RgbSample rgbSample = ColorSpaceConversionService.toRgb(s);
+			RgbSample rgbSample = ConversionService.toRgb(s);
 			histoColors[i] = new Color((float) rgbSample.getC1Normalized() - 0.1f,
 					(float) rgbSample.getC2Normalized() - 0.1f, (float) rgbSample.getC3Normalized() - 0.1f, 0.3f);
 		}
@@ -65,10 +65,10 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 
 			int i = 0;
 			for (Cluster c : clusters) {
-				CartesianCoordinates coord = ColorSpaceConversionService.toCoordinates(c.getCenter());
+				CartesianCoordinates coord = ConversionService.toCoordinates(c.getCenter());
 
 				clusterPoints[i] = new Coord3d(coord.getX(), coord.getY(), coord.getZ());
-				RgbSample rgbSample = ColorSpaceConversionService.toRgb(c.getCenter());
+				RgbSample rgbSample = ConversionService.toRgb(c.getCenter());
 				clusterColors[i++] =  new Color((float) rgbSample.getC1Normalized() - 0.1f,
 						(float) rgbSample.getC2Normalized() - 0.1f, (float) rgbSample.getC3Normalized() - 0.1f);
 			}

@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Sample;
-import de.automatic.ui.colorconfiguraiton.services.ColorSpaceConversionService;
+import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 
 public class PaletteShower {
 
@@ -47,7 +47,7 @@ public class PaletteShower {
 			int lengthOfQuader = windowLength / palette.size();
 			int x = 0;
 			for (Sample sample : palette) {
-				RgbSample rgbSample = ColorSpaceConversionService.toRgb(sample);
+				RgbSample rgbSample = ConversionService.toRgb(sample);
 				Color c = new Color((int) rgbSample.getC1(), (int) rgbSample.getC2(), (int) rgbSample.getC3());
 				g.setColor(c);
 				g.fillRect(x * lengthOfQuader, 0, lengthOfQuader, windowHeight);

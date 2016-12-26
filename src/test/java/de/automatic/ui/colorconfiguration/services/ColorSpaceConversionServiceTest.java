@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import de.automatic.ui.colorconfiguraiton.entities.CartesianCoordinates;
 import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
-import de.automatic.ui.colorconfiguraiton.services.ColorSpaceConversionService;
+import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 
 public class ColorSpaceConversionServiceTest {
 
@@ -20,7 +20,7 @@ public class ColorSpaceConversionServiceTest {
 
 	@Test
 	public void test0() {
-		System.out.println(ColorSpaceConversionService.toHsi(0.0, 1.0, 1.0 / 3.0, 0));
+		System.out.println(ConversionService.toHsi(0.0, 1.0, 1.0 / 3.0, 0));
 	}
 
 

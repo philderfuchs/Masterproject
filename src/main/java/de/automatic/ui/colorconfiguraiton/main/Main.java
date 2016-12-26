@@ -21,7 +21,7 @@ import de.automatic.ui.colorconfiguraiton.entities.Cluster;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 import de.automatic.ui.colorconfiguraiton.process.ImageReader;
 import de.automatic.ui.colorconfiguraiton.services.ClusterListConversionService;
-import de.automatic.ui.colorconfiguraiton.services.ColorSpaceConversionService;
+import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 import de.automatic.ui.colorconfiguraiton.vis.GraphVisualizer;
 import de.automatic.ui.colorconfiguraiton.vis.OneDimHistogramVisualizer;
 import de.automatic.ui.colorconfiguraiton.vis.PaletteShower;
@@ -29,11 +29,11 @@ import de.automatic.ui.colorconfiguraiton.vis.ThreeDimHistogramVisualizer;
 
 public class Main {
 
-	static int i = 1;
-	static int k = 5;
+	static int i = 0;
+	static int k = 8;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/kanye_small.jpg";
+	static String file = "resources/HS.png";
 
 	public static void main(String[] args) {
 
@@ -55,7 +55,7 @@ public class Main {
 		System.out.println("start clustering");
 		clusters = clusterer.clusterToEnd(histogram);
 		System.out.println("finished clustering");
-		new PaletteShower(ClusterListConversionService.convertToHashSet(clusters), "K-Means").visualizePalette();
+		new PaletteShower(ConversionService.convertToHashSet(clusters), "K-Means").visualizePalette();
 //
 //		 new OneDimHistogramVisualizer("Channel Histograms", histogram,
 //		 clusters);

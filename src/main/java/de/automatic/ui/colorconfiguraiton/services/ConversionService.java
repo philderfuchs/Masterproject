@@ -1,11 +1,23 @@
 package de.automatic.ui.colorconfiguraiton.services;
 
+import java.util.HashSet;
+
 import de.automatic.ui.colorconfiguraiton.entities.CartesianCoordinates;
+import de.automatic.ui.colorconfiguraiton.entities.Cluster;
+import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Sample;
 
-public class ColorSpaceConversionService {
+public class ConversionService {
+
+	public static HashSet<Sample> convertToHashSet(ClusterContainer clusters) {
+		HashSet<Sample> pixelSet = new HashSet<>();
+		for (Cluster c : clusters) {
+			pixelSet.add(c.getCenter());
+		}
+		return pixelSet;
+	}
 
 	public static RgbSample toRgb(CartesianCoordinates coord, int count) {
 		return new RgbSample(coord.getX() * 255, coord.getY() * 255, coord.getZ() * 255, count);
@@ -121,7 +133,7 @@ public class ColorSpaceConversionService {
 		double c = max - min;
 
 		double i = (r + g + b) / 3.0;
-//		double s = i == 0 ? 0 : 1.0 - min / i;
+		// double s = i == 0 ? 0 : 1.0 - min / i;
 		double s = i == 0 ? 0 : Math.sqrt(Math.pow(r - i, 2) + Math.pow(g - i, 2) + Math.pow(b - i, 2));
 
 		double h = 0;
