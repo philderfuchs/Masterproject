@@ -39,14 +39,14 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 		}
 
 		for (Cluster c : clusters) {
-			if (c.getHistogram().size() == 0) {
+			if (c.getSampleList().size() == 0) {
 				continue;
 			}
 
 			double meanX = 0;
 			double meanY = 0;
 			double meanZ = 0;
-			for (Sample s : c.getHistogram()) {
+			for (Sample s : c.getSampleList()) {
 				CartesianCoordinates coord = ColorSpaceConversionService.toCoordinates(s);
 				meanX += coord.getX() * (double) s.getCount();
 				meanY += coord.getY() * (double) s.getCount();
@@ -55,9 +55,9 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 				// meanY += coord.getY() / c.getHistogram().getLength();
 				// meanZ += coord.getZ() / c.getHistogram().getLength();
 			}
-			meanX = meanX / (double) c.getHistogram().getCountOfPixels();
-			meanY = meanY / (double) c.getHistogram().getCountOfPixels();
-			meanZ = meanZ / (double) c.getHistogram().getCountOfPixels();
+			meanX = meanX / (double) c.getSampleList().getCountOfPixels();
+			meanY = meanY / (double) c.getSampleList().getCountOfPixels();
+			meanZ = meanZ / (double) c.getSampleList().getCountOfPixels();
 			Sample newMean = null;
 			if (c.getCenter() instanceof RgbSample) {
 				newMean = ColorSpaceConversionService.toRgb(new CartesianCoordinates(meanX, meanY, meanZ), 1);
@@ -83,7 +83,7 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 
 	protected void reassignPixelsToCluster(SampleList histogram, ClusterContainer clusters) {
 		for (Cluster c : clusters) {
-			c.getHistogram().clear();
+			c.getSampleList().clear();
 		}
 		// put each pixel in the histogram in the closest cluster
 		for (Sample p : histogram) {
@@ -96,7 +96,7 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 					closestCluster = c;
 				}
 			}
-			closestCluster.getHistogram().add(p);
+			closestCluster.getSampleList().add(p);
 		}
 	}
 

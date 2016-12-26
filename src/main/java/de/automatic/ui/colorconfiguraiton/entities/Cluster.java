@@ -13,7 +13,7 @@ public class Cluster {
 		this.center = center;
 	}
 	
-	public SampleList getHistogram() {
+	public SampleList getSampleList() {
 		return samples;
 	}
 	
@@ -25,8 +25,8 @@ public class Cluster {
 		return error;
 	}
 	
-	public void setHistogram(SampleList histo) {
-		this.samples = histo;
+	public void setSampleList(SampleList sample) {
+		this.samples = sample;
 	}
 	
 	public Sample getCenter() {

@@ -24,7 +24,6 @@ public class KmeansPlusPlus extends AbstractKmeans {
 	}
 
 	public ClusterContainer init(SampleList histogram) {
-
 		this.finished = false;
 		Random r = new Random();
 		clusters = new ClusterContainer();
@@ -51,7 +50,7 @@ public class KmeansPlusPlus extends AbstractKmeans {
 	private Sample chooseNewSeedApache(ClusterContainer clusters) {
 		List<Pair<Sample, Double>> itemWeights = new ArrayList<Pair<Sample, Double>>();
 		for (Cluster c : clusters) {
-			for (Sample p : c.getHistogram()) {
+			for (Sample p : c.getSampleList()) {
 				itemWeights
 						.add(new Pair<Sample, Double>(p, ErrorCalculationService.getSquaredDistance(p, c.getCenter())));
 			}
@@ -65,7 +64,7 @@ public class KmeansPlusPlus extends AbstractKmeans {
 		double error = clusters.getError();
 		while (true) {
 			for (Cluster c : clusters) {
-				for (Sample p : c.getHistogram()) {
+				for (Sample p : c.getSampleList()) {
 					double prob = ErrorCalculationService.getSquaredDistance(p, c.getCenter()) / error;
 					double random = r.nextDouble();
 					if (random <= prob) {
