@@ -37,7 +37,7 @@ public class FtcSegmentation {
 
 		
 		Histogram histo = ConversionService.toHistogram(samples, Channels.C1, 32);
-//		Histogram histo = createSampleData();
+		histo = createSampleData();
 
 		visualizeSegmentation(histo, findMinima(histo));
 	}
@@ -115,40 +115,40 @@ public class FtcSegmentation {
 		return chart;
 	}
 
-//	private Histogram createSampleData() {
-//		Histogram histo = new Histogram(32);
-//		histo.add(new HistogramElement(4.0, 2));
-//		histo.add(new HistogramElement(5.0, 3));
-//		histo.add(new HistogramElement(6.0, 0.0, 0.0, 5));
-//		histo.add(new HistogramElement(7.0, 0.0, 0.0, 4));
-//		histo.add(new HistogramElement(8.0, 0.0, 0.0, 6));
-//		histo.add(new HistogramElement(9.0, 0.0, 0.0, 1));
-//
-//		histo.add(new HistogramElement(12.0, 0.0, 0.0, 1));
-//		histo.add(new HistogramElement(13.0, 0.0, 0.0, 3));
-//		histo.add(new HistogramElement(14.0, 0.0, 0.0, 1));
-//
-//		histo.add(new HistogramElement(14.5, 0.0, 0.0, 3));
-//		histo.add(new HistogramElement(21.0, 0.0, 0.0, 5));
-//		histo.add(new HistogramElement(22.0, 0.0, 0.0, 7));
-//		histo.add(new HistogramElement(23.0, 0.0, 0.0, 3));
-//		histo.add(new HistogramElement(24.0, 0.0, 0.0, 4));
-//		histo.add(new HistogramElement(25.0, 0.0, 0.0, 3));
-//		histo.add(new HistogramElement(26.0, 0.0, 0.0, 6));
-//		histo.add(new HistogramElement(27.0, 0.0, 0.0, 5));
-//		histo.add(new HistogramElement(28.0, 0.0, 0.0, 7));
-//		histo.add(new HistogramElement(29.0, 0.0, 0.0, 6));
-//		histo.add(new HistogramElement(30.0, 0.0, 0.0, 4));
-//
-//		histo.add(new HsiSample(34.0, 0.0, 0.0, 5));
-//		histo.add(new HsiSample(35.0, 0.0, 0.0, 4));
-//		histo.add(new HsiSample(36.0, 0.0, 0.0, 4));
-//		histo.add(new HsiSample(37.0, 0.0, 0.0, 4));
-//		histo.add(new HsiSample(38.0, 0.0, 0.0, 4));
-//		histo.add(new HsiSample(39.0, 0.0, 0.0, 4));
-//		histo.add(new HsiSample(40.0, 0.0, 0.0, 4));
-//		histo.add(new HsiSample(41.0, 0.0, 0.0, 6));
-//
-//		return histo;
-//	}
+	private Histogram createSampleData() {
+		Histogram histo = new Histogram(32, Channels.C1);	
+		histo.add(0);
+		histo.add(2);
+		histo.add(3);
+		histo.add(5);
+		histo.add(6);
+		histo.add(1);
+		histo.add(0);
+		histo.add(1);
+		histo.add(3);
+		histo.add(1);
+		histo.add(0);
+		histo.add(3);
+		histo.add(5);
+		histo.add(7);
+		histo.add(3);
+		histo.add(0);
+		histo.add(3);
+		histo.add(6);
+		histo.add(5);
+		histo.add(7);
+		histo.add(6);
+		histo.add(4);
+		histo.add(0);
+		histo.add(5);
+		histo.add(4);
+		histo.add(4);
+		histo.add(4);
+		histo.add(4);
+		histo.add(4);
+		histo.add(4);
+		histo.add(4);
+		histo.add(5);
+		return histo;
+	}
 }
