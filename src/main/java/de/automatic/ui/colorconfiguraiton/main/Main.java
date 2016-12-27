@@ -28,11 +28,11 @@ import de.automatic.ui.colorconfiguraiton.vis.ThreeDimHistogramVisualizer;
 
 public class Main {
 
-	static int i = 1;
+	static int i = 0;
 	static int k = 8;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/asap.jpg";
+	static String file = "resources/HS.png";
 
 	public static void main(String[] args) {
 
