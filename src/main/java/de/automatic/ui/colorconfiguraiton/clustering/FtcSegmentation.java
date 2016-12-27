@@ -24,25 +24,48 @@ import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 
 public class FtcSegmentation {
 
-	private static double threshold = 3.0;
-
 	public void segment(SampleList samples) {
-
-		// Segmentation segmentation = new Segmentation(Channels.C1);
-		// segmentation.add(30.0);
-		// segmentation.add(60.0);
-		// segmentation.add(120.0);
-		// segmentation.add(240.0);
-		// histogram = createSampleData();
-
 		Histogram histo = ConversionService.toHistogram(samples, Channels.C1, 128);
-//		histo = createSampleData();
-
+		histo = createSampleData();
 		visualizeSegmentation(histo, findMinima(histo));
 	}
 
-	private Segmentation findMinima(Histogram histo) {
+	public Histogram decreasingGrenanderEstimator(Histogram histo, int start, int end) {
+		Histogram gHisto = new Histogram(histo);
 
+		for (int i = start; i < end; i++) {
+			System.out.println("i=" + i);
+			if (i + 1 < gHisto.getBins() && gHisto.get(i + 1).getValue() - gHisto.get(i).getValue() > 0) {
+				// look ahead
+				System.out.println("increasing case");
+				int j = i;
+				int mean = gHisto.get(i).getValue();
+				System.out.println("init mean=" + mean);
+				do {
+					j++;
+					mean += gHisto.get(j).getValue();
+					System.out.println("j=" + j +", still increasing, mean is now=" + mean);
+				} while (j + 1 < gHisto.getBins() && gHisto.get(j + 1).getValue() - gHisto.get(j).getValue() > 0);
+
+				System.out.println("final j=" + j);
+				mean /= (j - i + 1);
+				System.out.println("final mean=" + mean);
+				for (int k = i; k <= j; k++) {
+					System.out.println("k=" + k);
+					gHisto.set(k, new HistogramElement(histo.get(k).getKey(), mean));
+				}
+				i = j - 1;
+			} else {
+				System.out.println("nothing to do");
+			}
+
+		}
+
+		return gHisto;
+
+	}
+
+	private Segmentation findMinima(Histogram histo) {
 		Segmentation segmentation = new Segmentation(Channels.C1);
 
 		for (int i = 1; i < histo.getBins() - 1; i++) {
@@ -56,9 +79,6 @@ public class FtcSegmentation {
 						j++;
 					}
 					if (j < histo.size() - 1 && histo.get(j + 1).getValue() - histo.get(j).getValue() > 0) {
-						// double marker = histo.get(i).getKey()
-						// + (histo.get(j).getKey() - histo.get(i).getKey()) /
-						// 2.0;
 						segmentation.add(i + (j - i) / 2);
 						i = j - 1;
 					}
@@ -67,9 +87,8 @@ public class FtcSegmentation {
 		}
 		segmentation.add(0);
 		segmentation.add(histo.getBins() - 1);
-		System.out.println(segmentation.size());
+		// System.out.println(segmentation.size());
 		return segmentation;
-
 	}
 
 	public void visualizeSegmentation(Histogram histogram, Segmentation segmentation) {
@@ -94,7 +113,7 @@ public class FtcSegmentation {
 		chartPanel.setPreferredSize(new java.awt.Dimension(1000, 270));
 
 		frame.add(chartPanel);
-		ChartPanel chartPanel2 = new ChartPanel(getChart(histogram));
+		ChartPanel chartPanel2 = new ChartPanel(getChart(decreasingGrenanderEstimator(histogram, 0, 8)));
 		chartPanel2.setPreferredSize(new java.awt.Dimension(1000, 270));
 		frame.add(chartPanel2);
 		frame.pack();
@@ -120,13 +139,12 @@ public class FtcSegmentation {
 
 	private Histogram createSampleData() {
 		Histogram histo = new Histogram(32, Channels.C1);
-		histo.add(0);
+		histo.add(5);
+		histo.add(3);
+		histo.add(6);
+		histo.add(5);
+		histo.add(3);
 		histo.add(2);
-		histo.add(3);
-		histo.add(5);
-		histo.add(6);
-		histo.add(1);
-		histo.add(0);
 		histo.add(1);
 		histo.add(3);
 		histo.add(1);
@@ -152,6 +170,8 @@ public class FtcSegmentation {
 		histo.add(4);
 		histo.add(4);
 		histo.add(5);
+		histo.add(0);
+
 		return histo;
 	}
 }
