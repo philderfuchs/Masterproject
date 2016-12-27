@@ -3,15 +3,38 @@ package de.automatic.ui.colorconfiguraiton.services;
 import java.util.HashSet;
 
 import de.automatic.ui.colorconfiguraiton.entities.CartesianCoordinates;
+import de.automatic.ui.colorconfiguraiton.entities.Channels;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
+import de.automatic.ui.colorconfiguraiton.entities.Histogram;
+import de.automatic.ui.colorconfiguraiton.entities.HistogramElement;
 import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Sample;
+import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 
 public class ConversionService {
 
-	public static HashSet<Sample> convertToHashSet(ClusterContainer clusters) {
+	public static Histogram toHistogram(SampleList samples, Channels channel, int bins) {
+
+		Histogram histo = new Histogram(bins);
+		samples.sort(channel);
+		double binRange = 1.0 / bins;
+		int j = 0;
+
+		for (int i = 0; i < bins; i++) {
+			int count = 0;
+			while (j < samples.size() && samples.get(j).getNormalized(channel) < (double) (i + 1.0) * binRange) {
+				count += samples.get(j).getCount();
+				j++;
+			}
+			histo.add(new HistogramElement((i + 0.5) * binRange, count));
+		}
+
+		return histo;
+	}
+
+	public static HashSet<Sample> toHashSet(ClusterContainer clusters) {
 		HashSet<Sample> pixelSet = new HashSet<>();
 		for (Cluster c : clusters) {
 			pixelSet.add(c.getCenter());

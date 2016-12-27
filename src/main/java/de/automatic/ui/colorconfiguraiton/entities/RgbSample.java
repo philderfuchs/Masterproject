@@ -49,6 +49,20 @@ public class RgbSample implements Sample {
 		return 0;
 	}
 
+	public double getNormalized(Channels c) {
+		switch (c) {
+		case C1:
+			return getC1Normalized();
+		case C2:
+			return getC2Normalized();
+		case C3:
+			return getC3Normalized();
+		default:
+			break;
+		}
+		return 0;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		RgbSample other = (RgbSample) o;

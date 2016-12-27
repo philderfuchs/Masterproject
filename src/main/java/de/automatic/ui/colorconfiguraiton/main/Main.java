@@ -20,7 +20,6 @@ import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 import de.automatic.ui.colorconfiguraiton.process.ImageReader;
-import de.automatic.ui.colorconfiguraiton.services.ClusterListConversionService;
 import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 import de.automatic.ui.colorconfiguraiton.vis.GraphVisualizer;
 import de.automatic.ui.colorconfiguraiton.vis.OneDimHistogramVisualizer;
@@ -29,11 +28,11 @@ import de.automatic.ui.colorconfiguraiton.vis.ThreeDimHistogramVisualizer;
 
 public class Main {
 
-	static int i = 0;
+	static int i = 1;
 	static int k = 8;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/HS.png";
+	static String file = "resources/asap.jpg";
 
 	public static void main(String[] args) {
 
@@ -47,25 +46,25 @@ public class Main {
 			e.printStackTrace();
 		}
 
-//		new FtcSegmentation().segment(histogram);
+		new FtcSegmentation().segment(histogram);
 		
-		ClusterContainer clusters = null;
+//		ClusterContainer clusters = null;
 //
-		AbstractKmeans clusterer = new KmeansPlusPlus(k);
-		System.out.println("start clustering");
-		clusters = clusterer.clusterToEnd(histogram);
-		System.out.println("finished clustering");
-		new PaletteShower(ConversionService.convertToHashSet(clusters), "K-Means").visualizePalette();
+//		AbstractKmeans clusterer = new KmeansPlusPlus(k);
+//		System.out.println("start clustering");
+//		clusters = clusterer.clusterToEnd(histogram);
+//		System.out.println("finished clustering");
+//		new PaletteShower(ConversionService.toHashSet(clusters), "K-Means").visualizePalette();
 //
 //		 new OneDimHistogramVisualizer("Channel Histograms", histogram,
 //		 clusters);
 
-		try {
-			new ThreeDimHistogramVisualizer(histogram, clusters);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			new ThreeDimHistogramVisualizer(histogram, clusters);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		// }
 	}
 

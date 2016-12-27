@@ -3,6 +3,8 @@ package de.automatic.ui.colorconfiguraiton.entities;
 public interface Sample {
 
 	public double get(Channels c);
+	
+	public double getNormalized(Channels c);
 
 	public double getC1();
 	
