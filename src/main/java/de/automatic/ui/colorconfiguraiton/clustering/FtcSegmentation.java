@@ -53,7 +53,31 @@ public class FtcSegmentation {
 		}
 
 		return gHisto;
+	}
+	
+	public Histogram increasingGrenanderEstimator(Histogram histo, int start, int end) {
+		Histogram gHisto = new Histogram(histo);
 
+		for (int i = start; i < end; i++) {
+			if (i + 1 < gHisto.getBins() && gHisto.get(i + 1).getValue() - gHisto.get(i).getValue() < 0) {
+				// look ahead
+				int j = i;
+				int mean = gHisto.get(i).getValue();
+				do {
+					j++;
+					mean += gHisto.get(j).getValue();
+				} while (j + 1 <= end && gHisto.get(j + 1).getValue() - gHisto.get(j).getValue() < 0);
+
+				mean /= (j - i + 1);
+				for (int k = i; k <= j; k++) {
+					gHisto.set(k, new HistogramElement(histo.get(k).getKey(), mean));
+				}
+				i = j - 1;
+			}
+
+		}
+
+		return gHisto;
 	}
 
 	private Segmentation findMinima(Histogram histo) {
@@ -104,7 +128,7 @@ public class FtcSegmentation {
 		chartPanel.setPreferredSize(new java.awt.Dimension(1000, 270));
 
 		frame.add(chartPanel);
-		ChartPanel chartPanel2 = new ChartPanel(getChart(decreasingGrenanderEstimator(histogram, 0, 10)));
+		ChartPanel chartPanel2 = new ChartPanel(getChart(increasingGrenanderEstimator(histogram, 15, 20)));
 		chartPanel2.setPreferredSize(new java.awt.Dimension(1000, 270));
 		frame.add(chartPanel2);
 		frame.pack();
@@ -138,19 +162,19 @@ public class FtcSegmentation {
 		histo.add(2);
 		histo.add(1);
 		histo.add(3);
-		histo.add(1);
-		histo.add(0);
-		histo.add(3);
-		histo.add(5);
-		histo.add(7);
-		histo.add(3);
-		histo.add(0);
-		histo.add(3);
-		histo.add(6);
-		histo.add(5);
-		histo.add(7);
-		histo.add(3);
 		histo.add(4);
+		histo.add(0);
+		histo.add(3);
+		histo.add(5);
+		histo.add(7);
+		histo.add(3);
+		histo.add(0);
+		histo.add(3);
+		histo.add(2);
+		histo.add(5);
+		histo.add(4);
+		histo.add(2);
+		histo.add(7);
 		histo.add(0);
 		histo.add(5);
 		histo.add(4);
