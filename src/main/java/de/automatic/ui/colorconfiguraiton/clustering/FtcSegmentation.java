@@ -65,6 +65,8 @@ public class FtcSegmentation {
 				}
 			}
 		}
+		segmentation.add(0);
+		segmentation.add(histo.getBins() - 1);
 		System.out.println(segmentation.size());
 		return segmentation;
 
