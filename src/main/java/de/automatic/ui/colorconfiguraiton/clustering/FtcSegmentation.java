@@ -34,29 +34,20 @@ public class FtcSegmentation {
 		Histogram gHisto = new Histogram(histo);
 
 		for (int i = start; i < end; i++) {
-			System.out.println("i=" + i);
 			if (i + 1 < gHisto.getBins() && gHisto.get(i + 1).getValue() - gHisto.get(i).getValue() > 0) {
 				// look ahead
-				System.out.println("increasing case");
 				int j = i;
 				int mean = gHisto.get(i).getValue();
-				System.out.println("init mean=" + mean);
 				do {
 					j++;
 					mean += gHisto.get(j).getValue();
-					System.out.println("j=" + j +", still increasing, mean is now=" + mean);
-				} while (j + 1 < gHisto.getBins() && gHisto.get(j + 1).getValue() - gHisto.get(j).getValue() > 0);
+				} while (j + 1 <= end && gHisto.get(j + 1).getValue() - gHisto.get(j).getValue() > 0);
 
-				System.out.println("final j=" + j);
 				mean /= (j - i + 1);
-				System.out.println("final mean=" + mean);
 				for (int k = i; k <= j; k++) {
-					System.out.println("k=" + k);
 					gHisto.set(k, new HistogramElement(histo.get(k).getKey(), mean));
 				}
 				i = j - 1;
-			} else {
-				System.out.println("nothing to do");
 			}
 
 		}
@@ -113,7 +104,7 @@ public class FtcSegmentation {
 		chartPanel.setPreferredSize(new java.awt.Dimension(1000, 270));
 
 		frame.add(chartPanel);
-		ChartPanel chartPanel2 = new ChartPanel(getChart(decreasingGrenanderEstimator(histogram, 0, 8)));
+		ChartPanel chartPanel2 = new ChartPanel(getChart(decreasingGrenanderEstimator(histogram, 0, 10)));
 		chartPanel2.setPreferredSize(new java.awt.Dimension(1000, 270));
 		frame.add(chartPanel2);
 		frame.pack();
