@@ -35,9 +35,8 @@ public class FtcSegmentation {
 		// segmentation.add(240.0);
 		// histogram = createSampleData();
 
-		
-		Histogram histo = ConversionService.toHistogram(samples, Channels.C1, 32);
-		histo = createSampleData();
+		Histogram histo = ConversionService.toHistogram(samples, Channels.C1, 128);
+//		histo = createSampleData();
 
 		visualizeSegmentation(histo, findMinima(histo));
 	}
@@ -49,7 +48,7 @@ public class FtcSegmentation {
 		for (int i = 1; i < histo.getBins() - 1; i++) {
 			if (histo.get(i).getValue() - histo.get(i - 1).getValue() < 0) {
 				if (histo.get(i + 1).getValue() - histo.get(i).getValue() > 0) {
-					segmentation.add(histo.get(i).getKey());
+					segmentation.add(i);
 				} else if (histo.get(i + 1).getValue() - histo.get(i).getValue() == 0) {
 					// maybe plateu
 					int j = i + 1;
@@ -57,14 +56,16 @@ public class FtcSegmentation {
 						j++;
 					}
 					if (j < histo.size() - 1 && histo.get(j + 1).getValue() - histo.get(j).getValue() > 0) {
-						double marker = histo.get(i).getKey()
-								+ (histo.get(j).getKey() - histo.get(i).getKey()) / 2.0;
-						segmentation.add(marker);
+						// double marker = histo.get(i).getKey()
+						// + (histo.get(j).getKey() - histo.get(i).getKey()) /
+						// 2.0;
+						segmentation.add(i + (j - i) / 2);
 						i = j - 1;
 					}
 				}
 			}
 		}
+		System.out.println(segmentation.size());
 		return segmentation;
 
 	}
@@ -79,8 +80,8 @@ public class FtcSegmentation {
 		if (segmentation != null) {
 			XYPlot plot = (XYPlot) chart.getPlot();
 
-			for (Double d : segmentation) {
-				ValueMarker marker = new ValueMarker(d);
+			for (Integer i : segmentation) {
+				ValueMarker marker = new ValueMarker(histogram.get(i).getKey());
 				marker.setPaint(Color.BLACK);
 				marker.setLabel("Marker");
 				plot.addDomainMarker(marker);
@@ -116,7 +117,7 @@ public class FtcSegmentation {
 	}
 
 	private Histogram createSampleData() {
-		Histogram histo = new Histogram(32, Channels.C1);	
+		Histogram histo = new Histogram(32, Channels.C1);
 		histo.add(0);
 		histo.add(2);
 		histo.add(3);
@@ -137,7 +138,7 @@ public class FtcSegmentation {
 		histo.add(6);
 		histo.add(5);
 		histo.add(7);
-		histo.add(6);
+		histo.add(3);
 		histo.add(4);
 		histo.add(0);
 		histo.add(5);

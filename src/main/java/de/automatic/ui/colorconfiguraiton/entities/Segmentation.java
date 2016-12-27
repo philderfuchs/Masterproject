@@ -2,7 +2,11 @@ package de.automatic.ui.colorconfiguraiton.entities;
 
 import java.util.ArrayList;
 
-public class Segmentation extends ArrayList<Double> {
+/**
+ * Saves the indexes of the corresponding histogram which build modes.
+ *  *
+ */
+public class Segmentation extends ArrayList<Integer> {
 
 	private Channels channel;
 
@@ -18,7 +22,5 @@ public class Segmentation extends ArrayList<Double> {
 	public void setChannel(Channels channel) {
 		this.channel = channel;
 	}
-	
-	
-	
+
 }

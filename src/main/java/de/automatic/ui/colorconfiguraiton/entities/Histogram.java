@@ -31,8 +31,8 @@ public class Histogram extends ArrayList<HistogramElement> {
 	
 	public boolean add(Integer i) {
 		totalCount += i;
-		double binRange = 1.0 * bins;
-		HistogramElement e = new HistogramElement(((double) this.size() + 0.5) + binRange, i);
+		double binRange = 1.0 / bins;
+		HistogramElement e = new HistogramElement(((double) this.size() + 0.5) * binRange, i);
 		return super.add(e);
 	}
 
