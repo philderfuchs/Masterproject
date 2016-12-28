@@ -17,6 +17,20 @@ import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 
 public class ConversionService {
 
+	public static SampleList toRgbSampleList(SampleList samples) {
+		
+		if(samples.get(0) instanceof RgbSample) {
+			return samples;
+		} else if (samples.get(0) instanceof HsiSample) {
+			SampleList rgbSamples = new SampleList();
+			for(Sample s : samples) {
+				rgbSamples.add(toRgb(s));
+			}
+			return rgbSamples;
+		}
+		return samples;
+	}
+	
 	public static Histogram toHistogram(SampleList samples, Channels channel, int bins, boolean normalize) {
 	
 		Histogram histo = new Histogram(bins, channel);

@@ -33,10 +33,6 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 	}
 
 	public void init() {
-		float x;
-		float y;
-		float z;
-		float a;
 
 		int size = histogram.size();
 

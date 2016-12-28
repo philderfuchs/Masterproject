@@ -38,30 +38,32 @@ public class Main {
 	public static void main(String[] args) {
 
 		// for (int i = 0; i < 2; i++) {
-		SampleList histogram = null;
-		try {
+		SampleList hsiSamples = null;
+		SampleList rgbSamples = null;
 
-			histogram = (new ImageReader(new File(file))).getHsiHistogram();
+		try {
+			hsiSamples = (new ImageReader(new File(file))).getHsiHistogram();
+			rgbSamples = (new ImageReader(new File(file))).getRgbHistogram();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		SampleList seeds = new FtcSegmentation().segment(histogram);
+		SampleList seeds = new FtcSegmentation().segment(hsiSamples);
 		new PaletteShower(ConversionService.toHashSet(seeds), "Segmentation Palette").visualizePalette();
 
-		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(seeds);
+		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(ConversionService.toRgbSampleList(seeds));
 		System.out.println("start clustering");
-		ClusterContainer clusters1 = clusterer1.init(histogram);
+		ClusterContainer clusters1 = clusterer1.clusterToEnd(rgbSamples);
 		System.out.println("finished clustering with " + clusterer1.getStepCount() + " steps");
 		new PaletteShower(ConversionService.toHashSet(clusters1), "K-Means after Segmentation Palette").visualizePalette();
 
 		AbstractKmeans clusterer2 = new KmeansPlusPlus(k);
 		System.out.println("start clustering");
-		ClusterContainer clusters2 = clusterer2.clusterToEnd(histogram);
+		ClusterContainer clusters2 = clusterer2.clusterToEnd(rgbSamples);
 		System.out.println("finished clustering with " + clusterer2.getStepCount() + " steps");
 		new PaletteShower(ConversionService.toHashSet(clusters2), "K-Means Palette").visualizePalette();
 
 		try {
-			new ThreeDimHistogramVisualizer(histogram, clusters1);
+			new ThreeDimHistogramVisualizer(rgbSamples, clusters1);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
