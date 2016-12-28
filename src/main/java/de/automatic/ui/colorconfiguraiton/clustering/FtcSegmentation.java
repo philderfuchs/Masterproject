@@ -17,15 +17,19 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import de.automatic.ui.colorconfiguraiton.entities.Channels;
+import de.automatic.ui.colorconfiguraiton.entities.Cluster;
+import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 import de.automatic.ui.colorconfiguraiton.entities.HistogramElement;
+import de.automatic.ui.colorconfiguraiton.entities.Sample;
 import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 import de.automatic.ui.colorconfiguraiton.entities.Segmentation;
+import de.automatic.ui.colorconfiguraiton.services.CalculationService;
 import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 
 public class FtcSegmentation {
 
-	public void segment(SampleList samples) {
+	public ClusterContainer segment(SampleList samples) {
 		Histogram histo = ConversionService.toHistogram(samples, Channels.C1, 64, true);
 		Segmentation seg = findMinima(histo);
 
@@ -41,8 +45,34 @@ public class FtcSegmentation {
 			}
 		}
 		// System.out.println();
-
 		visualizeSegmentation(histo, seg, 300);
+		ClusterContainer clusters = new ClusterContainer();
+		for (int i = 0; i < seg.size() - 2; i++) {
+			if (i == 0) {
+				SampleList modeSamples = new SampleList();
+				for (int j = seg.get(i); j < seg.get(i + 1); j++) {
+					for (Sample s : histo.get(j).getSamples()) {
+						modeSamples.add(s);
+					}
+				}
+				for (int j = seg.get(seg.size() - 2); j < seg.get(seg.size() - 1); j++) {
+					for (Sample s : histo.get(j).getSamples()) {
+						modeSamples.add(s);
+					}
+				}
+				clusters.add(new Cluster(modeSamples, CalculationService.calculateMean(modeSamples)));
+
+			} else {
+				SampleList modeSamples = new SampleList();
+				for (int j = seg.get(i); j < seg.get(i + 1); j++) {
+					for (Sample s : histo.get(j).getSamples()) {
+						modeSamples.add(s);
+					}
+				}
+				clusters.add(new Cluster(modeSamples, CalculationService.calculateMean(modeSamples)));
+			}
+		}
+		return clusters;
 	}
 
 	private boolean testUnimodalHypthesisFor(int index, Histogram histo, Segmentation seg) {
@@ -89,7 +119,7 @@ public class FtcSegmentation {
 			stats.addValue(valueToAdd);
 		}
 		if (stats.getMean() == 0 || stats.getStandardDeviation() == 0) {
-//			System.out.println("0 Case");
+			// System.out.println("0 Case");
 			return true;
 		}
 		double t = Math.sqrt(stats.getN()) * stats.getMean() / stats.getStandardDeviation();

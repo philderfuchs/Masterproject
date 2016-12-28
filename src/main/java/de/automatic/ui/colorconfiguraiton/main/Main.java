@@ -46,14 +46,14 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		new FtcSegmentation().segment(histogram);
+		new PaletteShower(ConversionService.toHashSet(new FtcSegmentation().segment(histogram)), "Segmentation Palette").visualizePalette();
 
 		ClusterContainer clusters = null;
 		AbstractKmeans clusterer = new KmeansPlusPlus(k);
 		System.out.println("start clustering");
 		clusters = clusterer.clusterToEnd(histogram);
 		System.out.println("finished clustering");
-		new PaletteShower(ConversionService.toHashSet(clusters), "K-Means").visualizePalette();
+		new PaletteShower(ConversionService.toHashSet(clusters), "K-Means Palette").visualizePalette();
 
 		try {
 			new ThreeDimHistogramVisualizer(histogram, clusters);
