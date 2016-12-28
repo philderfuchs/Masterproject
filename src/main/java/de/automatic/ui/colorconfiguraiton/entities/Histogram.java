@@ -22,6 +22,20 @@ public class Histogram extends ArrayList<HistogramElement> {
 		this.totalCount = histo.getTotalCount();
 	}
 
+	public void normalize() {
+		double maxValue = Double.MIN_VALUE;
+		for (HistogramElement e : this) {
+			if (e.getValue() > maxValue) {
+				maxValue = e.getValue();
+			}
+		}
+		totalCount = 0;
+		for (HistogramElement e : this) {
+			e.setValue(e.getValue() / maxValue);
+			totalCount += e.getValue();
+		}
+	}
+
 	public int getBins() {
 		return bins;
 	}

@@ -35,14 +35,9 @@ public class ConversionService {
 			histo.add(count);
 		}
 
-//		if(normalize) {
-//			double maxValue = Integer.MIN_VALUE;
-//			for (HistogramElement e : histo) {
-//				if(e.getValue() > maxValue) {
-//					maxValue = e.getValue();
-//				}
-//			}
-//		}
+		if(normalize) {
+			histo.normalize();
+		}
 		
 		return histo;
 	}

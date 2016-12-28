@@ -46,8 +46,10 @@ public class FtcSegmentation {
 		// T-Test
 		int start = 0;
 		int end = 10;
-		Histogram histo2 = decreasingGrenanderEstimator(
-				decreasingGrenanderEstimator(decreasingGrenanderEstimator(histo, start, end), start, end), start, end);
+		Histogram histo2 = decreasingGrenanderEstimator(histo, start, end);
+		for (int i = 0; i < 10; i++) {
+			histo2 = decreasingGrenanderEstimator(histo2, start, end);
+		}
 		
 		SummaryStatistics stats = new SummaryStatistics();
 		double error = 0.0;
@@ -72,11 +74,7 @@ public class FtcSegmentation {
 		System.out.println(error / Math.sqrt(end - start + 1));
 
 		visualizeSegmentation(histo, findMinima(histo), 0);
-		visualizeSegmentation(histo2, findMinima(histo), 330);
-		// Histogram histo3 = decreasingGrenanderEstimator(histo2, start, end);
-		// visualizeSegmentation(histo3, findMinima(histo), 660);
-		// Histogram histo4 = decreasingGrenanderEstimator(histo3, start, end);
-		// visualizeSegmentation(histo4, findMinima(histo), 660);
+		visualizeSegmentation(histo2, findMinima(histo2), 330);
 
 	}
 
@@ -110,15 +108,14 @@ public class FtcSegmentation {
 
 		for (int i = start; i < end; i++) {
 			if (i + 1 < gHisto.getBins() && gHisto.get(i + 1).getValue() - gHisto.get(i).getValue() < 0.0) {
-				// look ahead
 				int j = i;
 				double mean = gHisto.get(i).getValue();
 				do {
 					j++;
 					mean += gHisto.get(j).getValue();
-				} while (j + 1 <= end && gHisto.get(j + 1).getValue() - gHisto.get(j).getValue() <= 0.0);
+				} while (j + 1 <= end && gHisto.get(j + 1).getValue() - gHisto.get(j).getValue() < 0.0);
 
-				mean /= (j - i + 1);
+				mean /= ((double) j - (double) i + 1);
 				for (int k = i; k <= j; k++) {
 					gHisto.set(k, new HistogramElement(histo.get(k).getKey(), mean));
 				}
@@ -126,7 +123,6 @@ public class FtcSegmentation {
 			}
 
 		}
-
 		return gHisto;
 	}
 
@@ -152,7 +148,6 @@ public class FtcSegmentation {
 		}
 		segmentation.add(0);
 		segmentation.add(histo.getBins() - 1);
-		// System.out.println(segmentation.size());
 		return segmentation;
 	}
 
@@ -184,13 +179,8 @@ public class FtcSegmentation {
 	}
 
 	private JFreeChart getChart(Histogram histogram) {
-//		double[] values = new double[(int) histogram.getTotalCount()];
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		XYSeries series = new XYSeries("Series");
-//		 DefaultCategoryDataset dataset = new DefaultCategoryDataset();  
-
-
-//		int i = 0;
 		for (int i = 0; i < histogram.getBins(); i++) {
 			if(i > 0) {
 				series.add(i, histogram.get(i-1).getValue());
@@ -198,10 +188,6 @@ public class FtcSegmentation {
 			series.add(i, histogram.get(i).getValue());
 		}
 		dataset.addSeries(series);
-
-        
-//		dataset.addSeries("H1", values, histogram.getBins());
-//		JFreeChart chart = ChartFactory.createBarChart("Segmentation", "C1", "Count", dataset);
 		JFreeChart chart = ChartFactory.createXYLineChart  ("Segmentation", "C1", "Count", dataset);
 		return chart;
 	}
@@ -257,7 +243,7 @@ public class FtcSegmentation {
 		histo.add(4);
 		histo.add(5);
 		histo.add(0);
-
+		histo.normalize();
 		return histo;
 	}
 }
