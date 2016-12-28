@@ -110,6 +110,14 @@ public class ConversionService {
 
 	}
 
+	public static HsiSample toHsi(Sample s) {
+		if (s instanceof HsiSample) {
+			return new HsiSample((HsiSample) s);
+		} else {
+			return toHsi(s.getC1(), s.getC2(), s.getC3(), s.getCount());
+		}
+	}
+	
 	public static RgbSample toRgb(Sample p) {
 		if (p instanceof RgbSample) {
 			return new RgbSample((RgbSample) p);
@@ -164,7 +172,7 @@ public class ConversionService {
 		return new RgbSample(r, g, b, count);
 
 	}
-
+	
 	/**
 	 * 
 	 * @param r

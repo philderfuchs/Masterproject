@@ -23,18 +23,18 @@ import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 
 public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 
-	private SampleList histogram;
+	private SampleList samples;
 	private ArrayList<Cluster> clusters;
 
 	public ThreeDimHistogramVisualizer(SampleList histogram, ClusterContainer clusters) throws Exception {
-		this.histogram = histogram;
+		this.samples = histogram;
 		this.clusters = clusters;
 		AnalysisLauncher.open(this);
 	}
 
 	public void init() {
 
-		int size = histogram.size();
+		int size = samples.size();
 
 		Coord3d[] histoPoints = new Coord3d[size];
 		Color[] histoColors = new Color[size];
@@ -42,7 +42,7 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 		// int i = 0;
 		// for (Pixel p : histogram.getPixelList()) {
 		for (int i = 0; i < size; i++) {
-			Sample s = histogram.get(i);
+			Sample s = samples.get(i);
 			CartesianCoordinates coord = ConversionService.toCoordinates(s);
 			histoPoints[i] = new Coord3d(coord.getX(), coord.getY(), coord.getZ());
 			RgbSample rgbSample = ConversionService.toRgb(s);
@@ -59,13 +59,21 @@ public class ThreeDimHistogramVisualizer extends AbstractAnalysis {
 			Coord3d[] clusterPoints = new Coord3d[clusters.size()];
 			Color[] clusterColors = new Color[clusters.size()];
 
-			int i = 0;
+			SampleList centers = new SampleList();
 			for (Cluster c : clusters) {
-				CartesianCoordinates coord = ConversionService.toCoordinates(c.getCenter());
+				if (samples.get(0) instanceof RgbSample) {
+					centers.add(ConversionService.toRgb(c.getCenter()));
+				} else if (samples.get(0) instanceof HsiSample) {
+					centers.add(ConversionService.toHsi(c.getCenter()));
+				}
+			}
 
+			int i = 0;
+			for (Sample s : centers) {
+				CartesianCoordinates coord = ConversionService.toCoordinates(s);
 				clusterPoints[i] = new Coord3d(coord.getX(), coord.getY(), coord.getZ());
-				RgbSample rgbSample = ConversionService.toRgb(c.getCenter());
-				clusterColors[i++] =  new Color((float) rgbSample.getC1Normalized() - 0.1f,
+				RgbSample rgbSample = ConversionService.toRgb(s);
+				clusterColors[i++] = new Color((float) rgbSample.getC1Normalized() - 0.1f,
 						(float) rgbSample.getC2Normalized() - 0.1f, (float) rgbSample.getC3Normalized() - 0.1f);
 			}
 

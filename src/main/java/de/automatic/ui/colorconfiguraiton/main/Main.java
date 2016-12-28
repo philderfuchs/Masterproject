@@ -63,7 +63,7 @@ public class Main {
 		new PaletteShower(ConversionService.toHashSet(clusters2), "K-Means Palette").visualizePalette();
 
 		try {
-			new ThreeDimHistogramVisualizer(rgbSamples, clusters1);
+			new ThreeDimHistogramVisualizer(hsiSamples, clusters1);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
