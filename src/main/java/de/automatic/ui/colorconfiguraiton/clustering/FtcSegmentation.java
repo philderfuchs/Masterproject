@@ -29,7 +29,7 @@ import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 
 public class FtcSegmentation {
 
-	public ClusterContainer segment(SampleList samples) {
+	public SampleList segment(SampleList samples) {
 		Histogram histo = ConversionService.toHistogram(samples, Channels.C1, 64, true);
 		Segmentation seg = findMinima(histo);
 
@@ -46,7 +46,7 @@ public class FtcSegmentation {
 		}
 		// System.out.println();
 		visualizeSegmentation(histo, seg, 300);
-		ClusterContainer clusters = new ClusterContainer();
+		SampleList seeds = new SampleList();
 		for (int i = 0; i < seg.size() - 2; i++) {
 			if (i == 0) {
 				SampleList modeSamples = new SampleList();
@@ -60,7 +60,7 @@ public class FtcSegmentation {
 						modeSamples.add(s);
 					}
 				}
-				clusters.add(new Cluster(modeSamples, CalculationService.calculateMean(modeSamples)));
+				seeds.add(CalculationService.calculateMean(modeSamples));
 
 			} else {
 				SampleList modeSamples = new SampleList();
@@ -69,10 +69,10 @@ public class FtcSegmentation {
 						modeSamples.add(s);
 					}
 				}
-				clusters.add(new Cluster(modeSamples, CalculationService.calculateMean(modeSamples)));
+				seeds.add(CalculationService.calculateMean(modeSamples));
 			}
 		}
-		return clusters;
+		return seeds;
 	}
 
 	private boolean testUnimodalHypthesisFor(int index, Histogram histo, Segmentation seg) {

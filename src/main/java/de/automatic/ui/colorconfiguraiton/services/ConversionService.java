@@ -50,6 +50,14 @@ public class ConversionService {
 		}
 		return pixelSet;
 	}
+	
+	public static HashSet<Sample> toHashSet(SampleList samples) {
+		HashSet<Sample> pixelSet = new HashSet<>();
+		for (Sample s : samples) {
+			pixelSet.add(s);
+		}
+		return pixelSet;
+	}
 
 	public static RgbSample toRgb(CartesianCoordinates coord, int count) {
 		return new RgbSample(coord.getX() * 255, coord.getY() * 255, coord.getZ() * 255, count);
