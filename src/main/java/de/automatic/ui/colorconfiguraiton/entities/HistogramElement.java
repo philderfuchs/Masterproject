@@ -3,9 +3,9 @@ package de.automatic.ui.colorconfiguraiton.entities;
 public class HistogramElement {
 
 	private double key;
-	private int value;
+	private double value;
 
-	public HistogramElement(double key, int value) {
+	public HistogramElement(double key, double value) {
 		super();
 		this.key = key;
 		this.value = value;
@@ -19,11 +19,11 @@ public class HistogramElement {
 		this.key = key;
 	}
 
-	public int getValue() {
+	public double getValue() {
 		return value;
 	}
 
-	public void setValue(int value) {
+	public void setValue(double value) {
 		this.value = value;
 	}
 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Histogram extends ArrayList<HistogramElement> {
 
 	private int bins;
-	private int totalCount;
+	private double totalCount;
 	private Channels channel;
 
 	public Histogram(int bins, Channels channel) {
@@ -44,18 +44,18 @@ public class Histogram extends ArrayList<HistogramElement> {
 		return old;
 	}
 
-	public boolean add(Integer i) {
+	public boolean add(double i) {
 		totalCount += i;
 		double binRange = 1.0 / bins;
 		HistogramElement e = new HistogramElement(((double) this.size() + 0.5) * binRange, i);
 		return super.add(e);
 	}
 
-	public int getTotalCount() {
+	public double getTotalCount() {
 		return totalCount;
 	}
 
-	public void setTotalCount(int totalCount) {
+	public void setTotalCount(double totalCount) {
 		this.totalCount = totalCount;
 	}
 

@@ -1,5 +1,7 @@
 package de.automatic.ui.colorconfiguraiton.services;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 
 import de.automatic.ui.colorconfiguraiton.entities.CartesianCoordinates;
@@ -15,7 +17,9 @@ import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 
 public class ConversionService {
 
-	public static Histogram toHistogram(SampleList samples, Channels channel, int bins) {
+	public static Histogram toHistogram(SampleList samples, Channels channel, int bins, boolean normalize) {
+	
+		System.out.println(samples.get(0).getCount() + " | " + samples.get(samples.size()-1).getCount());
 
 		Histogram histo = new Histogram(bins, channel);
 		samples.sort(channel);
@@ -31,6 +35,15 @@ public class ConversionService {
 			histo.add(count);
 		}
 
+//		if(normalize) {
+//			double maxValue = Integer.MIN_VALUE;
+//			for (HistogramElement e : histo) {
+//				if(e.getValue() > maxValue) {
+//					maxValue = e.getValue();
+//				}
+//			}
+//		}
+		
 		return histo;
 	}
 
