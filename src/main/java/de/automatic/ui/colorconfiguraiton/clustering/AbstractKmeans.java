@@ -3,6 +3,7 @@ package de.automatic.ui.colorconfiguraiton.clustering;
 import java.util.ArrayList;
 
 import de.automatic.ui.colorconfiguraiton.entities.*;
+import de.automatic.ui.colorconfiguraiton.services.CalculationService;
 import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
 
@@ -43,30 +44,7 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 				continue;
 			}
 
-			double meanX = 0;
-			double meanY = 0;
-			double meanZ = 0;
-			for (Sample s : c.getSampleList()) {
-				CartesianCoordinates coord = ConversionService.toCoordinates(s);
-				meanX += coord.getX() * (double) s.getCount();
-				meanY += coord.getY() * (double) s.getCount();
-				meanZ += coord.getZ() * (double) s.getCount();
-				// meanX += coord.getX() / c.getHistogram().getLength();
-				// meanY += coord.getY() / c.getHistogram().getLength();
-				// meanZ += coord.getZ() / c.getHistogram().getLength();
-			}
-			meanX = meanX / (double) c.getSampleList().getCountOfPixels();
-			meanY = meanY / (double) c.getSampleList().getCountOfPixels();
-			meanZ = meanZ / (double) c.getSampleList().getCountOfPixels();
-			Sample newMean = null;
-			if (c.getCenter() instanceof RgbSample) {
-				newMean = ConversionService.toRgb(new CartesianCoordinates(meanX, meanY, meanZ), 1);
-			} else if (c.getCenter() instanceof HsiSample) {
-				// System.out.println("C1 " + meanC1 * 360.0);
-				// System.out.println("C2 " + meanC2);
-				// System.out.println("C3 " + meanC3);
-				newMean = ConversionService.toHsi(new CartesianCoordinates(meanX, meanY, meanZ), 1);
-			}
+			Sample newMean = CalculationService.calculateMean(c.getSampleList());
 			if (!newMean.equals(c.getCenter())) {
 				c.setCenter(newMean);
 				this.finished = false;

@@ -26,11 +26,14 @@ public class ConversionService {
 
 		for (int i = 0; i < bins; i++) {
 			int count = 0;
+			SampleList binSamples = new SampleList();
 			while (j < samples.size() && samples.get(j).getNormalized(channel) < (double) (i + 1.0) * binRange) {
 				count += samples.get(j).getCount();
+				binSamples.add(samples.get(j));
 				j++;
 			}
 			histo.add(count);
+			histo.get(histo.size() - 1).setSamples(binSamples);
 		}
 
 		if(normalize) {
