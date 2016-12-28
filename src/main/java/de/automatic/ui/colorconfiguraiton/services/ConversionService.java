@@ -19,8 +19,6 @@ public class ConversionService {
 
 	public static Histogram toHistogram(SampleList samples, Channels channel, int bins, boolean normalize) {
 	
-		System.out.println(samples.get(0).getCount() + " | " + samples.get(samples.size()-1).getCount());
-
 		Histogram histo = new Histogram(bins, channel);
 		samples.sort(channel);
 		double binRange = 1.0 / bins;

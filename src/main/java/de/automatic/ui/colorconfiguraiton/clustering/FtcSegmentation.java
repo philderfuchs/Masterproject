@@ -2,29 +2,17 @@ package de.automatic.ui.colorconfiguraiton.clustering;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
 import org.apache.commons.math3.distribution.TDistribution;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
-import org.apache.commons.math3.stat.inference.TTest;
-import org.apache.commons.math3.util.ArithmeticUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.ClusteredXYBarRenderer;
-import org.jfree.chart.renderer.xy.XYBarRenderer;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultKeyedValueDataset;
-import org.jfree.data.statistics.HistogramDataset;
-import org.jfree.data.xy.IntervalXYDataset;
-import org.jfree.data.xy.XYBarDataset;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -32,50 +20,81 @@ import de.automatic.ui.colorconfiguraiton.entities.Channels;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 import de.automatic.ui.colorconfiguraiton.entities.HistogramElement;
 import de.automatic.ui.colorconfiguraiton.entities.SampleList;
-import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
-import de.automatic.ui.colorconfiguraiton.entities.Sample;
 import de.automatic.ui.colorconfiguraiton.entities.Segmentation;
 import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 
 public class FtcSegmentation {
 
 	public void segment(SampleList samples) {
-		Histogram histo = ConversionService.toHistogram(samples, Channels.C1, 32, true);
-		histo = createSampleData();
+		Histogram histo = ConversionService.toHistogram(samples, Channels.C1, 64, true);
+		Segmentation seg = findMinima(histo);
+
+		// histo = createSampleData();
+		visualizeSegmentation(histo, seg, 0);
 
 		// T-Test
-		int start = 0;
-		int end = 10;
-		Histogram histo2 = decreasingGrenanderEstimator(histo, start, end);
+		Random r = new Random();
+		for (int i = 0; i < 100; i++) {
+			int j = r.nextInt(seg.size());
+			if (testUnimodalHypthesisFor(j, histo, seg)) {
+				seg.remove(j);
+			}
+		}
+		// System.out.println();
+
+		visualizeSegmentation(histo, seg, 300);
+	}
+
+	private boolean testUnimodalHypthesisFor(int index, Histogram histo, Segmentation seg) {
+
+		if (index == 0 || index == seg.size() - 1) {
+			return false;
+		}
+		int start = seg.get(index - 1);
+		int end = seg.get(index + 1);
+		// start = 7;
+		// end = 16;
+		// System.out.println(start);
+		// System.out.println(end);
+
+		boolean confirmed = false;
+
+		for (int i = start + 1; i <= end - 1; i++) {
+			Histogram incHisto = getGrenanderEstimator("inc", histo, start, i);
+			Histogram decHisto = getGrenanderEstimator("dec", histo, i, end);
+
+			if (similiar(histo, incHisto, start, i) && similiar(histo, decHisto, i, end)) {
+				confirmed = true;
+			}
+		}
+
+		return confirmed;
+	}
+
+	private Histogram getGrenanderEstimator(String direction, Histogram histo, int start, int end) {
+		Histogram histo2 = direction.equals("dec") ? decreasingGrenanderEstimator(histo, start, end)
+				: increasingGrenanderEstimator(histo, start, end);
+
 		for (int i = 0; i < 10; i++) {
-			histo2 = decreasingGrenanderEstimator(histo2, start, end);
+			histo2 = direction.equals("dec") ? decreasingGrenanderEstimator(histo2, start, end)
+					: increasingGrenanderEstimator(histo2, start, end);
 		}
-		
+		return histo2;
+	}
+
+	private boolean similiar(Histogram histo1, Histogram histo2, int start, int end) {
 		SummaryStatistics stats = new SummaryStatistics();
-		double error = 0.0;
 		for (int i = start; i <= end; i++) {
-			double valueToAdd = Math.abs(histo.get(i).getValue() - histo2.get(i).getValue());
-			error += valueToAdd;
-			System.out.println(valueToAdd);
+			double valueToAdd = Math.abs(histo1.get(i).getValue() - histo2.get(i).getValue());
 			stats.addValue(valueToAdd);
-			// System.out.println(sample1[i]);
-			// System.out.println(sample2[i]);
 		}
-		System.out.println("--------");
-		// System.out.println(new TTest().tTest(sample1, sample2));
-		// System.out.println(new TTest().tTest(sample1, sample2, 0.5));
-		System.out.println(stats.getMean());
-		System.out.println(stats.getStandardDeviation());
-		System.out.println(stats.getN());
-		System.out.println(Math.sqrt(stats.getN()) * stats.getMean() / stats.getStandardDeviation());
-		System.out.println(new TDistribution(end - start).inverseCumulativeProbability(0.95));
-		System.out.println("--------");
-		System.out.println(error);
-		System.out.println(error / Math.sqrt(end - start + 1));
-
-		visualizeSegmentation(histo, findMinima(histo), 0);
-		visualizeSegmentation(histo2, findMinima(histo2), 330);
-
+		if (stats.getMean() == 0 || stats.getStandardDeviation() == 0) {
+//			System.out.println("0 Case");
+			return true;
+		}
+		double t = Math.sqrt(stats.getN()) * stats.getMean() / stats.getStandardDeviation();
+		double criticalT = new TDistribution(end - start).inverseCumulativeProbability(0.97);
+		return t < criticalT;
 	}
 
 	public Histogram decreasingGrenanderEstimator(Histogram histo, int start, int end) {
@@ -128,6 +147,7 @@ public class FtcSegmentation {
 
 	private Segmentation findMinima(Histogram histo) {
 		Segmentation segmentation = new Segmentation(Channels.C1);
+		segmentation.add(0);
 
 		for (int i = 1; i < histo.getBins() - 1; i++) {
 			if (histo.get(i).getValue() - histo.get(i - 1).getValue() < 0) {
@@ -146,7 +166,6 @@ public class FtcSegmentation {
 				}
 			}
 		}
-		segmentation.add(0);
 		segmentation.add(histo.getBins() - 1);
 		return segmentation;
 	}
@@ -160,11 +179,11 @@ public class FtcSegmentation {
 		XYPlot plot = (XYPlot) chart.getPlot();
 
 		if (segmentation != null) {
-
+			int index = 0;
 			for (Integer i : segmentation) {
 				ValueMarker marker = new ValueMarker(i);
 				marker.setPaint(Color.BLACK);
-				marker.setLabel("Marker");
+				marker.setLabel(Integer.toString(index++));
 				plot.addDomainMarker(marker);
 			}
 		}
@@ -182,32 +201,33 @@ public class FtcSegmentation {
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		XYSeries series = new XYSeries("Series");
 		for (int i = 0; i < histogram.getBins(); i++) {
-			if(i > 0) {
-				series.add(i, histogram.get(i-1).getValue());
+			if (i > 0) {
+				series.add(i, histogram.get(i - 1).getValue());
 			}
 			series.add(i, histogram.get(i).getValue());
 		}
 		dataset.addSeries(series);
-		JFreeChart chart = ChartFactory.createXYLineChart  ("Segmentation", "C1", "Count", dataset);
+		JFreeChart chart = ChartFactory.createXYLineChart("Segmentation", "C1", "Count", dataset);
 		return chart;
 	}
-	
-//	private JFreeChart getChart(Histogram histogram) {
-//		double[] values = new double[(int) histogram.getTotalCount()];
-//		HistogramDataset dataset = new HistogramDataset();
-//
-//		int i = 0;
-//		for (HistogramElement e : histogram) {
-//			for (int j = 0; j < (int) e.getValue(); j++) {
-//				values[i++] = e.getKey();
-//			}
-//		}
-//
-//		dataset.addSeries("H1", values, histogram.getBins());
-//		JFreeChart chart = ChartFactory.createHistogram("Segmentation", "C1", "Count", dataset,
-//				PlotOrientation.VERTICAL, false, false, false);
-//		return chart;
-//	}
+
+	// private JFreeChart getChart(Histogram histogram) {
+	// double[] values = new double[(int) histogram.getTotalCount()];
+	// HistogramDataset dataset = new HistogramDataset();
+	//
+	// int i = 0;
+	// for (HistogramElement e : histogram) {
+	// for (int j = 0; j < (int) e.getValue(); j++) {
+	// values[i++] = e.getKey();
+	// }
+	// }
+	//
+	// dataset.addSeries("H1", values, histogram.getBins());
+	// JFreeChart chart = ChartFactory.createHistogram("Segmentation", "C1",
+	// "Count", dataset,
+	// PlotOrientation.VERTICAL, false, false, false);
+	// return chart;
+	// }
 
 	private Histogram createSampleData() {
 		Histogram histo = new Histogram(32, Channels.C1);
@@ -222,12 +242,12 @@ public class FtcSegmentation {
 		histo.add(3);
 		histo.add(5);
 		histo.add(3);
-		histo.add(5);
-		histo.add(7);
-		histo.add(3);
+		histo.add(4);
 		histo.add(0);
-		histo.add(3);
-		histo.add(2);
+		histo.add(0);
+		histo.add(0);
+		histo.add(0);
+		histo.add(0);
 		histo.add(5);
 		histo.add(4);
 		histo.add(2);

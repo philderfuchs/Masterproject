@@ -28,11 +28,11 @@ import de.automatic.ui.colorconfiguraiton.vis.ThreeDimHistogramVisualizer;
 
 public class Main {
 
-	static int i = 0;
-	static int k = 8;
+	static int i = 1;
+	static int k = 5;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/djmel.jpg";
+	static String file = "resources/lockitup.png";
 
 	public static void main(String[] args) {
 
@@ -47,25 +47,23 @@ public class Main {
 		}
 
 		new FtcSegmentation().segment(histogram);
-		
-//		ClusterContainer clusters = null;
-//
-//		AbstractKmeans clusterer = new KmeansPlusPlus(k);
-//		System.out.println("start clustering");
-//		clusters = clusterer.clusterToEnd(histogram);
-//		System.out.println("finished clustering");
-//		new PaletteShower(ConversionService.toHashSet(clusters), "K-Means").visualizePalette();
-//
-//		 new OneDimHistogramVisualizer("Channel Histograms", histogram,
-//		 clusters);
 
-//		try {
-//			new ThreeDimHistogramVisualizer(histogram, clusters);
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		// }
+		ClusterContainer clusters = null;
+		AbstractKmeans clusterer = new KmeansPlusPlus(k);
+		System.out.println("start clustering");
+		clusters = clusterer.clusterToEnd(histogram);
+		System.out.println("finished clustering");
+		new PaletteShower(ConversionService.toHashSet(clusters), "K-Means").visualizePalette();
+
+		try {
+			new ThreeDimHistogramVisualizer(histogram, clusters);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// new OneDimHistogramVisualizer("Channel Histograms", histogram,
+		// clusters);
 	}
 
 	// public static void main(String[] args) {
