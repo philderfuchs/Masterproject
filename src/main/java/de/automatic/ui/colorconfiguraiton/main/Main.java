@@ -20,7 +20,7 @@ public class Main {
 	static int k = 5;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/mapei.png";
+	static String file = "resources/urwald.JPG";
 
 	public static void main(String[] args) {
 
@@ -33,12 +33,15 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		SampleList seeds = new FtcSegmentation().segment(hsiSamples);
+		
+		SampleList listoForAcopa = hsiSamples;
+		
+		SampleList seeds = new FtcSegmentation().segment(listoForAcopa);
 		new PaletteShower(ConversionService.toHashSet(seeds), "Segmentation Palette", 1000, 0).visualizePalette();
 
 		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(ConversionService.toRgbSampleList(seeds));
 		System.out.println("start clustering");
-		ClusterContainer clusters1 = clusterer1.init(rgbSamples);
+		ClusterContainer clusters1 = clusterer1.clusterToEnd(rgbSamples);
 		System.out.println("finished clustering with " + clusterer1.getStepCount() + " steps");
 		new PaletteShower(ConversionService.toHashSet(clusters1), "K-Means after Segmentation Palette", 1000, 300)
 				.visualizePalette();
@@ -50,7 +53,7 @@ public class Main {
 		new PaletteShower(ConversionService.toHashSet(clusters2), "K-Means Palette", 1000, 600).visualizePalette();
 
 		try {
-			new ThreeDimHistogramVisualizer(hsiSamples, clusters1);
+			new ThreeDimHistogramVisualizer(listoForAcopa, clusters1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

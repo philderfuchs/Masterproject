@@ -30,7 +30,7 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 	public abstract ClusterContainer init(SampleList histogram);
 
 	public ClusterContainer step(SampleList histogram) {
-		System.out.println("step");
+//		System.out.println("step");
 		stepCount++;
 		this.finished = true;
 
