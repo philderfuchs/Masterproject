@@ -48,20 +48,20 @@ public class Main {
 			e.printStackTrace();
 		}
 		SampleList seeds = new FtcSegmentation().segment(hsiSamples);
-		new PaletteShower(ConversionService.toHashSet(seeds), "Segmentation Palette", 800, 0).visualizePalette();
+		new PaletteShower(ConversionService.toHashSet(seeds), "Segmentation Palette", 1000, 0).visualizePalette();
 
 		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(ConversionService.toRgbSampleList(seeds));
 		System.out.println("start clustering");
 		ClusterContainer clusters1 = clusterer1.init(rgbSamples);
 		System.out.println("finished clustering with " + clusterer1.getStepCount() + " steps");
-		new PaletteShower(ConversionService.toHashSet(clusters1), "K-Means after Segmentation Palette", 800, 300)
+		new PaletteShower(ConversionService.toHashSet(clusters1), "K-Means after Segmentation Palette", 1000, 300)
 				.visualizePalette();
 
 		AbstractKmeans clusterer2 = new KmeansPlusPlus(k);
 		System.out.println("start clustering");
 		ClusterContainer clusters2 = clusterer2.clusterToEnd(rgbSamples);
 		System.out.println("finished clustering with " + clusterer2.getStepCount() + " steps");
-		new PaletteShower(ConversionService.toHashSet(clusters2), "K-Means Palette", 800, 600).visualizePalette();
+		new PaletteShower(ConversionService.toHashSet(clusters2), "K-Means Palette", 1000, 600).visualizePalette();
 
 		try {
 			new ThreeDimHistogramVisualizer(hsiSamples, clusters1);
