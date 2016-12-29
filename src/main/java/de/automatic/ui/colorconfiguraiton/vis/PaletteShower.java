@@ -13,14 +13,18 @@ import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 
 public class PaletteShower {
 
-	HashSet<Sample> palette;
-	int windowLength = 400;
-	int windowHeight = 200;
+	private HashSet<Sample> palette;
+	private int windowLength = 400;
+	private int windowHeight = 200;
+	private int x;
+	private int y;
 	String title;
 
-	public PaletteShower(HashSet<Sample> palette, String title) {
+	public PaletteShower(HashSet<Sample> palette, String title, int x, int y) {
 		this.palette = palette;
 		this.title = title;
+		this.x = x;
+		this.y = y;
 	}
 
 	public void visualizePalette() {
@@ -32,6 +36,7 @@ public class PaletteShower {
 		jFrame.setSize(windowLength, windowHeight);
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jFrame.setTitle(title);
+		jFrame.setLocation(x, y);
 		jFrame.setVisible(true);
 
 	}
