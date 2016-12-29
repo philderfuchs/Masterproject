@@ -13,58 +13,67 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.statistics.HistogramDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 import de.automatic.ui.colorconfiguraiton.entities.Channels;
 import de.automatic.ui.colorconfiguraiton.entities.SampleList;
+import de.automatic.ui.colorconfiguraiton.entities.Segmentation;
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Sample;
 import de.automatic.ui.colorconfiguraiton.entities.Cluster;
+import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 
 public class OneDimHistogramVisualizer extends JFrame {
-
-	private static final long serialVersionUID = 1L;
-
-	public OneDimHistogramVisualizer(String title, SampleList histogram, ArrayList<Cluster> clusters) {
+	
+	public OneDimHistogramVisualizer(String title, Histogram histogram, Segmentation segmentation, int y){
 		super(title);
-		this.setLayout(new GridLayout(3, 1));
+		this.setLayout(new GridLayout(1, 1));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		this.add(getChartPanel("C1", histogram, Channels.C1, clusters));
-		this.add(getChartPanel("C2", histogram, Channels.C2, clusters));
-		this.add(getChartPanel("C3", histogram, Channels.C3, clusters));
-
-		pack();
-		setVisible(true);
+		
+		visualizeSegmentation(histogram, segmentation);
+		
+		this.add(visualizeSegmentation(histogram, segmentation));
+		this.pack();
+		this.setLocation(0, y);
+		this.setVisible(true);
+		
 	}
 
-	private ChartPanel getChartPanel(String title, SampleList histogram, Channels channel, ArrayList<Cluster> clusters) {
-		double[] values = new double[histogram.getCountOfPixels()];
-		HistogramDataset dataset = new HistogramDataset();
+	public ChartPanel visualizeSegmentation(Histogram histogram, Segmentation segmentation) {
 
-		int i = 0;
-		for (Sample p : histogram) {
-			for (int j = 0; j < p.getCount(); j++) {
-				values[i++] = (double) p.get(channel);
+
+		JFreeChart chart = getChart(histogram);
+		XYPlot plot = (XYPlot) chart.getPlot();
+
+		if (segmentation != null) {
+			int index = 0;
+			for (Integer i : segmentation) {
+				ValueMarker marker = new ValueMarker(i);
+				marker.setPaint(Color.BLACK);
+				marker.setLabel(Integer.toString(index++));
+				plot.addDomainMarker(marker);
 			}
 		}
 
-		dataset.addSeries("H1", values, histogram.size());
-		JFreeChart chart = ChartFactory.createHistogram(title, "C", "Count", dataset, PlotOrientation.VERTICAL, false,
-				false, false);
-
-		XYPlot plot = (XYPlot) chart.getPlot();
-
-//		for (Cluster c : clusters) {
-//			ValueMarker marker = new ValueMarker(c.getCenter().get(channel));
-//			marker.setPaint(new Color(c.getCenter().get(Channel.R), c.getCenter().get(Channel.G),
-//					c.getCenter().get(Channel.B)));
-//			marker.setLabel("yo");
-//			plot.addDomainMarker(marker);
-//		}
-
 		ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(1000, 270));
+		
 		return chartPanel;
+	}
+
+	private JFreeChart getChart(Histogram histogram) {
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		XYSeries series = new XYSeries("Series");
+		for (int i = 0; i < histogram.getBins(); i++) {
+			if (i > 0) {
+				series.add(i, histogram.get(i - 1).getValue());
+			}
+			series.add(i, histogram.get(i).getValue());
+		}
+		dataset.addSeries(series);
+		JFreeChart chart = ChartFactory.createXYLineChart("Segmentation", "C1", "Count", dataset);
+		return chart;
 	}
 
 }
