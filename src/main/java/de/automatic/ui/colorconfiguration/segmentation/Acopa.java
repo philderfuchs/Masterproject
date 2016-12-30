@@ -11,7 +11,7 @@ import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 public class Acopa {
 
 	public SampleList findSeeds(SampleList samples) {
-		Histogram histo = ConversionService.toHistogram(samples, Channels.C1, 64, true);
+		Histogram histo = ConversionService.toHistogram(samples, Channels.C2, 64, true);
 
 		FtcSegmentation segmentor = new FtcSegmentation();
 		Segmentation seg = segmentor.segment(histo);

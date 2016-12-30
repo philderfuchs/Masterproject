@@ -40,6 +40,17 @@ public class FtcSegmentation {
 		// T-Test
 		Random r = new Random();
 		for (int i = 0; i < 100; i++) {
+
+			// right now, a minimum of four segments build 3 segment markers are
+			// needed because the first and last mode automatically get merged
+			if (seg.size() <= 3) {
+				for (Integer index : seg) {
+					System.out.println(index);
+				}
+				System.out.println("breaking it");
+				break;
+			}
+
 			int j = r.nextInt(seg.size());
 			if (testUnimodalHypthesisFor(j, histo, seg)) {
 				seg.remove(j);
@@ -47,7 +58,7 @@ public class FtcSegmentation {
 		}
 		// System.out.println();
 		new OneDimHistogramVisualizer("Reduced Minima", histo, seg, 300);
-		
+
 		return seg;
 	}
 
@@ -75,7 +86,7 @@ public class FtcSegmentation {
 	}
 
 	private Segmentation findMinima(Histogram histo) {
-		Segmentation segmentation = new Segmentation(Channels.C1);
+		Segmentation segmentation = new Segmentation(histo.getChannel());
 		segmentation.add(0);
 
 		for (int i = 1; i < histo.getBins() - 1; i++) {
