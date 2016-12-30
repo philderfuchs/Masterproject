@@ -12,6 +12,7 @@ import de.automatic.ui.colorconfiguraiton.process.ImageReader;
 import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 import de.automatic.ui.colorconfiguraiton.vis.PaletteShower;
 import de.automatic.ui.colorconfiguraiton.vis.ThreeDimHistogramVisualizer;
+import de.automatic.ui.colorconfiguration.segmentation.Acopa;
 import de.automatic.ui.colorconfiguration.segmentation.FtcSegmentation;
 
 public class Main {
@@ -33,10 +34,10 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		SampleList listoForAcopa = hsiSamples;
-		
-		SampleList seeds = new FtcSegmentation().segment(listoForAcopa);
+
+		SampleList seeds = new Acopa().findSeeds(listoForAcopa);
 		new PaletteShower(ConversionService.toHashSet(seeds), "Segmentation Palette", 1000, 0).visualizePalette();
 
 		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(ConversionService.toRgbSampleList(seeds));

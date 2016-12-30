@@ -31,8 +31,7 @@ import de.automatic.ui.colorconfiguraiton.vis.OneDimHistogramVisualizer;
 
 public class FtcSegmentation {
 
-	public SampleList segment(SampleList samples) {
-		Histogram histo = ConversionService.toHistogram(samples, Channels.C1, 64, true);
+	public Segmentation segment(Histogram histo) {
 		Segmentation seg = findMinima(histo);
 
 		// histo = SampleDataService.createSampleHistogram();
@@ -48,33 +47,8 @@ public class FtcSegmentation {
 		}
 		// System.out.println();
 		new OneDimHistogramVisualizer("Reduced Minima", histo, seg, 300);
-		SampleList seeds = new SampleList();
-		for (int i = 0; i < seg.size() - 2; i++) {
-			if (i == 0) {
-				SampleList modeSamples = new SampleList();
-				for (int j = seg.get(i); j < seg.get(i + 1); j++) {
-					for (Sample s : histo.get(j).getSamples()) {
-						modeSamples.add(s);
-					}
-				}
-				for (int j = seg.get(seg.size() - 2); j < seg.get(seg.size() - 1); j++) {
-					for (Sample s : histo.get(j).getSamples()) {
-						modeSamples.add(s);
-					}
-				}
-				seeds.add(CalculationService.calculateMean(modeSamples));
-
-			} else {
-				SampleList modeSamples = new SampleList();
-				for (int j = seg.get(i); j < seg.get(i + 1); j++) {
-					for (Sample s : histo.get(j).getSamples()) {
-						modeSamples.add(s);
-					}
-				}
-				seeds.add(CalculationService.calculateMean(modeSamples));
-			}
-		}
-		return seeds;
+		
+		return seg;
 	}
 
 	private boolean testUnimodalHypthesisFor(int index, Histogram histo, Segmentation seg) {
