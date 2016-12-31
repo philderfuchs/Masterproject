@@ -8,6 +8,7 @@ import de.automatic.ui.colorconfiguraiton.clustering.KmeansFromGivenSeeds;
 import de.automatic.ui.colorconfiguraiton.clustering.KmeansPlusPlus;
 import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
+import de.automatic.ui.colorconfiguraiton.entities.HierarchicalHsiPalette;
 import de.automatic.ui.colorconfiguraiton.process.ImageReader;
 import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 import de.automatic.ui.colorconfiguraiton.visualisation.HierarchicalPaletteShower;
@@ -22,7 +23,7 @@ public class Main {
 	static int k = 5;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/HS.png";
+	static String file = "resources/lockitup.png";
 
 	public static void main(String[] args) {
 
@@ -38,10 +39,10 @@ public class Main {
 
 		SampleList listoForAcopa = hsiSamples;
 
-		SampleList seeds = new Acopa().findSeeds(listoForAcopa);
-		new HierarchicalPaletteShower(seeds, "Segmentation Palette", 1000, 0);
+		HierarchicalHsiPalette hieraPalette = new Acopa().findSeeds(listoForAcopa);
+		new HierarchicalPaletteShower(hieraPalette, "Segmentation Palette", 1000, 0);
 
-		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(ConversionService.toRgbSampleList(seeds));
+		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(ConversionService.toRgbSampleList(hieraPalette.getSeeds()));
 		System.out.println("start clustering");
 		ClusterContainer clusters1 = clusterer1.clusterToEnd(rgbSamples);
 		System.out.println("finished clustering with " + clusterer1.getStepCount() + " steps");

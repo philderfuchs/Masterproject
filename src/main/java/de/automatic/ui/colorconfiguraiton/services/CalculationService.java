@@ -23,11 +23,11 @@ public class CalculationService {
 		meanZ = meanZ / (double) samples.getCountOfPixels();
 		Sample mean = null;
 		if (samples.get(0) instanceof RgbSample) {
-			mean = ConversionService.toRgb(new CartesianCoordinates(meanX, meanY, meanZ), 1);
+			mean = ConversionService.toRgb(new CartesianCoordinates(meanX, meanY, meanZ), samples.getCountOfPixels());
 		} else if (samples.get(0) instanceof HsiSample) {
-			mean = ConversionService.toHsi(new CartesianCoordinates(meanX, meanY, meanZ), 1);
+			mean = ConversionService.toHsi(new CartesianCoordinates(meanX, meanY, meanZ), samples.getCountOfPixels());
 		}
 		return mean;
 	}
-	
+
 }
