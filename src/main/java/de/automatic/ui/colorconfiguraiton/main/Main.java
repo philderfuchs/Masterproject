@@ -23,7 +23,7 @@ public class Main {
 	static int k = 5;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/lockitup.png";
+	static String file = "resources/HS.png";
 
 	public static void main(String[] args) {
 
@@ -40,7 +40,7 @@ public class Main {
 		SampleList listoForAcopa = hsiSamples;
 
 		HierarchicalHsiPalette hieraPalette = new Acopa().findSeeds(listoForAcopa);
-		new HierarchicalPaletteShower(hieraPalette, "Segmentation Palette", 1000, 0);
+		new HierarchicalPaletteShower(hieraPalette, "Segmentation Palette", 0, 0);
 
 		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(ConversionService.toRgbSampleList(hieraPalette.getSeeds()));
 		System.out.println("start clustering");
