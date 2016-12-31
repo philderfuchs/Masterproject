@@ -10,8 +10,9 @@ import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 import de.automatic.ui.colorconfiguraiton.process.ImageReader;
 import de.automatic.ui.colorconfiguraiton.services.ConversionService;
-import de.automatic.ui.colorconfiguraiton.vis.PaletteShower;
-import de.automatic.ui.colorconfiguraiton.vis.ThreeDimHistogramVisualizer;
+import de.automatic.ui.colorconfiguraiton.visualisation.HierarchicalPaletteShower;
+import de.automatic.ui.colorconfiguraiton.visualisation.PaletteShower;
+import de.automatic.ui.colorconfiguraiton.visualisation.ThreeDimHistogramVisualizer;
 import de.automatic.ui.colorconfiguration.segmentation.Acopa;
 import de.automatic.ui.colorconfiguration.segmentation.FtcSegmentation;
 
@@ -21,7 +22,7 @@ public class Main {
 	static int k = 5;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/urwald.JPG";
+	static String file = "resources/HS.png";
 
 	public static void main(String[] args) {
 
@@ -38,20 +39,19 @@ public class Main {
 		SampleList listoForAcopa = hsiSamples;
 
 		SampleList seeds = new Acopa().findSeeds(listoForAcopa);
-		new PaletteShower(ConversionService.toHashSet(seeds), "Segmentation Palette", 1000, 0).visualizePalette();
+		new HierarchicalPaletteShower(seeds, "Segmentation Palette", 1000, 0);
 
 		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(ConversionService.toRgbSampleList(seeds));
 		System.out.println("start clustering");
 		ClusterContainer clusters1 = clusterer1.clusterToEnd(rgbSamples);
 		System.out.println("finished clustering with " + clusterer1.getStepCount() + " steps");
-		new PaletteShower(ConversionService.toHashSet(clusters1), "K-Means after Segmentation Palette", 1000, 300)
-				.visualizePalette();
+		new PaletteShower(ConversionService.toHashSet(clusters1), "K-Means after Segmentation Palette", 1000, 300);
 
 		AbstractKmeans clusterer2 = new KmeansPlusPlus(k);
 		System.out.println("start clustering");
 		ClusterContainer clusters2 = clusterer2.clusterToEnd(rgbSamples);
 		System.out.println("finished clustering with " + clusterer2.getStepCount() + " steps");
-		new PaletteShower(ConversionService.toHashSet(clusters2), "K-Means Palette", 1000, 600).visualizePalette();
+		new PaletteShower(ConversionService.toHashSet(clusters2), "K-Means Palette", 1000, 600);
 
 		try {
 			new ThreeDimHistogramVisualizer(listoForAcopa, clusters1);

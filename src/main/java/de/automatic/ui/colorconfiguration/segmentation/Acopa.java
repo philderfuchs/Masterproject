@@ -12,18 +12,34 @@ import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 public class Acopa {
 
 	public SampleList findSeeds(SampleList samples) {
+		FtcSegmentation segmentor = new FtcSegmentation();
+
+		SampleList hieraPalette = segmentHChannel(samples, segmentor);
+
+		int mode = 0;
+		for (Sample s : hieraPalette) {
+			HierarchicalHsiPalette modePalette = (HierarchicalHsiPalette) s;
+			Histogram modeHisto = ConversionService.toHistogram(modePalette.getModeSamples(), Channels.C2, 64, true);
+			Segmentation modeSeg = segmentor.segment(modeHisto, "Mode " + mode++);
+
+			for (int i = 0; i < modeSeg.size() - 2; i++) {
+				SampleList modeSamples = getSamplesForMode(modeHisto, modeSeg, i);
+				modePalette.getChildren()
+						.add(new HierarchicalHsiPalette(CalculationService.calculateMean(modeSamples), modeSamples));
+			}
+		}
+		return hieraPalette;
+	}
+
+	private SampleList segmentHChannel(SampleList samples, FtcSegmentation segmentor) {
 		SampleList hieraPalette = new SampleList();
 
-		FtcSegmentation segmentor = new FtcSegmentation();
 		Histogram histo = ConversionService.toHistogram(samples, Channels.C1, 64, true);
-		Segmentation seg = segmentor.segment(histo);
+		Segmentation seg = segmentor.segment(histo, "C1");
 
 		for (int i = 0; i < seg.size() - 2; i++) {
 			SampleList modeSamples = getSamplesForMode(histo, seg, i);
 			hieraPalette.add(new HierarchicalHsiPalette(CalculationService.calculateMean(modeSamples), modeSamples));
-		}
-		for (Sample s : hieraPalette) {
-			
 		}
 		return hieraPalette;
 	}

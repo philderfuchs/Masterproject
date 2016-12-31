@@ -27,15 +27,24 @@ import de.automatic.ui.colorconfiguraiton.entities.Segmentation;
 import de.automatic.ui.colorconfiguraiton.services.CalculationService;
 import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 import de.automatic.ui.colorconfiguraiton.services.SampleDataService;
-import de.automatic.ui.colorconfiguraiton.vis.OneDimHistogramVisualizer;
+import de.automatic.ui.colorconfiguraiton.visualisation.OneDimHistogramVisualizer;
 
 public class FtcSegmentation {
 
-	public Segmentation segment(Histogram histo) {
+	private int iteration;
+	private static final int visWidth = 550;
+	private static final int visHeight = 150;
+
+	public FtcSegmentation() {
+		int iteration = 0;
+	}
+
+	public Segmentation segment(Histogram histo, String title) {
 		Segmentation seg = findMinima(histo);
 
 		// histo = SampleDataService.createSampleHistogram();
-		new OneDimHistogramVisualizer("All Minima", histo, seg, 0);
+		new OneDimHistogramVisualizer(title + " | All Minima", histo, seg, 0, iteration * visHeight, visWidth,
+				visHeight);
 
 		// T-Test
 		Random r = new Random();
@@ -43,13 +52,8 @@ public class FtcSegmentation {
 
 			// right now, a minimum of four segments build 3 segment markers are
 			// needed because the first and last mode automatically get merged
-			if (seg.size() <= 3) {
-				for (Integer index : seg) {
-					System.out.println(index);
-				}
-				System.out.println("breaking it");
+			if (seg.size() <= 3)
 				break;
-			}
 
 			int j = r.nextInt(seg.size());
 			if (testUnimodalHypthesisFor(j, histo, seg)) {
@@ -57,8 +61,10 @@ public class FtcSegmentation {
 			}
 		}
 		// System.out.println();
-		new OneDimHistogramVisualizer("Reduced Minima", histo, seg, 300);
+		new OneDimHistogramVisualizer(title + " | Reduced Minima", histo, seg, visWidth, iteration * visHeight,
+				visWidth, visHeight);
 
+		iteration++;
 		return seg;
 	}
 
