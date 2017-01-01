@@ -12,44 +12,74 @@ import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 
 public class Acopa {
 
-	public HierarchicalHsiPalette findSeeds(SampleList samples) {
-		FtcSegmentation segmentor = new FtcSegmentation();
+	private static final int histoBins = 64;
 
-		HierarchicalHsiPalette hieraPalette = segmentHChannel(samples, segmentor);
+	private FtcSegmentation segmentor;
 
-		int mode = 0;
-		for (Sample s : hieraPalette) {
-			HierarchicalHsiSample modePalette = (HierarchicalHsiSample) s;
-			Histogram modeHisto = ConversionService.toHistogram(modePalette.getModeSamples(), Channels.C2, 64, true);
-			Segmentation modeSeg = segmentor.segment(modeHisto, "Mode " + mode++);
+	public Acopa() {
 
-			for (int i = 0; i < modeSeg.size() - 2; i++) {
-				SampleList modeSamples = getSamplesForMode(modeHisto, modeSeg, i);
-				modePalette.getChildren()
-						.add(new HierarchicalHsiSample(CalculationService.calculateMean(modeSamples), modeSamples));
-			}
-		}
-		return hieraPalette;
 	}
 
-	private HierarchicalHsiPalette segmentHChannel(SampleList samples, FtcSegmentation segmentor) {
+	public HierarchicalHsiPalette findSeeds(SampleList samples) {
+		segmentor = new FtcSegmentation();
+
 		HierarchicalHsiPalette hieraPalette = new HierarchicalHsiPalette();
 
-		Histogram histo = ConversionService.toHistogram(samples, Channels.C1, 64, true);
+		Histogram histo = ConversionService.toHistogram(samples, Channels.C1, histoBins, true);
 		Segmentation seg = segmentor.segment(histo, "C1");
 
 		for (int i = 0; i < seg.size() - 2; i++) {
 			SampleList modeSamples = getSamplesForMode(histo, seg, i);
-			hieraPalette.add(new HierarchicalHsiSample(CalculationService.calculateMean(modeSamples), modeSamples));
+			HierarchicalHsiSample child = new HierarchicalHsiSample(CalculationService.calculateMean(modeSamples),
+					modeSamples);
+			hieraPalette.add(child);
+			rek(child, 1);
 		}
+
 		return hieraPalette;
+	}
+
+	private void rek(HierarchicalHsiSample s, int level) {
+		if (level == 3)
+			return;
+		Channels c = getChannel(level);
+		Histogram modeHisto = ConversionService.toHistogram(s.getModeSamples(), c, histoBins, true);
+		Segmentation modeSeg = segmentor.segment(modeHisto, "Mode level " + level);
+		if (modeSeg.size() == 2) {
+			SampleList modeSamples = s.getModeSamples();
+			HierarchicalHsiSample child = new HierarchicalHsiSample(CalculationService.calculateMean(modeSamples),
+					modeSamples);
+			s.getChildren().add(child);
+			rek(child, level + 1);
+		} else {
+			for (int i = 0; i < modeSeg.size() - 2; i++) {
+				SampleList modeSamples = getSamplesForMode(modeHisto, modeSeg, i);
+				HierarchicalHsiSample child = new HierarchicalHsiSample(CalculationService.calculateMean(modeSamples),
+						modeSamples);
+				s.getChildren().add(child);
+				rek(child, level + 1);
+			}
+		}
+	}
+
+	private Channels getChannel(int level) {
+		switch (level) {
+		case 0:
+			return Channels.C1;
+		case 1:
+			return Channels.C2;
+		case 2:
+			return Channels.C3;
+		default:
+			return Channels.C1;
+		}
 	}
 
 	private SampleList getSamplesForMode(Histogram histo, Segmentation seg, int modeMarker) {
 		SampleList modeSamples = new SampleList();
 
 		if (modeMarker == 0) {
-			for (int j = seg.get(modeMarker); j < seg.get(modeMarker + 1); j++) {
+			for (int j = seg.get(0); j < seg.get(1); j++) {
 				for (Sample s : histo.get(j).getSamples()) {
 					modeSamples.add(s);
 				}

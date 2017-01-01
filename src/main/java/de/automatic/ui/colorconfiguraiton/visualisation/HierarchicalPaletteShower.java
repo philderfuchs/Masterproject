@@ -42,7 +42,7 @@ public class HierarchicalPaletteShower {
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jFrame.setTitle(title);
 		jFrame.setLocation(x, y);
-		jFrame.setSize(hieraPalette.getCountOfLastLevelChildren() * colorWidth, 2 * colorHeight);
+		jFrame.setSize(hieraPalette.getCountOfLastLevelChildren() * colorWidth, 3 * colorHeight);
 		// jFrame.pack();
 		jFrame.setVisible(true);
 
@@ -63,12 +63,21 @@ public class HierarchicalPaletteShower {
 				paintColor(g, s.getCountOfLastLevelChildren() * colorWidth, offset * colorWidth, 0, s);
 				offset += s.getCountOfLastLevelChildren();
 			}
+			
+			offset = 0;
+			for (HierarchicalHsiSample s : hieraPalette) {
+				for (HierarchicalHsiSample s2 : s.getChildren()) {
+					paintColor(g, s2.getCountOfLastLevelChildren() * colorWidth, offset * colorWidth, 1 * colorHeight, s2);
+					offset += s2.getCountOfLastLevelChildren();				}
+			}
 
 			// draw level 1
 			offset = 0;
 			for (HierarchicalHsiSample s : hieraPalette) {
 				for (HierarchicalHsiSample s2 : s.getChildren()) {
-					paintColor(g, colorWidth, offset++ * colorWidth, 1 * colorHeight, s2);
+					for (HierarchicalHsiSample s3 : s2.getChildren()) {
+						paintColor(g, colorWidth, offset++ * colorWidth, 2 * colorHeight, s3);
+					}
 				}
 			}
 

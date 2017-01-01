@@ -50,9 +50,8 @@ public class FtcSegmentation {
 		Random r = new Random();
 		for (int i = 0; i < 100; i++) {
 
-			// right now, a minimum of four segments build 3 segment markers are
-			// needed because the first and last mode automatically get merged
-			if (seg.size() <= 3)
+			// stop if only start and stop marker left
+			if (seg.size() < 3)
 				break;
 
 			int j = r.nextInt(seg.size());
