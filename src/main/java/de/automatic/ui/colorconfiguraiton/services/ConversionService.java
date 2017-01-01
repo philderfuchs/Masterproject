@@ -18,21 +18,21 @@ import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 public class ConversionService {
 
 	public static SampleList toRgbSampleList(SampleList samples) {
-		
-		if(samples.get(0) instanceof RgbSample) {
+
+		if (samples.get(0) instanceof RgbSample) {
 			return samples;
 		} else if (samples.get(0) instanceof HsiSample) {
 			SampleList rgbSamples = new SampleList();
-			for(Sample s : samples) {
+			for (Sample s : samples) {
 				rgbSamples.add(toRgb(s));
 			}
 			return rgbSamples;
 		}
 		return samples;
 	}
-	
+
 	public static Histogram toHistogram(SampleList samples, Channels channel, int bins, boolean normalize) {
-	
+
 		Histogram histo = new Histogram(bins, channel);
 		samples.sort(channel);
 		double binRange = 1.0 / bins;
@@ -50,10 +50,10 @@ public class ConversionService {
 			histo.get(histo.size() - 1).setSamples(binSamples);
 		}
 
-		if(normalize) {
+		if (normalize) {
 			histo.normalize();
 		}
-		
+
 		return histo;
 	}
 
@@ -64,7 +64,7 @@ public class ConversionService {
 		}
 		return pixelSet;
 	}
-	
+
 	public static HashSet<Sample> toHashSet(SampleList samples) {
 		HashSet<Sample> pixelSet = new HashSet<>();
 		for (Sample s : samples) {
@@ -117,7 +117,7 @@ public class ConversionService {
 			return toHsi(s.getC1(), s.getC2(), s.getC3(), s.getCount());
 		}
 	}
-	
+
 	public static RgbSample toRgb(Sample p) {
 		if (p instanceof RgbSample) {
 			return new RgbSample((RgbSample) p);
@@ -172,7 +172,7 @@ public class ConversionService {
 		return new RgbSample(r, g, b, count);
 
 	}
-	
+
 	/**
 	 * 
 	 * @param r

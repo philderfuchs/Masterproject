@@ -31,20 +31,22 @@ import de.automatic.ui.colorconfiguraiton.visualisation.OneDimHistogramVisualize
 
 public class FtcSegmentation {
 
-	private int iteration;
+	private int windowCount;
 	private static final int visWidth = 550;
-	private static final int visHeight = 150;
+	private static final int visHeight = 120;
+	private static final int windowsPerColumn = 6;
 
 	public FtcSegmentation() {
-		int iteration = 0;
+		windowCount = 0;
 	}
 
 	public Segmentation segment(Histogram histo, String title) {
 		Segmentation seg = findMinima(histo);
 
 		// histo = SampleDataService.createSampleHistogram();
-		new OneDimHistogramVisualizer(title + " | All Minima", histo, seg, 0, iteration * visHeight, visWidth,
-				visHeight);
+		new OneDimHistogramVisualizer(title + " | All Minima", histo, seg, (windowCount / windowsPerColumn) * visWidth,
+				(windowCount % windowsPerColumn) * visHeight, visWidth, visHeight);
+		windowCount++;
 
 		// T-Test
 		Random r = new Random();
@@ -60,10 +62,10 @@ public class FtcSegmentation {
 			}
 		}
 		// System.out.println();
-		new OneDimHistogramVisualizer(title + " | Reduced Minima", histo, seg, visWidth, iteration * visHeight,
-				visWidth, visHeight);
-
-		iteration++;
+		new OneDimHistogramVisualizer(title + " | Reduced Minima", histo, seg,
+				(windowCount / windowsPerColumn) * visWidth, (windowCount % windowsPerColumn) * visHeight, visWidth,
+				visHeight);
+		windowCount++;
 		return seg;
 	}
 
