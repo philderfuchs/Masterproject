@@ -30,7 +30,7 @@ public class Acopa {
 
 		for (int i = 0; i < seg.size() - 2; i++) {
 			SampleList modeSamples = getSamplesForMode(histo, seg, i);
-			HierarchicalHsiSample child = new HierarchicalHsiSample(CalculationService.calculateMean(modeSamples),
+			HierarchicalHsiSample child = new HierarchicalHsiSample(CalculationService.calculateMean(modeSamples, true),
 					modeSamples);
 			hieraPalette.add(child);
 			rek(child, 1);
@@ -47,14 +47,14 @@ public class Acopa {
 		Segmentation modeSeg = segmentor.segment(modeHisto, "Mode level " + level);
 		if (modeSeg.size() == 2) {
 			SampleList modeSamples = s.getModeSamples();
-			HierarchicalHsiSample child = new HierarchicalHsiSample(CalculationService.calculateMean(modeSamples),
+			HierarchicalHsiSample child = new HierarchicalHsiSample(CalculationService.calculateMean(modeSamples, true),
 					modeSamples);
 			s.getChildren().add(child);
 			rek(child, level + 1);
 		} else {
 			for (int i = 0; i < modeSeg.size() - 2; i++) {
 				SampleList modeSamples = getSamplesForMode(modeHisto, modeSeg, i);
-				HierarchicalHsiSample child = new HierarchicalHsiSample(CalculationService.calculateMean(modeSamples),
+				HierarchicalHsiSample child = new HierarchicalHsiSample(CalculationService.calculateMean(modeSamples, true),
 						modeSamples);
 				s.getChildren().add(child);
 				rek(child, level + 1);

@@ -9,6 +9,8 @@ import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
 
 public abstract class AbstractKmeans implements StepByStepClusterer, FinishingClusterer {
 
+	private boolean weighted = false;
+	
 	protected static int maxStepCount = 40;
 
 	protected int k;
@@ -44,7 +46,7 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 				continue;
 			}
 
-			Sample newMean = CalculationService.calculateMean(c.getSampleList());
+			Sample newMean = CalculationService.calculateMean(c.getSampleList(), weighted);
 			if (!newMean.equals(c.getCenter())) {
 				c.setCenter(newMean);
 				this.finished = false;

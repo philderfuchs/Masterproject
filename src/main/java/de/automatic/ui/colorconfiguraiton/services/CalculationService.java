@@ -8,19 +8,23 @@ import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 
 public class CalculationService {
 
-	public static Sample calculateMean(SampleList samples) {
+	public static Sample calculateMean(SampleList samples, boolean weighted) {
 		double meanX = 0;
 		double meanY = 0;
 		double meanZ = 0;
 		for (Sample s : samples) {
 			CartesianCoordinates coord = ConversionService.toCoordinates(s);
-			meanX += coord.getX() * (double) s.getCount();
-			meanY += coord.getY() * (double) s.getCount();
-			meanZ += coord.getZ() * (double) s.getCount();
+			double x = weighted ? coord.getX() * (double) s.getCount() : coord.getX();
+			double y = weighted ? coord.getY() * (double) s.getCount() : coord.getY();
+			double z = weighted ? coord.getZ() * (double) s.getCount() : coord.getZ();
+
+			meanX += x;
+			meanY += y;
+			meanZ += z;
 		}
-		meanX = meanX / (double) samples.getCountOfPixels();
-		meanY = meanY / (double) samples.getCountOfPixels();
-		meanZ = meanZ / (double) samples.getCountOfPixels();
+		meanX = weighted ? meanX / (double) samples.getCountOfPixels() : meanX / (double) samples.size();
+		meanY = weighted ? meanY / (double) samples.getCountOfPixels() : meanY / (double) samples.size();
+		meanZ = weighted ? meanZ / (double) samples.getCountOfPixels() : meanZ / (double) samples.size();
 		Sample mean = null;
 		if (samples.get(0) instanceof RgbSample) {
 			mean = ConversionService.toRgb(new CartesianCoordinates(meanX, meanY, meanZ), samples.getCountOfPixels());
