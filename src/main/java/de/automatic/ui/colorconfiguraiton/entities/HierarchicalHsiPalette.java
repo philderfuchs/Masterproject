@@ -5,11 +5,19 @@ import java.util.ArrayList;
 public class HierarchicalHsiPalette extends ArrayList<HierarchicalHsiSample> {
 
 	public SampleList getSeeds() {
-		GetSeedVisitor v = new GetSeedVisitor();
+		GetSeedsVisitor v = new GetSeedsVisitor();
 		for (HierarchicalHsiSample s : this) {
 			s.accept(v);
 		}
 		return v.getSeeds();
+	}
+	
+	public int getCountOfLastLevelChildren() {
+		GetCountOfLastOrderChildrenVisitor v = new GetCountOfLastOrderChildrenVisitor();
+		for (HierarchicalHsiSample s : this) {
+			s.accept(v);
+		}
+		return v.getCount();
 	}
 
 	public int getCountOfPixels() {

@@ -1,10 +1,10 @@
 package de.automatic.ui.colorconfiguraiton.entities;
 
-public class GetSeedVisitor implements Visitor {
+public class GetSeedsVisitor implements Visitor {
 
 	private SampleList seeds;
 
-	public GetSeedVisitor() {
+	public GetSeedsVisitor() {
 		this.seeds = new SampleList();
 	}
 

@@ -1,6 +1,7 @@
 package de.automatic.ui.colorconfiguraiton.visualisation;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.JFrame;
@@ -41,7 +42,8 @@ public class HierarchicalPaletteShower {
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jFrame.setTitle(title);
 		jFrame.setLocation(x, y);
-		jFrame.setSize(1500, 2 * colorHeight);
+		jFrame.setSize(hieraPalette.getCountOfLastLevelChildren() * colorWidth, 2 * colorHeight);
+		// jFrame.pack();
 		jFrame.setVisible(true);
 
 	}
@@ -53,29 +55,23 @@ public class HierarchicalPaletteShower {
 		}
 
 		public void paintComponent(Graphics g) {
-			hieraPaint(hieraPalette, g, 0);
-		}
+			// hieraPaint(hieraPalette, g, 0);
 
-		int level2Offset = 0;
-		int level1Offset = 0;
-		int level0Offset = 0;
+			// draw level 0
+			int offset = 0;
+			for (HierarchicalHsiSample s : hieraPalette) {
+				paintColor(g, s.getCountOfLastLevelChildren() * colorWidth, offset * colorWidth, 0, s);
+				offset += s.getCountOfLastLevelChildren();
+			}
 
-		private int hieraPaint(HierarchicalHsiPalette palette, Graphics g, int level) {
-			int returnCount = 0;
-
-			for (HierarchicalHsiSample s : palette) {
-				if (level == 1) {
-					paintColor(g, colorWidth, level1Offset * colorWidth, 1 * colorHeight, s);
-					level1Offset++;
-					returnCount++;
-				} else if (level == 0) {
-					int countOfChildren = hieraPaint(s.getChildren(), g, level + 1);
-					paintColor(g, countOfChildren * colorWidth, level0Offset * colorWidth, 0, s);
-					level0Offset += countOfChildren;
+			// draw level 1
+			offset = 0;
+			for (HierarchicalHsiSample s : hieraPalette) {
+				for (HierarchicalHsiSample s2 : s.getChildren()) {
+					paintColor(g, colorWidth, offset++ * colorWidth, 1 * colorHeight, s2);
 				}
 			}
 
-			return returnCount;
 		}
 
 		private void paintColor(Graphics g, int width, int x, int y, Sample sample) {

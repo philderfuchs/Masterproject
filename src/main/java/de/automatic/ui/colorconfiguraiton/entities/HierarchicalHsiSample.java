@@ -61,12 +61,14 @@ public class HierarchicalHsiSample extends HsiSample implements Visitable {
 
 	@Override
 	public void accept(Visitor v) {
-		
 		v.visit(this);
 		for(HierarchicalHsiSample s : children) {
 			s.accept(v);
 		}
-		
+	}
+	
+	public int getCountOfLastLevelChildren() {
+		return children.getCountOfLastLevelChildren();
 	}
 
 }
