@@ -104,23 +104,28 @@ public class FtcSegmentation {
 		if (tooFlat(histo, index, end))
 			return true;
 
-		boolean confirmed = false;
 		StatisticalTest tester = new weikerTTest();
+
+		// maybe whole segment is kind of monotone
+		if (tester.similiar(histo, GrenanderEstimator.poolAdjacentViolator("inc", histo, start, end), start, end)
+				|| tester.similiar(histo, GrenanderEstimator.poolAdjacentViolator("dec", histo, start, end), start,
+						end))
+			return true;
 
 		for (int i = start + 1; i <= end - 1; i++) {
 			Histogram incHisto = GrenanderEstimator.poolAdjacentViolator("inc", histo, start, i);
 			Histogram decHisto = GrenanderEstimator.poolAdjacentViolator("dec", histo, i, end);
 
 			if (tester.similiar(histo, incHisto, start, i) && tester.similiar(histo, decHisto, i, end)) {
-				confirmed = true;
+				return true;
 			}
 		}
 
-		return confirmed;
+		return false;
 	}
 
 	private boolean tooFlat(Histogram histo, int start, int end) {
-		if(flatThreshold == 0) {
+		if (flatThreshold == 0) {
 			return false;
 		}
 		boolean tooFlat = true;
