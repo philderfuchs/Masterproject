@@ -5,6 +5,7 @@ import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.entities.Sample;
 import de.automatic.ui.colorconfiguraiton.entities.SampleList;
+import de.automatic.ui.colorconfiguraiton.services.SeedFilterer;
 
 public class KmeansFromGivenSeeds extends AbstractKmeans {
 
@@ -21,6 +22,8 @@ public class KmeansFromGivenSeeds extends AbstractKmeans {
 		this.finished = false;
 		// clusters not yet initialized
 		clusters = new ClusterContainer();
+
+		SeedFilterer.filterSeeds(seeds);
 		for (Sample s : seeds) {
 			clusters.add(new Cluster(new SampleList(), s));
 		}
