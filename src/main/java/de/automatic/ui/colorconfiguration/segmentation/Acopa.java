@@ -13,6 +13,7 @@ import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 public class Acopa {
 
 	private static final int histoBins = 64;
+	private static final boolean weightedMean = false;
 
 	private FtcSegmentation segmentor;
 	private SampleListFilterer filterer;
@@ -34,8 +35,8 @@ public class Acopa {
 		// doesnt have a successor
 		for (int i = 0; i < seg.size() - 1; i++) {
 			SampleList modeSamples = getSamplesForMode(histo, seg, i);
-			HierarchicalHsiSample child = new HierarchicalHsiSample(CalculationService.calculateMean(modeSamples, true),
-					modeSamples);
+			HierarchicalHsiSample child = new HierarchicalHsiSample(
+					CalculationService.calculateMean(modeSamples, weightedMean), modeSamples);
 			hieraPalette.add(child);
 			rek(child, 1);
 		}
@@ -59,13 +60,13 @@ public class Acopa {
 		// s.getChildren().add(child);
 		// rek(child, level + 1);
 		// } else {
-		
+
 		// The Last modemarker is always the end of the histogram and thus
 		// doesnt have a successor
 		for (int i = 0; i < modeSeg.size() - 1; i++) {
 			SampleList modeSamples = getSamplesForMode(modeHisto, modeSeg, i);
-			HierarchicalHsiSample child = new HierarchicalHsiSample(CalculationService.calculateMean(modeSamples, true),
-					modeSamples);
+			HierarchicalHsiSample child = new HierarchicalHsiSample(
+					CalculationService.calculateMean(modeSamples, weightedMean), modeSamples);
 			s.getChildren().add(child);
 			rek(child, level + 1);
 		}
@@ -93,7 +94,7 @@ public class Acopa {
 				modeSamples.add(s);
 			}
 		}
-		
+
 		return modeSamples;
 	}
 
