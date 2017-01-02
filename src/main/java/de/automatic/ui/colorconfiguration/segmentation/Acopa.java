@@ -15,19 +15,21 @@ public class Acopa {
 	private static final int histoBins = 64;
 
 	private FtcSegmentation segmentor;
+	private SampleListFilterer filterer;
 
 	public Acopa() {
-
+		segmentor = new FtcSegmentation();
+		filterer = new SampleListFilterer();
 	}
 
 	public HierarchicalHsiPalette findSeeds(SampleList samples) {
-		segmentor = new FtcSegmentation();
-
 		HierarchicalHsiPalette hieraPalette = new HierarchicalHsiPalette();
-
-		Histogram histo = ConversionService.toHistogram(samples, Channels.C1, histoBins, true);
+		SampleList filteredSamples = filterer.filterGreyCylinder(samples, 0.05);
+	
+		Histogram histo = ConversionService.toHistogram(filteredSamples, Channels.C1, histoBins, true);
 		Segmentation seg = segmentor.segment(histo, "C1");
-
+		filterer.linkBackGreyCylinder(histo);
+		
 		for (int i = 0; i < seg.size() - 2; i++) {
 			SampleList modeSamples = getSamplesForMode(histo, seg, i);
 			HierarchicalHsiSample child = new HierarchicalHsiSample(CalculationService.calculateMean(modeSamples, true),
