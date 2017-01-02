@@ -12,7 +12,7 @@ import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 
 public class Acopa {
 
-	private static final int histoBins = 128;
+	private static final int histoBins = 64;
 
 	private FtcSegmentation segmentor;
 	private SampleListFilterer filterer;
@@ -85,29 +85,15 @@ public class Acopa {
 		}
 	}
 
-	private SampleList getSamplesForMode(Histogram histo, Segmentation seg, int modeMarker) {
+	private SampleList getSamplesForMode(Histogram histo, Segmentation seg, int segIndex) {
 		SampleList modeSamples = new SampleList();
 
-		// if (modeMarker == 0) {
-		// for (int j = seg.get(0); j < seg.get(1); j++) {
-		// for (Sample s : histo.get(j).getSamples()) {
-		// modeSamples.add(s);
-		// }
-		// }
-		// for (int j = seg.get(seg.size() - 2); j < seg.get(seg.size() - 1);
-		// j++) {
-		// for (Sample s : histo.get(j).getSamples()) {
-		// modeSamples.add(s);
-		// }
-		// }
-		//
-		// } else {
-		for (int j = seg.get(modeMarker); j < seg.get(modeMarker + 1); j++) {
+		for (int j = seg.get(segIndex); j < seg.get(segIndex + 1); j++) {
 			for (Sample s : histo.get(j).getSamples()) {
 				modeSamples.add(s);
 			}
 		}
-		// }
+		
 		return modeSamples;
 	}
 

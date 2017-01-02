@@ -7,7 +7,7 @@ import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 
 public class weikerTTest implements StatisticalTest {
 	
-	private double probability = 0.99;
+	private double probability = 0.97;
 	
 	public boolean similiar(Histogram histo1, Histogram histo2, int start, int end) {
 		SummaryStatistics stats = new SummaryStatistics();
