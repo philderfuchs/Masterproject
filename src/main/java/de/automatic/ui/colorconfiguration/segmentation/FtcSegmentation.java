@@ -36,7 +36,7 @@ public class FtcSegmentation {
 	private static final int visHeight = 120;
 	private static final int windowsPerColumn = 6;
 
-	private static double flatThreshold = 0;
+	private static double flatThreshold = 0.05;
 
 	public FtcSegmentation() {
 		windowCount = 0;
@@ -99,12 +99,13 @@ public class FtcSegmentation {
 
 		// first look if there are no significant histogram peaks in the given
 		// range
-		if (tooFlat(histo, start, index))
-			return true;
-		if (tooFlat(histo, index, end))
-			return true;
+//		if (tooFlat(histo, start, index))
+//			return true;
+//		if (tooFlat(histo, index, end))
+//			return true;
 
-		StatisticalTest tester = new weikerTTest();
+		// StatisticalTest tester = new WeikerTTest();
+		StatisticalTest tester = new MaxDistanceTest();
 
 		// maybe whole segment is kind of monotone
 		if (tester.similiar(histo, GrenanderEstimator.poolAdjacentViolator("inc", histo, start, end), start, end)

@@ -5,7 +5,7 @@ import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 
-public class weikerTTest implements StatisticalTest {
+public class WeikerTTest implements StatisticalTest {
 	
 	private double probability = 0.97;
 	
