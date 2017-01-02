@@ -21,7 +21,6 @@ public class HistogramCompressor {
 		for (HistogramElement e : histo) {
 			integral += e.getValue();
 		}
-		System.out.println("Value is " + integral);
 		if (integral < threshold) {
 			for (HistogramElement e : histo) {
 				e.setValue(Math.sqrt(Math.sqrt(e.getValue())));
