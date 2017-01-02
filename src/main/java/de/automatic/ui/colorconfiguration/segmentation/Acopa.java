@@ -25,7 +25,7 @@ public class Acopa {
 
 	public HierarchicalHsiPalette findSeeds(SampleList samples) {
 		HierarchicalHsiPalette hieraPalette = new HierarchicalHsiPalette();
-		SampleList filteredSamples = filterer.filterGreyCylinder(samples, 0.1);
+		SampleList filteredSamples = filterer.filterGreyCylinder(samples, 0.2);
 
 		Histogram histo = ConversionService.toHistogram(filteredSamples, Channels.C1, histoBins, true);
 		Segmentation seg = segmentor.segment(histo, "C1");
