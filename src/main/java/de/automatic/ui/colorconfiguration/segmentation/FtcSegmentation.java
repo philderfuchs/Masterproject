@@ -112,7 +112,7 @@ public class FtcSegmentation {
 						end))
 			return true;
 
-		for (int i = start + 1; i <= end - 1; i++) {
+		for (int i = start + 1; i < end - 1; i++) {
 			Histogram incHisto = GrenanderEstimator.poolAdjacentViolator("inc", histo, start, i);
 			Histogram decHisto = GrenanderEstimator.poolAdjacentViolator("dec", histo, i, end);
 
@@ -129,7 +129,7 @@ public class FtcSegmentation {
 			return false;
 		}
 		boolean tooFlat = true;
-		for (int i = start; i <= end; i++) {
+		for (int i = start; i < end; i++) {
 			if (histo.get(i).getValue() > flatThreshold) {
 				tooFlat = false;
 			}

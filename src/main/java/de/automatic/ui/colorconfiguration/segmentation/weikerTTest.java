@@ -11,7 +11,7 @@ public class weikerTTest implements StatisticalTest {
 	
 	public boolean similiar(Histogram histo1, Histogram histo2, int start, int end) {
 		SummaryStatistics stats = new SummaryStatistics();
-		for (int i = start; i <= end; i++) {
+		for (int i = start; i < end; i++) {
 			double valueToAdd = Math.abs(histo1.get(i).getValue() - histo2.get(i).getValue());
 			stats.addValue(valueToAdd);
 		}

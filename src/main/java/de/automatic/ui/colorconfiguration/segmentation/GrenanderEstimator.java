@@ -19,7 +19,7 @@ public class GrenanderEstimator {
 	private static Histogram decreasingGrenanderEstimator(Histogram histo, int start, int end) {
 		Histogram gHisto = new Histogram(histo);
 
-		for (int i = start; i < end; i++) {
+		for (int i = start; i < end - 1; i++) {
 			if (i + 1 < gHisto.getBins() && gHisto.get(i + 1).getValue() - gHisto.get(i).getValue() > 0.0) {
 				// look ahead
 				int j = i;
@@ -44,7 +44,7 @@ public class GrenanderEstimator {
 	private static Histogram increasingGrenanderEstimator(Histogram histo, int start, int end) {
 		Histogram gHisto = new Histogram(histo);
 
-		for (int i = start; i < end; i++) {
+		for (int i = start; i < end - 1; i++) {
 			if (i + 1 < gHisto.getBins() && gHisto.get(i + 1).getValue() - gHisto.get(i).getValue() < 0.0) {
 				int j = i;
 				double mean = gHisto.get(i).getValue();
@@ -63,5 +63,5 @@ public class GrenanderEstimator {
 		}
 		return gHisto;
 	}
-	
+
 }
