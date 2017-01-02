@@ -43,11 +43,13 @@ public class FtcSegmentation {
 	}
 
 	public Segmentation segment(Histogram histo, String title) {
+		boolean compressed = HistogramCompressor.compress(histo);
 		Segmentation seg = findMinima(histo);
 
 		// histo = SampleDataService.createSampleHistogram();
-		new OneDimHistogramVisualizer(title + " | All Minima", histo, seg, (windowCount / windowsPerColumn) * visWidth,
-				(windowCount % windowsPerColumn) * visHeight, visWidth, visHeight);
+		new OneDimHistogramVisualizer(title + " | All Minima | " + compressed, histo, seg,
+				(windowCount / windowsPerColumn) * visWidth, (windowCount % windowsPerColumn) * visHeight, visWidth,
+				visHeight);
 		windowCount++;
 
 		// step 2: merge consecutive segments
@@ -82,7 +84,7 @@ public class FtcSegmentation {
 			}
 		}
 
-		new OneDimHistogramVisualizer(title + " | Reduced Minima", histo, seg,
+		new OneDimHistogramVisualizer(title + " | Reduced Minima  | " + compressed, histo, seg,
 				(windowCount / windowsPerColumn) * visWidth, (windowCount % windowsPerColumn) * visHeight, visWidth,
 				visHeight);
 		windowCount++;
@@ -99,10 +101,10 @@ public class FtcSegmentation {
 
 		// first look if there are no significant histogram peaks in the given
 		// range
-//		if (tooFlat(histo, start, index))
-//			return true;
-//		if (tooFlat(histo, index, end))
-//			return true;
+		// if (tooFlat(histo, start, index))
+		// return true;
+		// if (tooFlat(histo, index, end))
+		// return true;
 
 		// StatisticalTest tester = new WeikerTTest();
 		StatisticalTest tester = new MaxDistanceTest();
