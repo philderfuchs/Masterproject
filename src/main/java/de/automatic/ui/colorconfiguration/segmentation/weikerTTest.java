@@ -7,6 +7,8 @@ import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 
 public class weikerTTest implements StatisticalTest {
 	
+	private double probability = 0.99;
+	
 	public boolean similiar(Histogram histo1, Histogram histo2, int start, int end) {
 		SummaryStatistics stats = new SummaryStatistics();
 		for (int i = start; i <= end; i++) {
@@ -18,7 +20,7 @@ public class weikerTTest implements StatisticalTest {
 			return true;
 		}
 		double t = Math.sqrt(stats.getN()) * stats.getMean() / stats.getStandardDeviation();
-		double criticalT = new TDistribution(end - start).inverseCumulativeProbability(0.97);
+		double criticalT = new TDistribution(end - start).inverseCumulativeProbability(probability);
 		return t < criticalT;
 	}
 	

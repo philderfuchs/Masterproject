@@ -36,6 +36,8 @@ public class FtcSegmentation {
 	private static final int visHeight = 120;
 	private static final int windowsPerColumn = 6;
 
+	private static double flatThreshold = 0;
+
 	public FtcSegmentation() {
 		windowCount = 0;
 	}
@@ -48,7 +50,7 @@ public class FtcSegmentation {
 				(windowCount % windowsPerColumn) * visHeight, visWidth, visHeight);
 		windowCount++;
 
-		// T-Test
+		// step 2: merge consecutive segments
 		Random r = new Random();
 		for (int i = 0; i < 100; i++) {
 
@@ -56,12 +58,30 @@ public class FtcSegmentation {
 			if (seg.size() < 3)
 				break;
 
-			int j = r.nextInt(seg.size());
-			if (testUnimodalHypthesisFor(j, histo, seg)) {
-				seg.remove(j);
+			int chosenIndex = r.nextInt(seg.size());
+			if (testUnimodalHypthesisFor(chosenIndex, histo, seg, 0)) {
+				seg.remove(chosenIndex);
 			}
 		}
-		// System.out.println();
+
+		// step 3: merge unions of segments
+		for (int i = 0; i < 100; i++) {
+
+			// stop if only start and stop marker left
+			if (seg.size() < 3)
+				break;
+			int chosenIndex = r.nextInt(seg.size());
+			for (int unions = 1; unions + chosenIndex < seg.size() - 1; unions++) {
+				if (testUnimodalHypthesisFor(chosenIndex, histo, seg, unions)) {
+					for (int j = chosenIndex; j <= chosenIndex + unions; j++) {
+						seg.remove(j);
+						System.out.println("Worked");
+					}
+					break;
+				}
+			}
+		}
+
 		new OneDimHistogramVisualizer(title + " | Reduced Minima", histo, seg,
 				(windowCount / windowsPerColumn) * visWidth, (windowCount % windowsPerColumn) * visHeight, visWidth,
 				visHeight);
@@ -69,13 +89,20 @@ public class FtcSegmentation {
 		return seg;
 	}
 
-	private boolean testUnimodalHypthesisFor(int index, Histogram histo, Segmentation seg) {
+	private boolean testUnimodalHypthesisFor(int index, Histogram histo, Segmentation seg, int unionCount) {
 
 		if (index == 0 || index == seg.size() - 1) {
 			return false;
 		}
 		int start = seg.get(index - 1);
-		int end = seg.get(index + 1);
+		int end = seg.get(Math.min(index + 1 + unionCount, seg.size() - 1));
+
+		// first look if there are no significant histogram peaks in the given
+		// range
+		if (tooFlat(histo, start, index))
+			return true;
+		if (tooFlat(histo, index, end))
+			return true;
 
 		boolean confirmed = false;
 		StatisticalTest tester = new weikerTTest();
@@ -90,6 +117,19 @@ public class FtcSegmentation {
 		}
 
 		return confirmed;
+	}
+
+	private boolean tooFlat(Histogram histo, int start, int end) {
+		if(flatThreshold == 0) {
+			return false;
+		}
+		boolean tooFlat = true;
+		for (int i = start; i <= end; i++) {
+			if (histo.get(i).getValue() > flatThreshold) {
+				tooFlat = false;
+			}
+		}
+		return tooFlat;
 	}
 
 	private Segmentation findMinima(Histogram histo) {

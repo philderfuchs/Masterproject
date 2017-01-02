@@ -12,7 +12,7 @@ import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 
 public class Acopa {
 
-	private static final int histoBins = 64;
+	private static final int histoBins = 128;
 
 	private FtcSegmentation segmentor;
 	private SampleListFilterer filterer;
@@ -30,7 +30,9 @@ public class Acopa {
 		Segmentation seg = segmentor.segment(histo, "C1");
 		filterer.linkBackGreyCylinder(histo);
 
-		for (int i = 0; i < seg.size() - 2; i++) {
+		// The Last modemarker is always the end of the histogram and thus
+		// doesnt have a successor
+		for (int i = 0; i < seg.size() - 1; i++) {
 			SampleList modeSamples = getSamplesForMode(histo, seg, i);
 			HierarchicalHsiSample child = new HierarchicalHsiSample(CalculationService.calculateMean(modeSamples, true),
 					modeSamples);
@@ -58,7 +60,7 @@ public class Acopa {
 		// rek(child, level + 1);
 		// } else {
 		
-		// The Last Modemarker ist always the end of the histogram and thus
+		// The Last modemarker is always the end of the histogram and thus
 		// doesnt have a successor
 		for (int i = 0; i < modeSeg.size() - 1; i++) {
 			SampleList modeSamples = getSamplesForMode(modeHisto, modeSeg, i);
