@@ -23,4 +23,12 @@ public class GetSeedsVisitor implements Visitor {
 		this.seeds = seeds;
 	}
 
+	public int getTotalCount() {
+		int totalCount = 0;
+		for (Sample s : seeds) {
+			totalCount += s.getCount();
+		}
+		return totalCount;
+	}
+
 }

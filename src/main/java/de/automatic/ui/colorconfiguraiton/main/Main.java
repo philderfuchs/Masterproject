@@ -19,11 +19,10 @@ import de.automatic.ui.colorconfiguration.segmentation.FtcSegmentation;
 
 public class Main {
 
-	static int i = 1;
-	static int k = 5;
+	static int k = 7;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/mapei.png";
+	static String file = "resources/peppers.png";
 
 	public static void main(String[] args) {
 
@@ -41,18 +40,18 @@ public class Main {
 
 		HierarchicalHsiPalette hieraPalette = new Acopa().findSeeds(listoForAcopa);
 		new HierarchicalPaletteShower(hieraPalette, "Segmentation Palette", 0, 0);
-
+		
 		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(ConversionService.toRgbSampleList(hieraPalette.getSeeds()));
 		System.out.println("start clustering");
-		ClusterContainer clusters1 = clusterer1.clusterToEnd(rgbSamples);
+		ClusterContainer clusters1 = clusterer1.init(rgbSamples);
 		System.out.println("finished clustering with " + clusterer1.getStepCount() + " steps");
-		new PaletteShower(ConversionService.toHashSet(clusters1), "K-Means after Segmentation Palette", 1000, 300);
+		new PaletteShower(ConversionService.toSampleList(clusters1), "K-Means after Segmentation Palette", 1000, 300);
 
 		AbstractKmeans clusterer2 = new KmeansPlusPlus(k);
 		System.out.println("start clustering");
 		ClusterContainer clusters2 = clusterer2.clusterToEnd(rgbSamples);
 		System.out.println("finished clustering with " + clusterer2.getStepCount() + " steps");
-		new PaletteShower(ConversionService.toHashSet(clusters2), "K-Means Palette", 1000, 600);
+		new PaletteShower(ConversionService.toSampleList(clusters2), "K-Means Palette", 1000, 600);
 
 		try {
 			new ThreeDimHistogramVisualizer(listoForAcopa, clusters1);

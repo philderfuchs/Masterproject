@@ -20,12 +20,20 @@ public class HierarchicalHsiPalette extends ArrayList<HierarchicalHsiSample> {
 		return v.getCount();
 	}
 
-	public int getCountOfPixels() {
+	public int getCurrentLevelCountOfSamples() {
 		int count = 0;
 		for (HierarchicalHsiSample p : this) {
 			count += p.getCount();
 		}
 		return count;
+	}
+	
+	public int getLastLevelCountOfSamples() {
+		GetSeedsVisitor v = new GetSeedsVisitor();
+		for (HierarchicalHsiSample s : this) {
+			s.accept(v);
+		}
+		return v.getTotalCount();
 	}
 
 }
