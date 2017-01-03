@@ -16,11 +16,11 @@ public class Acopa {
 	private static final boolean weightedMean = false;
 
 	private FtcSegmentation segmentor;
-	private SampleListFilterer filterer;
+	private GreyCylinderFilterer filterer;
 
 	public Acopa() {
 		segmentor = new FtcSegmentation();
-		filterer = new SampleListFilterer();
+		filterer = new GreyCylinderFilterer();
 	}
 
 	public HierarchicalHsiPalette findSeeds(SampleList samples) {

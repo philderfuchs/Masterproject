@@ -5,12 +5,12 @@ import de.automatic.ui.colorconfiguraiton.entities.Channels;
 import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 import de.automatic.ui.colorconfiguraiton.entities.Sample;
 
-public class SampleListFilterer {
+public class GreyCylinderFilterer {
 
 	private SampleList filteredList;
 	private SampleList greyCylinder;
 
-	public SampleListFilterer() {
+	public GreyCylinderFilterer() {
 		filteredList = new SampleList();
 		greyCylinder = new SampleList();
 	}
@@ -25,27 +25,20 @@ public class SampleListFilterer {
 		}
 		return filteredList;
 	}
-	
+
 	public void linkBackGreyCylinder(Histogram histo) {
 		greyCylinder.sort(Channels.C1);
-		
+
 		int j = 0;
 
-		for (int i = 0; i < histo.size() -1 ; i++) {
-			while (j < greyCylinder.size() && greyCylinder.get(j).getNormalized(Channels.C1) <= histo.get(i + 1).getKey()) {
+		for (int i = 0; i < histo.size() - 1; i++) {
+			while (j < greyCylinder.size()
+					&& greyCylinder.get(j).getNormalized(Channels.C1) <= histo.get(i + 1).getKey()) {
 				histo.get(i).getSamples().add(greyCylinder.get(j));
 				j++;
 			}
 
 		}
 	}
-
-//	public SampleList getFilteredSamples() {
-//		return filteredSamples;
-//	}
-//
-//	public void setFilteredSamples(SampleList filteredSamples) {
-//		this.filteredSamples = filteredSamples;
-//	}
 
 }
