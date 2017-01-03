@@ -58,12 +58,12 @@ public class Histogram extends ArrayList<HistogramElement> {
 		return old;
 	}
 
-	public boolean add(double i) {
-		totalCount += i;
-		double binRange = 1.0 / bins;
-		HistogramElement e = new HistogramElement(((double) this.size() + 0.5) * binRange, i);
-		return super.add(e);
-	}
+//	public boolean add(double i) {
+//		totalCount += i;
+//		double binRange = 1.0 / bins;
+//		HistogramElement e = new HistogramElement(((double) this.size() + 0.5) * binRange, i);
+//		return super.add(e);
+//	}
 
 	public double getTotalCount() {
 		return totalCount;

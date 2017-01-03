@@ -31,6 +31,7 @@ public class ConversionService {
 		return samples;
 	}
 
+
 	public static Histogram toHistogram(SampleList samples, Channels channel, int bins, boolean normalize) {
 
 		Histogram histo = new Histogram(bins, channel);
@@ -46,7 +47,7 @@ public class ConversionService {
 				binSamples.add(samples.get(j));
 				j++;
 			}
-			histo.add(count);
+			histo.add(new HistogramElement(((double) i) * binRange, count, binSamples));
 			histo.get(histo.size() - 1).setSamples(binSamples);
 		}
 
@@ -56,6 +57,34 @@ public class ConversionService {
 
 		return histo;
 	}
+	
+//	public static Histogram toHistogram(SampleList samples, Channels channel, int bins, boolean normalize) {
+//
+//		Histogram histo = new Histogram(bins, channel);
+//		samples.sort(channel);
+//		double min = samples.get(0).getNormalized(channel);
+//		double max = samples.get(samples.size() - 1).getNormalized(channel);
+//		double binRange = (max - min) / bins;
+//		int j = 0;
+//
+//		for (int i = 0; i < bins; i++) {
+//			int count = 0;
+//			SampleList binSamples = new SampleList();
+//			while (j < samples.size()
+//					&& samples.get(j).getNormalized(channel) <= min + (((double) i) + 1.0) * binRange) {
+//				count += samples.get(j).getCount();
+//				binSamples.add(samples.get(j));
+//				j++;
+//			}
+//			histo.add(new HistogramElement(min + ((double) i) * binRange, count, binSamples));
+//		}
+//
+//		if (normalize) {
+//			histo.normalize();
+//		}
+//
+//		return histo;
+//	}
 
 	public static HashSet<Sample> toHashSet(ClusterContainer clusters) {
 		HashSet<Sample> pixelSet = new HashSet<>();

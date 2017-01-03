@@ -13,6 +13,13 @@ public class HistogramElement {
 		samples = new SampleList();
 	}
 
+	public HistogramElement(double key, double value, SampleList samples) {
+		super();
+		this.key = key;
+		this.value = value;
+		this.samples = samples;
+	}
+
 	public double getKey() {
 		return key;
 	}

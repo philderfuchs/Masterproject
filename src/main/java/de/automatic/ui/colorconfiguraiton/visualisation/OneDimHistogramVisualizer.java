@@ -50,7 +50,7 @@ public class OneDimHistogramVisualizer extends JFrame {
 		if (segmentation != null) {
 			int index = 0;
 			for (Integer i : segmentation) {
-				ValueMarker marker = new ValueMarker(i);
+				ValueMarker marker = new ValueMarker(histogram.get(i).getKey());
 				marker.setPaint(Color.BLACK);
 				marker.setLabel(Integer.toString(index++));
 				plot.addDomainMarker(marker);
@@ -68,7 +68,7 @@ public class OneDimHistogramVisualizer extends JFrame {
 		XYSeries series = new XYSeries("Series");
 		for (int i = 0; i < histogram.getBins(); i++) {
 			if (i > 0) {
-				series.add(histogram.get(i - 1).getKey(), histogram.get(i - 1).getValue());
+				series.add(histogram.get(i).getKey(), histogram.get(i - 1).getValue());
 			}
 			series.add(histogram.get(i).getKey(), histogram.get(i).getValue());
 		}
