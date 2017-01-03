@@ -23,7 +23,7 @@ public class KmeansFromGivenSeeds extends AbstractKmeans {
 		// clusters not yet initialized
 		clusters = new ClusterContainer();
 
-		SeedFilterer.filterSeeds(seeds);
+//		SeedFilterer.filterSeeds(seeds);
 		for (Sample s : seeds) {
 			clusters.add(new Cluster(new SampleList(), s));
 		}

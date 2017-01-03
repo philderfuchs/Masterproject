@@ -13,7 +13,7 @@ import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 public class Acopa {
 
 	private static final int histoBins = 128;
-	private static final boolean weightedMean = false;
+	private static final boolean weightedMean = true;
 
 	private FtcSegmentation segmentor;
 	private GreyCylinderFilterer filterer;

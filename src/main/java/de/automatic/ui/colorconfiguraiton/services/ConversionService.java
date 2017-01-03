@@ -93,6 +93,14 @@ public class ConversionService {
 		}
 		return pixelSet;
 	}
+	
+	public static SampleList toSampleList(ClusterContainer clusters) {
+		SampleList samples = new SampleList();
+		for (Cluster c : clusters) {
+			samples.add(c.getCenter());
+		}
+		return samples;
+	}
 
 	public static HashSet<Sample> toHashSet(SampleList samples) {
 		HashSet<Sample> pixelSet = new HashSet<>();

@@ -16,7 +16,7 @@ import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 
 public class HierarchicalPaletteShower {
 
-	private final int colorWidth = 50;
+	private final int colorWidth = 30;
 	private final int colorHeight = 80;
 
 	private HierarchicalHsiPalette hieraPalette;
