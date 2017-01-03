@@ -68,9 +68,9 @@ public class OneDimHistogramVisualizer extends JFrame {
 		XYSeries series = new XYSeries("Series");
 		for (int i = 0; i < histogram.getBins(); i++) {
 			if (i > 0) {
-				series.add(i, histogram.get(i - 1).getValue());
+				series.add(histogram.get(i - 1).getKey(), histogram.get(i - 1).getValue());
 			}
-			series.add(i, histogram.get(i).getValue());
+			series.add(histogram.get(i).getKey(), histogram.get(i).getValue());
 		}
 		dataset.addSeries(series);
 		JFreeChart chart = ChartFactory.createXYLineChart("Segmentation", "C1", "Count", dataset);
