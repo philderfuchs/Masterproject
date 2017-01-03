@@ -35,6 +35,7 @@ public class FtcSegmentation {
 	private static final int visWidth = 550;
 	private static final int visHeight = 120;
 	private static final int windowsPerColumn = 6;
+	private static final boolean visualize = true;
 
 	private static double flatThreshold = 0.05;
 
@@ -47,10 +48,12 @@ public class FtcSegmentation {
 		Segmentation seg = findMinima(histo);
 
 		// histo = SampleDataService.createSampleHistogram();
-		new OneDimHistogramVisualizer(title + " | All Minima | " + compressed, histo, seg,
-				(windowCount / windowsPerColumn) * visWidth, (windowCount % windowsPerColumn) * visHeight, visWidth,
-				visHeight);
-		windowCount++;
+		if (visualize) {
+			new OneDimHistogramVisualizer(title + " | All Minima | " + compressed, histo, seg,
+					(windowCount / windowsPerColumn) * visWidth, (windowCount % windowsPerColumn) * visHeight, visWidth,
+					visHeight);
+			windowCount++;
+		}
 
 		// step 2: merge consecutive segments
 		Random r = new Random();
@@ -84,10 +87,12 @@ public class FtcSegmentation {
 			}
 		}
 
-		new OneDimHistogramVisualizer(title + " | Reduced Minima  | " + compressed, histo, seg,
-				(windowCount / windowsPerColumn) * visWidth, (windowCount % windowsPerColumn) * visHeight, visWidth,
-				visHeight);
-		windowCount++;
+		if (visualize) {
+			new OneDimHistogramVisualizer(title + " | Reduced Minima  | " + compressed, histo, seg,
+					(windowCount / windowsPerColumn) * visWidth, (windowCount % windowsPerColumn) * visHeight, visWidth,
+					visHeight);
+			windowCount++;
+		}
 		return seg;
 	}
 
