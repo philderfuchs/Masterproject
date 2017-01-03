@@ -99,23 +99,10 @@ public class FtcSegmentation {
 		int start = seg.get(index - 1);
 		int end = seg.get(Math.min(index + 1 + unionCount, seg.size() - 1));
 
-		// first look if there are no significant histogram peaks in the given
-		// range
-		// if (tooFlat(histo, start, index))
-		// return true;
-		// if (tooFlat(histo, index, end))
-		// return true;
-
 		// StatisticalTest tester = new WeikerTTest();
 		StatisticalTest tester = new MaxDistanceTest();
 
-		// maybe whole segment is kind of monotone
-		if (tester.similiar(histo, GrenanderEstimator.poolAdjacentViolator("inc", histo, start, end), start, end)
-				|| tester.similiar(histo, GrenanderEstimator.poolAdjacentViolator("dec", histo, start, end), start,
-						end))
-			return true;
-
-		for (int i = start + 1; i < end - 1; i++) {
+		for (int i = start; i < end; i++) {
 			Histogram incHisto = GrenanderEstimator.poolAdjacentViolator("inc", histo, start, i);
 			Histogram decHisto = GrenanderEstimator.poolAdjacentViolator("dec", histo, i, end);
 
@@ -125,19 +112,6 @@ public class FtcSegmentation {
 		}
 
 		return false;
-	}
-
-	private boolean tooFlat(Histogram histo, int start, int end) {
-		if (flatThreshold == 0) {
-			return false;
-		}
-		boolean tooFlat = true;
-		for (int i = start; i < end; i++) {
-			if (histo.get(i).getValue() > flatThreshold) {
-				tooFlat = false;
-			}
-		}
-		return tooFlat;
 	}
 
 	private Segmentation findMinima(Histogram histo) {
