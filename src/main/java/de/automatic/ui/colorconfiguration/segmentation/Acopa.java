@@ -13,7 +13,7 @@ import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 public class Acopa {
 
 	private static final int histoBins = 128;
-	private static final boolean weightedMean = true;
+	private static final boolean weightedMean = false;
 
 	private FtcSegmentation segmentor;
 	private GreyCylinderFilterer filterer;
@@ -89,7 +89,11 @@ public class Acopa {
 	private SampleList getSamplesForMode(Histogram histo, Segmentation seg, int segIndex) {
 		SampleList modeSamples = new SampleList();
 
-		for (int j = seg.get(segIndex); j < seg.get(segIndex + 1); j++) {
+		int start = seg.get(segIndex);
+		// if this is the last mode, add the samples from the end marker
+		int end = segIndex == seg.size() - 2 ? seg.get(segIndex + 1) + 1 : seg.get(segIndex + 1);
+
+		for (int j = start; j < end; j++) {
 			for (Sample s : histo.get(j).getSamples()) {
 				modeSamples.add(s);
 			}
