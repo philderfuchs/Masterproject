@@ -21,12 +21,12 @@ public class ImageReader {
 	}
 
 	public SampleList getRgbHistogram() {
-		HashMap<Integer, Integer> pixelMap = getPixelMap();
+		HashMap<HsiSample, Double> pixelMap = getWeightedHsiMap();
 
 		SampleList samples = new SampleList();
-		for (Integer i : pixelMap.keySet()) {
-			Color c = new Color(i);
-			samples.add(new RgbSample(c.getRed(), c.getGreen(), c.getBlue(), pixelMap.get(i)));
+		for (HsiSample s : pixelMap.keySet()) {
+			s.setCount(pixelMap.get(s).intValue()); 
+			samples.add(ConversionService.toRgb(s));
 		}
 
 		return samples;

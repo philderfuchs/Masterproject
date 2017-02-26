@@ -9,6 +9,7 @@ import de.automatic.ui.colorconfiguraiton.clustering.KmeansPlusPlus;
 import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 import de.automatic.ui.colorconfiguraiton.entities.HierarchicalHsiPalette;
+import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.process.ImageReader;
 import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 import de.automatic.ui.colorconfiguraiton.visualisation.HierarchicalPaletteShower;
@@ -27,11 +28,11 @@ public class Main {
 	public static void main(String[] args) {
 
 		SampleList hsiSamples = null;
-//		SampleList rgbSamples = null;
+		SampleList rgbSamples = null;
 
 		try {
 			hsiSamples = (new ImageReader(new File(file))).getHsiHistogram();
-//			rgbSamples = (new ImageReader(new File(file))).getRgbHistogram();
+			rgbSamples = (new ImageReader(new File(file))).getRgbHistogram();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -42,9 +43,9 @@ public class Main {
 		HierarchicalHsiPalette hieraPalette = new Acopa().findSeeds(listoForAcopa);
 		new HierarchicalPaletteShower(hieraPalette, "Segmentation Palette", 0, 0);
 		
-		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(hieraPalette.getSeeds());
+		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(ConversionService.toRgbSampleList(hieraPalette.getSeeds()));
 		System.out.println("start clustering");
-		clusters1 = clusterer1.clusterToEnd(hsiSamples);
+		clusters1 = clusterer1.clusterToEnd(rgbSamples);
 		System.out.println("finished clustering with " + clusterer1.getStepCount() + " steps");
 		new PaletteShower(ConversionService.toSampleList(clusters1), "K-Means after Segmentation Palette", 1000, 300);
 
