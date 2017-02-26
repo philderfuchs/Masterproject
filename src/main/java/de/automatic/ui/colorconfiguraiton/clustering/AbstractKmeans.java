@@ -11,7 +11,7 @@ public abstract class AbstractKmeans implements StepByStepClusterer, FinishingCl
 
 	private boolean weighted = true;
 	
-	protected static int maxStepCount = 40;
+	protected static int maxStepCount = 10;
 
 	protected int k;
 	protected ClusterContainer clusters;

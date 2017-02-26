@@ -22,7 +22,7 @@ public class Main {
 	static int k = 7;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/mightbe.jpg";
+	static String file = "resources/kanye_small.jpg";
 
 	public static void main(String[] args) {
 

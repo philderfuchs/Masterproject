@@ -33,15 +33,43 @@ public class ImageReader {
 	}
 
 	public SampleList getHsiHistogram() {
-		HashMap<Integer, Integer> pixelMap = getPixelMap();
+		HashMap<HsiSample, Double> pixelMap = getWeightedHsiMap();
 
 		SampleList samples = new SampleList();
-		for (Integer i : pixelMap.keySet()) {
-			Color c = new Color(i);
-			samples.add(ConversionService.toHsi(c.getRed(), c.getGreen(), c.getBlue(), pixelMap.get(i)));
+		for (HsiSample s : pixelMap.keySet()) {
+			s.setCount(pixelMap.get(s).intValue()); 
+			samples.add(s);
 		}
 
 		return samples;
+	}
+	
+	private HashMap<HsiSample, Double> getWeightedHsiMap() {
+		int imgHeight = img.getHeight();
+		int imgWidth = img.getWidth();
+
+		HashMap<HsiSample, Double> pixelMap = new HashMap();
+
+		HsiSample[][] converted = new HsiSample [imgHeight][imgWidth];
+		for (int y = 0; y < imgHeight; y++) {
+			for (int x = 0; x < imgWidth; x++) {
+				Color c = new Color(img.getRGB(x, y));
+				converted[x][y] = ConversionService.toHsi(c.getRed(), c.getGreen(), c.getBlue(), 1);
+			}
+		}
+		
+		for (int y = 0; y < imgHeight; y++) {
+			for (int x = 0; x < imgWidth; x++) {
+				HsiSample sample = converted[x][y];
+				double weight = 1.0 + 2.0 * sample.getC2();
+				if (pixelMap.containsKey(sample)) {
+					pixelMap.put(sample, pixelMap.get(sample) + weight);
+				} else {
+					pixelMap.put(sample, weight);
+				}
+			}
+		}
+		return pixelMap;
 	}
 
 	private HashMap<Integer, Integer> getPixelMap() {
