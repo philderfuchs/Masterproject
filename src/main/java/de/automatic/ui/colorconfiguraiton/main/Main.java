@@ -27,11 +27,11 @@ public class Main {
 	public static void main(String[] args) {
 
 		SampleList hsiSamples = null;
-		SampleList rgbSamples = null;
+//		SampleList rgbSamples = null;
 
 		try {
 			hsiSamples = (new ImageReader(new File(file))).getHsiHistogram();
-			rgbSamples = (new ImageReader(new File(file))).getRgbHistogram();
+//			rgbSamples = (new ImageReader(new File(file))).getRgbHistogram();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -47,12 +47,6 @@ public class Main {
 		clusters1 = clusterer1.clusterToEnd(hsiSamples);
 		System.out.println("finished clustering with " + clusterer1.getStepCount() + " steps");
 		new PaletteShower(ConversionService.toSampleList(clusters1), "K-Means after Segmentation Palette", 1000, 300);
-//
-//		AbstractKmeans clusterer2 = new KmeansPlusPlus(k);
-//		System.out.println("start clustering");
-//		ClusterContainer clusters2 = clusterer2.clusterToEnd(rgbSamples);
-//		System.out.println("finished clustering with " + clusterer2.getStepCount() + " steps");
-//		new PaletteShower(ConversionService.toSampleList(clusters2), "K-Means Palette", 1000, 600);
 
 		try {
 			new ThreeDimHistogramVisualizer(listoForAcopa, clusters1);
