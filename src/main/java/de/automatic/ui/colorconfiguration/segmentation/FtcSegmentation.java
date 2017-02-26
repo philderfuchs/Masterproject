@@ -37,14 +37,13 @@ public class FtcSegmentation {
 	private static final int windowsPerColumn = 6;
 	private static final boolean visualize = true;
 
-	private static double flatThreshold = 0.05;
-
 	public FtcSegmentation() {
 		windowCount = 0;
 	}
 
 	public Segmentation segment(Histogram histo, String title) {
-		boolean compressed = HistogramCompressor.compress(histo);
+		boolean compressed = HistogramPreProcessor.compress(histo);
+		HistogramPreProcessor.smooth(histo);
 		Segmentation seg = findMinima(histo);
 
 		// histo = SampleDataService.createSampleHistogram();

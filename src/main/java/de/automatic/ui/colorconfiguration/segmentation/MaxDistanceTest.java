@@ -4,7 +4,7 @@ import de.automatic.ui.colorconfiguraiton.entities.Histogram;
 
 public class MaxDistanceTest implements StatisticalTest {
 
-	private static final double maxDistance = 0.06;
+	private static final double maxDistance = 0.065;
 
 	@Override
 	public boolean similiar(Histogram histo1, Histogram histo2, int start, int end) {
