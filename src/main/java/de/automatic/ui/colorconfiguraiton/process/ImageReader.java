@@ -74,7 +74,7 @@ public class ImageReader {
 				meanDist /= 8;
 				meanDist += 0.01;
 				meanDist = 1.0 / (meanDist * 100);
-				double weight = 1.0 + Math.pow(6.0 * sample.getC2() * meanDist, 2);
+				double weight = 1.0 + 5.0 * sample.getC2() * Math.pow(meanDist, 3);
 
 				if (pixelMap.containsKey(sample)) {
 					pixelMap.put(sample, pixelMap.get(sample) + weight);

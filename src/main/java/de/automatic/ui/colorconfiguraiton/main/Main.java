@@ -38,7 +38,7 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		hsiSamples = (new GreyCylinderFilterer()).filterGreyCylinder(hsiSamples, 0.15);
+		hsiSamples = (new GreyCylinderFilterer()).filterGreyCylinder(hsiSamples, 0.14);
 		
 		SampleList listoForAcopa = hsiSamples;
 		ClusterContainer clusters1 = null;
