@@ -5,7 +5,7 @@ import de.automatic.ui.colorconfiguraiton.entities.HistogramElement;
 
 public class HistogramPreProcessor {
 
-	private static final double threshold = 3;
+	private static final double threshold = 5.0;
 
 	/**
 	 * compresses the histogram if integral below threshold
@@ -17,17 +17,22 @@ public class HistogramPreProcessor {
 	public static boolean compress(Histogram histo) {
 
 		double integral = 0;
+		boolean compressed = false;
 
 		for (HistogramElement e : histo) {
 			integral += e.getValue();
 		}
-		if (integral < threshold) {
+		while (integral < threshold) {
+			compressed = true;
+			integral = 0;
 			for (HistogramElement e : histo) {
-				e.setValue(Math.sqrt(Math.sqrt(e.getValue())));
+				double compressedValue = Math.sqrt(e.getValue());
+				e.setValue(compressedValue);
+				integral += compressedValue;
 			}
-			return true;
 		}
-		return false;
+		
+		return compressed;
 	}
 
 	public static boolean smooth(Histogram histo) {
