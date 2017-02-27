@@ -39,7 +39,7 @@ public class HistogramPreProcessor {
 	public static boolean smooth(Histogram histo) {
 		double oldValue = histo.get(0).getValue();
 		for (int i = 1; i < histo.size() - 1; i++) {
-			double value = (oldValue + 2 * histo.get(i).getValue() + histo.get(i+1).getValue()) / 4;
+			double value = (oldValue + histo.get(i).getValue() + histo.get(i+1).getValue()) / 3;
 			oldValue = histo.get(i).getValue();
 			histo.get(i).setValue(value);
 		}

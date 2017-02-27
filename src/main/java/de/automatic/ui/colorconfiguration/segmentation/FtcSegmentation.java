@@ -44,6 +44,7 @@ public class FtcSegmentation {
 	public Segmentation segment(Histogram histo, String title) {
 		boolean compressed = HistogramPreProcessor.compress(histo);
 		HistogramPreProcessor.smooth(histo);
+		
 		Segmentation seg = findMinima(histo);
 
 		// histo = SampleDataService.createSampleHistogram();
