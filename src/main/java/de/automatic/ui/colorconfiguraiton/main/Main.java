@@ -24,7 +24,7 @@ public class Main {
 	static int k = 7;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/cozytapes.jpg";
+	static String file = "resources/kanye_small.jpg";
 
 	public static void main(String[] args) {
 
@@ -38,7 +38,7 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		hsiSamples = (new GreyCylinderFilterer()).filterGreyCylinder(hsiSamples, 0.1);
+		hsiSamples = (new GreyCylinderFilterer()).filterGreyCylinder(hsiSamples, 0.15);
 		
 		SampleList listoForAcopa = hsiSamples;
 		ClusterContainer clusters1 = null;
