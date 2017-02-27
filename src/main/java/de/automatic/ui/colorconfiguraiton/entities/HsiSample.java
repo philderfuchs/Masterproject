@@ -16,6 +16,11 @@ public class HsiSample implements Sample {
 		return df.format(h).equals(df.format(other.getC1())) && df.format(s).equals(df.format(other.getC2()))
 				&& df.format(i).equals(df.format(other.getC3()));
 	}
+	
+	@Override
+	public int hashCode() {
+		return (int) (h*1000.0) + (int) (s*1000.0) + (int) (i*1000.0);
+	}
 
 	public String toString() {
 		return h + " | " + s + " | " + i;

@@ -235,7 +235,7 @@ public class ConversionService {
 //		 double s = i == 0 ? 0 : 1.0 - min / i;
 		double s = i == 0 ? 0 : Math.sqrt(Math.pow(r - i, 2) + Math.pow(g - i, 2) + Math.pow(b - i, 2));
 
-		double h = 0;
+		double h = Math.random() * 360.0;
 		if (c != 0.0) {
 			h = Math.toDegrees(
 					Math.acos((0.5 * ((r - g) + (r - b))) / Math.sqrt(Math.pow((r - g), 2) + (r - b) * (g - b))));

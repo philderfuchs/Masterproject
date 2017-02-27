@@ -9,9 +9,9 @@ import de.automatic.ui.colorconfiguraiton.services.ErrorCalculationService;
 
 public abstract class AbstractKmeans implements StepByStepClusterer, FinishingClusterer {
 
-	private boolean weighted = false;
+	private boolean weighted = true;
 	
-	protected static int maxStepCount = 20;
+	protected static int maxStepCount = 40;
 
 	protected int k;
 	protected ClusterContainer clusters;

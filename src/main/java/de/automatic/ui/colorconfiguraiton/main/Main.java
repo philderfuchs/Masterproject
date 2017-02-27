@@ -23,16 +23,16 @@ public class Main {
 	static int k = 7;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/kanye_small.jpg";
+	static String file = "resources/mapei.png";
 
 	public static void main(String[] args) {
 
 		SampleList hsiSamples = null;
-		SampleList rgbSamples = null;
+//		SampleList rgbSamples = null;
 
 		try {
 			hsiSamples = (new ImageReader(new File(file))).getHsiHistogram();
-			rgbSamples = (new ImageReader(new File(file))).getRgbHistogram();
+//			rgbSamples = (new ImageReader(new File(file))).getRgbHistogram();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,9 +43,9 @@ public class Main {
 		HierarchicalHsiPalette hieraPalette = new Acopa().findSeeds(listoForAcopa);
 		new HierarchicalPaletteShower(hieraPalette, "Segmentation Palette", 0, 0);
 		
-		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(ConversionService.toRgbSampleList(hieraPalette.getSeeds()));
+		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(hieraPalette.getSeeds());
 		System.out.println("start clustering");
-		clusters1 = clusterer1.clusterToEnd(rgbSamples);
+		clusters1 = clusterer1.clusterToEnd(hsiSamples);
 		System.out.println("finished clustering with " + clusterer1.getStepCount() + " steps");
 		new PaletteShower(ConversionService.toSampleList(clusters1), "K-Means after Segmentation Palette", 1000, 300);
 
