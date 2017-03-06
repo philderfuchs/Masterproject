@@ -22,8 +22,8 @@ public class ImageReader {
 		img = ImageIO.read(file);
 	}
 
-	public SampleList getRgbHistogram() {
-		HashMap<HsiSample, Double> pixelMap = getWeightedHsiMap();
+	public SampleList getRgbHistogram(double weightFactor) {
+		HashMap<HsiSample, Double> pixelMap = getWeightedHsiMap(weightFactor);
 
 		SampleList samples = new SampleList();
 		for (HsiSample s : pixelMap.keySet()) {
@@ -34,8 +34,8 @@ public class ImageReader {
 		return samples;
 	}
 
-	public SampleList getHsiHistogram() {
-		HashMap<HsiSample, Double> pixelMap = getWeightedHsiMap();
+	public SampleList getHsiHistogram(double weightFactor) {
+		HashMap<HsiSample, Double> pixelMap = getWeightedHsiMap(weightFactor);
 
 		SampleList samples = new SampleList();
 		for (HsiSample s : pixelMap.keySet()) {
@@ -46,7 +46,7 @@ public class ImageReader {
 		return samples;
 	}
 
-	private HashMap<HsiSample, Double> getWeightedHsiMap() {
+	private HashMap<HsiSample, Double> getWeightedHsiMap(double weightFactor) {
 		int imgHeight = img.getHeight();
 		int imgWidth = img.getWidth();
 
@@ -69,13 +69,25 @@ public class ImageReader {
 				for (int i = -1; i <= 1; i++) {
 					for (int j = -1; j <= 1; j++) {
 						meanDist += ErrorCalculationService.getEucledianDistance(sample, converted[x + i][y + j]);
+//						meanDist += Math.abs(sample.getC1Normalized() - converted[x + i][y + j].getC1Normalized());
 					}
 				}
-				meanDist /= 8;
+//				meanDist = Math.max(meanDist, 0.01);
+				meanDist /= 8.0;
+//				meanDist = 1.0/meanDist;
+				
+//				System.out.println(sample);
+//				System.out.println(meanDist);
+				
+				
 				meanDist += 0.01;
 				meanDist = 1.0 / (meanDist * 100);
-				double weight = 1.0 + 5.0 * sample.getC2() * Math.pow(meanDist, 3);
+				double weight = 1.0 + weightFactor * sample.getC2() * Math.pow(meanDist, 2);
+//				double weight = 1.0 + weightFactor * sample.getC2() * meanDist;
 
+//				System.out.println(sample);
+//				System.out.println(weight);
+				
 				if (pixelMap.containsKey(sample)) {
 					pixelMap.put(sample, pixelMap.get(sample) + weight);
 				} else {

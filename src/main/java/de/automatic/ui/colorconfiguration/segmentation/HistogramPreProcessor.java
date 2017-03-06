@@ -5,7 +5,7 @@ import de.automatic.ui.colorconfiguraiton.entities.HistogramElement;
 
 public class HistogramPreProcessor {
 
-	private static double threshold = 5.5;
+	private static double threshold = 5;
 
 	/**
 	 * compresses the histogram if integral below threshold

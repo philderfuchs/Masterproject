@@ -24,7 +24,10 @@ public class Main {
 	static int k = 7;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/kanye_small.jpg";
+	static String file = "resources/mapei.png";
+	
+	public static double greyCylinder = 0.1;
+	public static double weightFactor = 5.0;
 
 	public static void main(String[] args) {
 
@@ -32,13 +35,13 @@ public class Main {
 //		SampleList rgbSamples = null;
 
 		try {
-			hsiSamples = (new ImageReader(new File(file))).getHsiHistogram();
+			hsiSamples = (new ImageReader(new File(file))).getHsiHistogram(weightFactor);
 //			rgbSamples = (new ImageReader(new File(file))).getRgbHistogram();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		hsiSamples = (new GreyCylinderFilterer()).filterGreyCylinder(hsiSamples, 0.14);
+		hsiSamples = (new GreyCylinderFilterer()).filterGreyCylinder(hsiSamples, greyCylinder);
 		
 		SampleList listoForAcopa = hsiSamples;
 		ClusterContainer clusters1 = null;
