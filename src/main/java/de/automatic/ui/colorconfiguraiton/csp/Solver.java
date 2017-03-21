@@ -9,6 +9,9 @@ import com.analog.lyric.dimple.model.core.FactorGraph;
 import com.analog.lyric.dimple.model.domains.DiscreteDomain;
 import com.analog.lyric.dimple.model.values.Value;
 import com.analog.lyric.dimple.model.variables.Discrete;
+import com.chroma.Chroma;
+import com.chroma.ColorSpace;
+
 import cern.colt.Arrays;
 import de.automatic.ui.colorconfiguraiton.visualisation.ColorVarShower;
 
@@ -20,19 +23,22 @@ public class Solver {
 		public final double evalEnergy(Value[] args) {
 
 			ColorVar state1 = (ColorVar) args[0].getObject();
-
-			return -Math.log(state1.getS()) + -Math.log(1.0 - state1.getRelativeHueGroupSize());
+			return -Math.log(state1.getRelativeChroma()) + -Math.log(1.0 - state1.getRelativeHueGroupSize());
 
 		}
 	}
 
 	public static void solve(ArrayList<ColorVar> vars) {
-
+		
 		// new ColorVarShower(vars.get(1));
 		for (ColorVar v : vars) {
 			System.out.println("HueGroup: " + v.getHueGroup());
 			System.out.println("RelativeHueGroupSize: " + v.getRelativeHueGroupSize());
 			System.out.println("Weight: " + v.getRelativeWeight());
+			System.out.println("HSI Saturation: " + v.getS());
+			System.out.println("Relative Chroma: " + v.getLchC() / 128.0);
+			System.out.println("Cie Saturation: " + v.getSaturation());
+			System.out.println("---");
 		}
 
 		FactorGraph graph = new FactorGraph();
