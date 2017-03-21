@@ -15,13 +15,15 @@ public class HierarchicalHsiPalette extends ArrayList<HierarchicalHsiSample> {
 	}
 	
 	public ArrayList<ColorVar> getColorVars() {
+				
 		int totalWeights = 0;
 		for (HierarchicalHsiSample s : this) {
 			totalWeights += s.getWeight();
 		}
-		GetColorVarsVisitor v = new GetColorVarsVisitor(totalWeights);
+		GetColorVarsVisitor v = new GetColorVarsVisitor(totalWeights, this.getCountOfLastLevelChildren());
 		for(int i = 0; i < this.size(); i++) {
 			v.setCurrentHueGroup(i);
+			v.setCurrentHueGroupSize(this.get(i).getCountOfLastLevelChildren());
 			this.get(i).accept(v);
 			
 		}

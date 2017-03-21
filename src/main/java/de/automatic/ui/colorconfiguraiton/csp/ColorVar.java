@@ -4,6 +4,14 @@ public class ColorVar {
 	
 	private int hueGroup;
 	
+	/*
+	 * 0..1
+	 */
+	private double relativeHueGroupSize;
+		
+	/*
+	 * 0..1
+	 */
 	private double relativeWeight;
 
 	/*
@@ -98,6 +106,14 @@ public class ColorVar {
 
 	public void setHueGroup(int hueGroup) {
 		this.hueGroup = hueGroup;
+	}
+
+	public double getRelativeHueGroupSize() {
+		return relativeHueGroupSize;
+	}
+
+	public void setRelativeHueGroupSize(double relativeHueGroupSize) {
+		this.relativeHueGroupSize = relativeHueGroupSize;
 	}
 	
 }

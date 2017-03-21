@@ -18,18 +18,11 @@ public class Solver {
 	public static class AccentColorFactor extends FactorFunction {
 		@Override
 		public final double evalEnergy(Value[] args) {
-			// int state1 = (int) args[0].getObject();
-			// int state2 = (int) args[1].getObject();
-			//
-			// int diff = state1 - state2;
-			//
-			// return diff >= 2 ? 0 : Double.POSITIVE_INFINITY;
 
 			ColorVar state1 = (ColorVar) args[0].getObject();
 
-			return -Math.log(state1.getS());
+			return -Math.log(state1.getS()) + -Math.log(1.0 - state1.getRelativeHueGroupSize());
 
-			// return -Math.log(state1.getRelativeWeight());
 		}
 	}
 
@@ -38,6 +31,7 @@ public class Solver {
 		// new ColorVarShower(vars.get(1));
 		for (ColorVar v : vars) {
 			System.out.println("HueGroup: " + v.getHueGroup());
+			System.out.println("RelativeHueGroupSize: " + v.getRelativeHueGroupSize());
 			System.out.println("Weight: " + v.getRelativeWeight());
 		}
 
