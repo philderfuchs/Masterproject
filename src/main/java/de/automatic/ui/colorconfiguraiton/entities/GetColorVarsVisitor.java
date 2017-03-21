@@ -8,8 +8,10 @@ import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 public class GetColorVarsVisitor implements Visitor {
 	
 	private ArrayList<ColorVar> vars;
+	private int totalWeights;
 
-	public GetColorVarsVisitor() {
+	public GetColorVarsVisitor(int totalWeights) {
+		this.totalWeights = totalWeights;
 		this.vars = new ArrayList<ColorVar>();
 	}
 
@@ -25,6 +27,8 @@ public class GetColorVarsVisitor implements Visitor {
 			var.setR((int) rgb.getC1());
 			var.setG((int) rgb.getC2());
 			var.setB((int) rgb.getC3());
+						
+			var.setRelativeWeight((double) sample.getWeight() / (double) totalWeights); 
 			vars.add(var);
 		}
 	}

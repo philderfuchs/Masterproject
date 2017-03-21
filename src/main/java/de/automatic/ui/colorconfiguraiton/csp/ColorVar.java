@@ -1,6 +1,8 @@
 package de.automatic.ui.colorconfiguraiton.csp;
 
 public class ColorVar {
+	
+	private double relativeWeight;
 
 	/*
 	 * 0..360
@@ -78,6 +80,14 @@ public class ColorVar {
 
 	public void setB(int b) {
 		this.b = b;
+	}
+
+	public double getRelativeWeight() {
+		return relativeWeight;
+	}
+
+	public void setRelativeWeight(double relativeWeight) {
+		this.relativeWeight = relativeWeight;
 	}
 	
 }

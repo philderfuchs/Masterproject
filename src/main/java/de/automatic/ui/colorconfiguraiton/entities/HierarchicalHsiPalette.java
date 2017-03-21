@@ -15,7 +15,11 @@ public class HierarchicalHsiPalette extends ArrayList<HierarchicalHsiSample> {
 	}
 	
 	public ArrayList<ColorVar> getColorVars() {
-		GetColorVarsVisitor v = new GetColorVarsVisitor();
+		int totalWeights = 0;
+		for (HierarchicalHsiSample s : this) {
+			totalWeights += s.getWeight();
+		}
+		GetColorVarsVisitor v = new GetColorVarsVisitor(totalWeights);
 		for (HierarchicalHsiSample s : this) {
 			s.accept(v);
 		}
