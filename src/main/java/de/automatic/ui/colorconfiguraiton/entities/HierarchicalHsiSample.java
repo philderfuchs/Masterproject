@@ -42,6 +42,10 @@ public class HierarchicalHsiSample extends HsiSample implements Visitable {
 		this.children = new HierarchicalHsiPalette();
 		this.modeSamples = samples;
 	}
+	
+	public int getWeight() {
+		return this.getModeSamples().getCountOfPixels();
+	}
 
 	public HierarchicalHsiPalette getChildren() {
 		return children;
