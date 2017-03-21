@@ -57,7 +57,7 @@ public class Main {
 		new PaletteShower(ConversionService.toSampleList(clusters1), "K-Means after Segmentation Palette", 0, 300);	
 		
 		System.out.println("------------------------");
-		Solver.solve();
+		Solver.solve(hieraPalette.getColorVars());
 
 		// try {
 		// new ThreeDimHistogramVisualizer(listoForAcopa, clusters1);

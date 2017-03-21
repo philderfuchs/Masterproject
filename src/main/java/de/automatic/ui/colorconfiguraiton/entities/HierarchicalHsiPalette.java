@@ -2,6 +2,8 @@ package de.automatic.ui.colorconfiguraiton.entities;
 
 import java.util.ArrayList;
 
+import de.automatic.ui.colorconfiguraiton.csp.ColorVar;
+
 public class HierarchicalHsiPalette extends ArrayList<HierarchicalHsiSample> {
 
 	public SampleList getSeeds() {
@@ -10,6 +12,14 @@ public class HierarchicalHsiPalette extends ArrayList<HierarchicalHsiSample> {
 			s.accept(v);
 		}
 		return v.getSeeds();
+	}
+	
+	public ArrayList<ColorVar> getColorVars() {
+		GetColorVarsVisitor v = new GetColorVarsVisitor();
+		for (HierarchicalHsiSample s : this) {
+			s.accept(v);
+		}
+		return v.getVars();
 	}
 	
 	public int getCountOfLastLevelChildren() {

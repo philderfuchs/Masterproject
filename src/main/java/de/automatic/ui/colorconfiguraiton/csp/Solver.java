@@ -1,6 +1,8 @@
 package de.automatic.ui.colorconfiguraiton.csp;
 
-	import org.eclipse.jdt.annotation.NonNullByDefault;
+	import java.util.ArrayList;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;
 
 	import com.analog.lyric.dimple.factorfunctions.core.FactorFunction;
 	import com.analog.lyric.dimple.model.core.FactorGraph;
@@ -8,11 +10,12 @@ package de.automatic.ui.colorconfiguraiton.csp;
 	import com.analog.lyric.dimple.model.values.Value;
 	import com.analog.lyric.dimple.model.variables.Discrete;
 	import cern.colt.Arrays;
+import de.automatic.ui.colorconfiguraiton.visualisation.ColorVarShower;
 
 	public class Solver {
 
 		@NonNullByDefault
-		public static class DiffFactor extends FactorFunction {
+		public static class AccentColorFactor extends FactorFunction {
 			@Override
 			public final double evalEnergy(Value[] args) {
 				int state1 = (int) args[0].getObject();
@@ -24,17 +27,24 @@ package de.automatic.ui.colorconfiguraiton.csp;
 			}
 		}
 
-		public static void solve() {
+		public static void solve(ArrayList<ColorVar> vars) {
+			
+			new ColorVarShower(vars.get(1));
+			
 			FactorGraph graph = new FactorGraph();
-			DiscreteDomain domain = DiscreteDomain.create(1, 2, 3);
-			Discrete x = new Discrete(domain);
-			Discrete y = new Discrete(domain);
-			graph.addFactor(new DiffFactor(), x, y);
+			
+			ColorVar[] domain = new ColorVar[vars.size()];
+			vars.toArray(domain);
+//			System.out.println(domain[0].getH());
 
-			graph.solve();
-
-			System.out.println(x.getValue());
-			System.out.println(y.getValue());
+//			DiscreteDomain domain = DiscreteDomain.create(1, 2, 3);
+//			Discrete accent = new Discrete(domain);
+//			graph.addFactor(new AccentColorFactor());
+//
+//			graph.solve();
+//
+//			System.out.println(x.getValue());
+//			System.out.println(y.getValue());
 
 		}
 
