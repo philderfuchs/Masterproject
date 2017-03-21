@@ -2,6 +2,8 @@ package de.automatic.ui.colorconfiguraiton.csp;
 
 public class ColorVar {
 	
+	private int hueGroup;
+	
 	private double relativeWeight;
 
 	/*
@@ -88,6 +90,14 @@ public class ColorVar {
 
 	public void setRelativeWeight(double relativeWeight) {
 		this.relativeWeight = relativeWeight;
+	}
+
+	public int getHueGroup() {
+		return hueGroup;
+	}
+
+	public void setHueGroup(int hueGroup) {
+		this.hueGroup = hueGroup;
 	}
 	
 }

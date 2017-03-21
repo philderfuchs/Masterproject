@@ -28,6 +28,8 @@ public class Solver {
 			ColorVar state1 = (ColorVar) args[0].getObject();
 
 			return -Math.log(state1.getS());
+
+			// return -Math.log(state1.getRelativeWeight());
 		}
 	}
 
@@ -35,7 +37,8 @@ public class Solver {
 
 		// new ColorVarShower(vars.get(1));
 		for (ColorVar v : vars) {
-			System.out.println(v.getRelativeWeight());
+			System.out.println("HueGroup: " + v.getHueGroup());
+			System.out.println("Weight: " + v.getRelativeWeight());
 		}
 
 		FactorGraph graph = new FactorGraph();
