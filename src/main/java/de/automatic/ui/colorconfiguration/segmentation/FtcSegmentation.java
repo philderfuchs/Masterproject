@@ -35,7 +35,7 @@ public class FtcSegmentation {
 	private static final int visWidth = 550;
 	private static final int visHeight = 120;
 	private static final int windowsPerColumn = 6;
-	private static final boolean visualize = true;
+	private static final boolean visualize = false;
 
 	public FtcSegmentation() {
 		windowCount = 0;

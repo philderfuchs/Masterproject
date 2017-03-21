@@ -24,42 +24,43 @@ public class Main {
 	static int k = 7;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/mapei.png";
-	
+	static String file = "resources/mightbe.jpg";
+
 	public static double greyCylinder = 0.1;
 	public static double weightFactor = 5.0;
 
 	public static void main(String[] args) {
 
 		SampleList hsiSamples = null;
-//		SampleList rgbSamples = null;
 
 		try {
 			hsiSamples = (new ImageReader(new File(file))).getHsiHistogram(weightFactor);
-//			rgbSamples = (new ImageReader(new File(file))).getRgbHistogram();
+
+			hsiSamples = (new GreyCylinderFilterer()).filterGreyCylinder(hsiSamples, greyCylinder);
+
+			SampleList listoForAcopa = hsiSamples;
+			ClusterContainer clusters1 = null;
+
+			System.out.println(">>>> Starting ACoPa");
+			HierarchicalHsiPalette hieraPalette = new Acopa().findSeeds(listoForAcopa);
+			new HierarchicalPaletteShower(hieraPalette, "Segmentation Palette", 0, 0);
+			System.out.println(">>>> Finished ACoPa. Starting clustering.");
+			AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(hieraPalette.getSeeds());
+			clusters1 = clusterer1.clusterToEnd(hsiSamples);
+			System.out.println("Finished clustering with " + clusterer1.getStepCount() + " steps");
+			new PaletteShower(ConversionService.toSampleList(clusters1), "K-Means after Segmentation Palette", 0,
+					300);
+			
+			// new ThreeDimHistogramVisualizer(listoForAcopa, clusters1);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		hsiSamples = (new GreyCylinderFilterer()).filterGreyCylinder(hsiSamples, greyCylinder);
 		
-		SampleList listoForAcopa = hsiSamples;
-		ClusterContainer clusters1 = null;
-
-		HierarchicalHsiPalette hieraPalette = new Acopa().findSeeds(listoForAcopa);
-		new HierarchicalPaletteShower(hieraPalette, "Segmentation Palette", 0, 0);
-		
-		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(hieraPalette.getSeeds());
-		System.out.println("start clustering");
-		clusters1 = clusterer1.clusterToEnd(hsiSamples);
-		System.out.println("finished clustering with " + clusterer1.getStepCount() + " steps");
-		new PaletteShower(ConversionService.toSampleList(clusters1), "K-Means after Segmentation Palette", 1000, 300);
-
-		try {
-			new ThreeDimHistogramVisualizer(listoForAcopa, clusters1);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		// try {
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
 
 	}
 
