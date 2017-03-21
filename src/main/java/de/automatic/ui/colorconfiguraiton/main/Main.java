@@ -6,6 +6,7 @@ import java.io.IOException;
 import de.automatic.ui.colorconfiguraiton.clustering.AbstractKmeans;
 import de.automatic.ui.colorconfiguraiton.clustering.KmeansFromGivenSeeds;
 import de.automatic.ui.colorconfiguraiton.clustering.KmeansPlusPlus;
+import de.automatic.ui.colorconfiguraiton.csp.Solver;
 import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 import de.automatic.ui.colorconfiguraiton.entities.HierarchicalHsiPalette;
@@ -18,7 +19,6 @@ import de.automatic.ui.colorconfiguraiton.visualisation.ThreeDimHistogramVisuali
 import de.automatic.ui.colorconfiguration.segmentation.Acopa;
 import de.automatic.ui.colorconfiguration.segmentation.FtcSegmentation;
 import de.automatic.ui.colorconfiguration.segmentation.GreyCylinderFilterer;
-import scheming.PaletteAnalyzer;
 
 public class Main {
 
@@ -54,10 +54,10 @@ public class Main {
 		AbstractKmeans clusterer1 = new KmeansFromGivenSeeds(hieraPalette.getSeeds());
 		clusters1 = clusterer1.clusterToEnd(hsiSamples);
 		System.out.println("Finished clustering with " + clusterer1.getStepCount() + " steps");
-		new PaletteShower(ConversionService.toSampleList(clusters1), "K-Means after Segmentation Palette", 0, 300);
-
-		PaletteAnalyzer.analyze(hieraPalette);
+		new PaletteShower(ConversionService.toSampleList(clusters1), "K-Means after Segmentation Palette", 0, 300);	
 		
+		System.out.println("------------------------");
+		Solver.solve();
 
 		// try {
 		// new ThreeDimHistogramVisualizer(listoForAcopa, clusters1);
