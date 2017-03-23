@@ -25,7 +25,7 @@ public class Main {
 	static int k = 7;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/mightbe.jpg";
+	static String file = "resources/flume.png";
 
 	public static double greyCylinder = 0.1;
 	public static double weightFactor = 5.0;

@@ -26,10 +26,26 @@ import de.automatic.ui.colorconfiguraiton.visualisation.ColorVarShower;
 
 public class Solver {
 
+	public static class DifferentValueFactor extends FactorFunction {
+		@Override
+		public final double evalEnergy(Value[] args) {
+
+			boolean allDifferent = true;
+			for (int i = 0; i < args.length - 1; i++) {
+				ColorVar state1 = (ColorVar) args[i].getObject();
+				for (int j = i + 1; j < args.length; j++) {
+					ColorVar state2 = (ColorVar) args[j].getObject();
+					if (state1 == state2) {
+						allDifferent = false;
+					}
+				}
+			}
+			return allDifferent ? 0 : Double.POSITIVE_INFINITY;
+		}
+	}
+
 	@NonNullByDefault
-
 	public static class DifferentHueGroupFactor extends FactorFunction {
-
 		@Override
 		public final double evalEnergy(Value[] args) {
 
@@ -42,12 +58,9 @@ public class Solver {
 						allDifferent = false;
 					}
 				}
-
 			}
-
 			return allDifferent ? 0 : Double.POSITIVE_INFINITY;
 		}
-
 	}
 
 	@NonNullByDefault
@@ -56,7 +69,9 @@ public class Solver {
 		public final double evalEnergy(Value[] args) {
 
 			ColorVar state1 = (ColorVar) args[0].getObject();
-			return -Math.log(state1.getRelativeChroma()) + -Math.log(1.0 - state1.getRelativeHueGroupSize());
+			// return -Math.log(state1.getRelativeChroma()) + -Math.log(1.0 -
+			// state1.getRelativeHueGroupSize());
+			return -Math.log(state1.getS()) + -Math.log(1.0 - state1.getRelativeHueGroupSize());
 
 		}
 	}
@@ -68,8 +83,7 @@ public class Solver {
 
 			ColorVar state1 = (ColorVar) args[0].getObject();
 			// return -Math.log(state1.getRelativeChroma());
-			return -Math.log(state1.getRelativeChroma());
-
+			return -Math.log(state1.getS());
 		}
 	}
 
@@ -103,22 +117,14 @@ public class Solver {
 		}
 	}
 
-	// @NonNullByDefault
-	// public static class UnEqualFactor extends FactorFunction {
-	// @Override
-	// public final double evalEnergy(Value[] args) {
-	//
-	// ColorVar state1 = (ColorVar) args[0].getObject();
-	// ColorVar state2 = (ColorVar) args[1].getObject();
-	//
-	// return state1 == state2 ? Double.POSITIVE_INFINITY : 0;
-	// }
-	// }
-
 	public static void solve(ArrayList<ColorVar> vars) {
+
+		int countOfHueGroups = vars.get(vars.size() - 1).getHueGroup() + 1;
+		System.out.println("Count of Hue Groups: " + countOfHueGroups);
 
 		ColorVar[] domain = new ColorVar[vars.size()];
 		for (int i = 0; i < vars.size(); i++) {
+			printInfo(vars.get(i));
 			domain[i] = vars.get(i);
 		}
 
@@ -127,43 +133,39 @@ public class Solver {
 		// graph.setSolverFactory(new JunctionTreeSolver());
 
 		DiscreteDomain domainWrapper = DiscreteDomain.create(domain);
+		Discrete primary = new Discrete(domainWrapper);
 		Discrete accent = new Discrete(domainWrapper);
 		Discrete interaction = new Discrete(domainWrapper);
-		Discrete primary = new Discrete(domainWrapper);
-
-		graph.addFactor(new AccentColorFactor(), accent);
-		graph.solve();
-		accent.setFixedValue(accent.getValue());
 
 		graph.addFactor(new PrimaryColorFactor(), primary);
-		graph.addFactor(new InteractionColorFactor(), interaction);
 
-		// graph.solve();
-		// accent.setFixedValue(interaction.getValue());
-		Factor different1 = graph.addFactor(new DifferentHueGroupFactor(), accent, primary, interaction);
+		graph.solve();
+		primary.setFixedValue(primary.getValue());
 
-//		Factor different1 = graph.addFactor(new DifferentHueGroupFactor(), accent, primary);
-		Factor different2 = graph.addFactor(new DifferentHueGroupFactor(), accent, interaction);
+		graph.addFactor(new AccentColorFactor(), accent);
+		Factor different1 = graph.addFactor(new DifferentHueGroupFactor(), primary, accent);
 		Factor contRatio1 = graph.addFactor(new ContrastRatioFactor(), primary, accent);
-		Factor contRatio2 = graph.addFactor(new ContrastRatioFactor(), primary, interaction);
 		graph.join(different1, contRatio1);
 
 		graph.solve();
+		accent.setFixedValue(accent.getValue());
 
-		//
-		// graph.addFactor(new DifferentHueGroupFactor(), primary, accent);
-		// graph.solve();
-		//
-		// graph.addFactor(new DifferentHueGroupFactor(), primary, interaction);
-		// graph.solve();
+		graph.addFactor(new InteractionColorFactor(), interaction);
 
-		// graph.addFactor(new ContrastRatioFactor(), primary, accent);
+		// Factor different1 = graph.addFactor(new DifferentHueGroupFactor(),
+		// accent, primary, interaction);
 
-		// graph.addFactor(new UnEqualFactor(), accent, primary);
-		// graph.setOption(BPOptions.iterations, 30);
+		if (countOfHueGroups >= 3) {
+			graph.addFactor(new DifferentHueGroupFactor(), accent, interaction);
+			graph.addFactor(new DifferentValueFactor(), primary, interaction);
+		} else {
+			graph.addFactor(new DifferentHueGroupFactor(), primary, accent, interaction);
+		}
+		graph.addFactor(new ContrastRatioFactor(), primary, interaction);
+		// graph.join(different1, contRatio1);
 
-		// System.out.println(((ColorVar) primary.getValue()).getH());
-		// System.out.println(((ColorVar) accent.getValue()).getH());
+		graph.solve();
+
 		System.out.println("Primary: " + Arrays.toString(primary.getBelief()));
 		System.out.println("Accent: " + Arrays.toString(accent.getBelief()));
 		System.out.println("Interaction: " + Arrays.toString(interaction.getBelief()));
@@ -173,5 +175,10 @@ public class Solver {
 		new ColorVarShower((ColorVar) interaction.getValue(), "Interaction", 900, 500);
 		// new ColorVarShower(vars.get(3), "yo", 900, 500);
 
+	}
+
+	private static void printInfo(ColorVar c) {
+		System.out.println(ConversionService.toHex(c.getR(), c.getG(), c.getB()) + " | Rel. Chroma: "
+				+ c.getRelativeChroma() + " | Saturation: " + c.getS());
 	}
 }

@@ -17,6 +17,10 @@ import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 
 public class ConversionService {
 
+	public static String toHex (int r, int g, int b) {
+		return String.format("#%02x%02x%02x", r, g, b);  
+	}
+	
 	public static SampleList toRgbSampleList(SampleList samples) {
 
 		if (samples.get(0) instanceof RgbSample) {
