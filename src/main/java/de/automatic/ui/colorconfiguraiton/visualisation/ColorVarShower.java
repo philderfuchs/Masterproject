@@ -17,12 +17,12 @@ public class ColorVarShower extends JFrame {
 	private static int width = 200;
 	private static int height = 200;
 
-	public ColorVarShower(ColorVar var) {
-		super("");
+	public ColorVarShower(ColorVar var, String title, int x, int y) {
+		super(title);
 		this.var = var;
 		this.add(new ColorPanel());
 
-		this.setLocation(500, 500);
+		this.setLocation(x, y);
 		this.setSize(width, height);
 		this.setVisible(true);
 
