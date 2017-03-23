@@ -46,6 +46,7 @@ public class GetColorVarsVisitor implements Visitor {
 
 			var.setRelativeWeight((double) sample.getWeight() / (double) totalWeights);
 			var.setHueGroup(currentHueGroup);
+			var.setHueGroupSize(currentHueGroupSize);
 			var.setRelativeHueGroupSize((double) currentHueGroupSize / (double) totalPaletteSize);
 			vars.add(var);
 		}

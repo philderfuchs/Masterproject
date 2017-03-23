@@ -2,6 +2,8 @@ package de.automatic.ui.colorconfiguraiton.csp;
 
 public class ColorVar {
 
+	private int hueGroupSize;
+
 	private int hueGroup;
 
 	/*
@@ -66,7 +68,7 @@ public class ColorVar {
 	public double getRelativeChroma() {
 		return lchC / 128.0;
 	}
-	
+
 	public double getCieA() {
 		return cieA;
 	}
@@ -177,6 +179,14 @@ public class ColorVar {
 
 	public void setLchH(double lchH) {
 		this.lchH = lchH;
+	}
+
+	public int getHueGroupSize() {
+		return hueGroupSize;
+	}
+
+	public void setHueGroupSize(int hueGroupSize) {
+		this.hueGroupSize = hueGroupSize;
 	}
 
 }
