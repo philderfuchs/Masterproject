@@ -2,6 +2,8 @@ package de.automatic.ui.colorconfiguraiton.csp;
 
 import java.util.ArrayList;
 
+import java.util.Arrays;
+
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
 import com.analog.lyric.dimple.factorfunctions.core.FactorFunction;
@@ -16,10 +18,10 @@ import com.analog.lyric.dimple.solvers.junctiontree.JunctionTreeSolver;
 import com.analog.lyric.dimple.solvers.junctiontreemap.JunctionTreeMAPSolver;
 import com.analog.lyric.dimple.solvers.minsum.MinSumSolver;
 import com.analog.lyric.dimple.solvers.particleBP.ParticleBPSolver;
+import com.analog.lyric.dimple.exceptions.DimpleException;
 import com.chroma.Chroma;
 import com.chroma.ColorSpace;
 
-import cern.colt.Arrays;
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 import de.automatic.ui.colorconfiguraiton.visualisation.ColorVarShower;
@@ -113,7 +115,9 @@ public class Solver {
 
 			Double contrastRatio = ContrastUtils.calculateContrastRatio(lum1, lum2);
 
-			return contrastRatio >= 2 ? -Math.log(contrastRatio / 22.0) : Double.POSITIVE_INFINITY;
+			// System.out.println(contrastRatio);
+
+			return contrastRatio >= 2.5 ? -Math.log(contrastRatio / 22.0) : Double.POSITIVE_INFINITY;
 		}
 	}
 
@@ -127,54 +131,97 @@ public class Solver {
 			printInfo(vars.get(i));
 			domain[i] = vars.get(i);
 		}
-
-		FactorGraph graph = new FactorGraph();
-		graph.setOption(BPOptions.iterations, 50);
-		// graph.setSolverFactory(new JunctionTreeSolver());
-
 		DiscreteDomain domainWrapper = DiscreteDomain.create(domain);
+
+		boolean sat = false;
+
 		Discrete primary = new Discrete(domainWrapper);
 		Discrete accent = new Discrete(domainWrapper);
 		Discrete interaction = new Discrete(domainWrapper);
 
-		graph.addFactor(new PrimaryColorFactor(), primary);
+		int primaryRank = 1;
 
-		graph.solve();
-		primary.setFixedValue(primary.getValue());
+		do {
+			System.out.println("Top");
+			if (primaryRank == domain.length) {
+				System.out.println("No Solution Found");
+				break;
+			}
 
-		graph.addFactor(new AccentColorFactor(), accent);
-		Factor different1 = graph.addFactor(new DifferentHueGroupFactor(), primary, accent);
-		Factor contRatio1 = graph.addFactor(new ContrastRatioFactor(), primary, accent);
-		graph.join(different1, contRatio1);
+			FactorGraph graph = new FactorGraph();
+			graph.setOption(BPOptions.iterations, 50);
+//			 graph.setSolverFactory(new JunctionTreeSolver());
 
-		graph.solve();
-		accent.setFixedValue(accent.getValue());
+			primary = new Discrete(domainWrapper);
+			accent = new Discrete(domainWrapper);
+			interaction = new Discrete(domainWrapper);
 
-		graph.addFactor(new InteractionColorFactor(), interaction);
+			graph.addFactor(new PrimaryColorFactor(), primary);
 
-		// Factor different1 = graph.addFactor(new DifferentHueGroupFactor(),
-		// accent, primary, interaction);
+			graph.solve();
+			// primary.setFixedValue(primary.getValue());
+			setByRank(primaryRank, primary, domain);
 
-		if (countOfHueGroups >= 3) {
-			graph.addFactor(new DifferentHueGroupFactor(), accent, interaction);
-			graph.addFactor(new DifferentValueFactor(), primary, interaction);
-		} else {
-			graph.addFactor(new DifferentHueGroupFactor(), primary, accent, interaction);
-		}
-		graph.addFactor(new ContrastRatioFactor(), primary, interaction);
-		// graph.join(different1, contRatio1);
+			graph.addFactor(new AccentColorFactor(), accent);
+			Factor different1 = graph.addFactor(new DifferentHueGroupFactor(), primary, accent);
+			Factor contRatio1 = graph.addFactor(new ContrastRatioFactor(), primary, accent);
+			graph.join(different1, contRatio1);
 
-		graph.solve();
+			try {
+				graph.solve();
+			} catch (DimpleException e) {
+				System.out.println("UNSAT at Accent");
+				primaryRank++;
+				continue;
+			}
+			accent.setFixedValue(accent.getValue());
+
+			graph.addFactor(new InteractionColorFactor(), interaction);
+
+			if (countOfHueGroups < 3) {
+				// only two hue groups
+				graph.addFactor(new DifferentHueGroupFactor(), accent, interaction);
+				Factor contrast = graph.addFactor(new ContrastRatioFactor(), primary, interaction);
+				Factor diff = graph.addFactor(new DifferentValueFactor(), primary, interaction);
+				graph.join(diff, contrast);
+
+			} else {
+				Factor contrast = graph.addFactor(new ContrastRatioFactor(), primary, interaction);
+				Factor diff = graph.addFactor(new DifferentHueGroupFactor(), primary, accent, interaction);
+			}
+
+			try {
+				graph.solve();
+			} catch (DimpleException e) {
+				System.out.println("UNSAT at Interaction");
+				primaryRank++;
+				continue;
+			}
+
+			sat = true;
+
+		} while (!sat);
 
 		System.out.println("Primary: " + Arrays.toString(primary.getBelief()));
 		System.out.println("Accent: " + Arrays.toString(accent.getBelief()));
 		System.out.println("Interaction: " + Arrays.toString(interaction.getBelief()));
-
 		new ColorVarShower((ColorVar) primary.getValue(), "Primary", 500, 500);
 		new ColorVarShower((ColorVar) accent.getValue(), "Accent", 700, 500);
 		new ColorVarShower((ColorVar) interaction.getValue(), "Interaction", 900, 500);
 		// new ColorVarShower(vars.get(3), "yo", 900, 500);
 
+	}
+
+	private static void setByRank(int rank, Discrete y, ColorVar[] domain) {
+		double[] belief = y.getBelief();
+		Arrays.sort(belief);
+		double valueAtRank = belief[belief.length - rank];
+
+		for (int i = 0; i < y.getBelief().length; i++) {
+			if (valueAtRank == y.getBelief()[i]) {
+				y.setFixedValue(domain[i]);
+			}
+		}
 	}
 
 	private static void printInfo(ColorVar c) {
