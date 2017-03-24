@@ -147,6 +147,11 @@ public class Solver {
 		int countOfHueGroups = vars.get(vars.size() - 1).getHueGroup() + 1;
 		System.out.println("Count of Hue Groups: " + countOfHueGroups);
 
+		FactorGraph graph = new FactorGraph();
+		graph.setOption(BPOptions.iterations, 50);
+		graph.setSolverFactory(new JunctionTreeSolver());
+
+		
 		ColorVar[] domain = new ColorVar[vars.size()];
 		for (int i = 0; i < vars.size(); i++) {
 			printInfo(vars.get(i));
@@ -154,25 +159,16 @@ public class Solver {
 		}
 		DiscreteDomain domainWrapper = DiscreteDomain.create(domain);
 
-		boolean sat = false;
-
 		Discrete primary = new Discrete(domainWrapper);
 		Discrete secondary = new Discrete(domainWrapper);
 		Discrete accent = new Discrete(domainWrapper);
 		Discrete interaction = new Discrete(domainWrapper);
 
-		int primaryRank = 1;
+
 
 		if (countOfHueGroups == 2) {
 
-			FactorGraph graph = new FactorGraph();
-			graph.setOption(BPOptions.iterations, 50);
-			graph.setSolverFactory(new JunctionTreeSolver());
-
-			primary = new Discrete(domainWrapper);
-			secondary = new Discrete(domainWrapper);
-			accent = new Discrete(domainWrapper);
-			interaction = new Discrete(domainWrapper);
+			System.out.println("--------- Case: 2 Hue Groups ---------");
 
 			graph.addFactor(new PrimaryColorFactor(), primary);
 
@@ -182,37 +178,24 @@ public class Solver {
 
 			graph.addFactor(new InteractionColorFactor(), interaction);
 
-			if (countOfHueGroups < 3) {
-				// only two hue groups
-				graph.addFactor(new DifferentHueGroupFactor(), accent, interaction);
-				graph.addFactor(new ContrastRatioFactor(), primary, interaction);
-				graph.addFactor(new DifferentValueFactor(), primary, interaction);
+//			graph.addFactor(new DifferentHueGroupFactor(), accent, interaction);
+			graph.addFactor(new ContrastRatioFactor(), primary, interaction);
+			graph.addFactor(new DifferentValueFactor(), primary, accent, interaction);
 
-			} else {
-				graph.addFactor(new DifferentHueGroupFactor(), primary, accent, interaction);
-				graph.addFactor(new ContrastRatioFactor(), primary, interaction);
-			}
 			graph.addFactor(new SecondaryColorFactor(), primary, secondary);
+			graph.addFactor(new DifferentValueFactor(), secondary, accent);
+			graph.addFactor(new DifferentValueFactor(), secondary, interaction);
+
 			try {
 				graph.solve();
 			} catch (DimpleException e) {
-				System.out.println("UNSAT at Secondary");
-				secondary.setFixedValue(primary.getValue());
+				System.err.println("UNSAT");
 			}
 
 		} else {
 
 			System.out.println("--------- Case: 3 Hue Groups ---------");
-
-			FactorGraph graph = new FactorGraph();
-			graph.setOption(BPOptions.iterations, 50);
-			graph.setSolverFactory(new JunctionTreeSolver());
-
-			primary = new Discrete(domainWrapper);
-			secondary = new Discrete(domainWrapper);
-			accent = new Discrete(domainWrapper);
-			interaction = new Discrete(domainWrapper);
-
+			
 			graph.addFactor(new PrimaryColorFactor(), primary);
 
 			graph.addFactor(new AccentColorFactor(), accent);
@@ -224,11 +207,11 @@ public class Solver {
 			graph.addFactor(new ContrastRatioFactor(), primary, interaction);
 
 			graph.addFactor(new SecondaryColorFactor(), primary, secondary);
+
 			try {
 				graph.solve();
 			} catch (DimpleException e) {
-				System.out.println("UNSAT at Secondary");
-				secondary.setFixedValue(primary.getValue());
+				System.err.println("UNSAT at Secondary");
 			}
 
 		}
