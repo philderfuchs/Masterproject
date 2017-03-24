@@ -19,7 +19,7 @@ import de.automatic.ui.colorconfiguraiton.visualisation.ColorVarShower;
 
 public class Solver {
 
-	public static final double contrastRatioThreshold = 2;
+	public static final double contrastRatioThreshold = 2.2;
 
 	public static class DifferentValueFactor extends FactorFunction {
 		@Override
@@ -142,7 +142,7 @@ public class Solver {
 		}
 	}
 
-	public static void solve(ArrayList<ColorVar> vars) {
+	public static void solve(ArrayList<ColorVar> vars, double meanLuminance) {
 
 		int countOfHueGroups = vars.get(vars.size() - 1).getHueGroup() + 1;
 		System.out.println("Count of Hue Groups: " + countOfHueGroups);
@@ -220,11 +220,25 @@ public class Solver {
 		System.out.println("Secondary: " + Arrays.toString(secondary.getBelief()));
 		System.out.println("Accent: " + Arrays.toString(accent.getBelief()));
 		System.out.println("Interaction: " + Arrays.toString(interaction.getBelief()));
-		new ColorVarShower((ColorVar) primary.getValue(), "Primary", 500, 500);
-		new ColorVarShower((ColorVar) secondary.getValue(), "Secondary", 700, 500);
-		new ColorVarShower((ColorVar) accent.getValue(), "Accent", 900, 500);
-		new ColorVarShower((ColorVar) interaction.getValue(), "Interaction", 1100, 500);
+		new ColorVarShower((ColorVar) primary.getValue(), "Primary", 300, 500);
+		new ColorVarShower((ColorVar) secondary.getValue(), "Secondary", 500, 500);
+		new ColorVarShower((ColorVar) accent.getValue(), "Accent", 700, 500);
+		new ColorVarShower((ColorVar) interaction.getValue(), "Interaction", 900, 500);
+		
+		ColorVar background = new ColorVar();
+		if(meanLuminance <= 0.2) {
+			background.setR(0);
+			background.setG(0);
+			background.setB(0);
+		} else {
+			background.setR(255);
+			background.setG(255);
+			background.setB(255);
+		}
 
+		new ColorVarShower(background, "Background", 1100, 500);
+
+		
 	}
 
 	private static void setByRank(int rank, Discrete y, ColorVar[] domain) {

@@ -6,11 +6,13 @@ import java.io.IOException;
 import de.automatic.ui.colorconfiguraiton.clustering.AbstractKmeans;
 import de.automatic.ui.colorconfiguraiton.clustering.KmeansFromGivenSeeds;
 import de.automatic.ui.colorconfiguraiton.clustering.KmeansPlusPlus;
+import de.automatic.ui.colorconfiguraiton.csp.ContrastUtils;
 import de.automatic.ui.colorconfiguraiton.csp.Solver;
 import de.automatic.ui.colorconfiguraiton.entities.SampleList;
 import de.automatic.ui.colorconfiguraiton.entities.ClusterContainer;
 import de.automatic.ui.colorconfiguraiton.entities.HierarchicalHsiPalette;
 import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
+import de.automatic.ui.colorconfiguraiton.entities.Sample;
 import de.automatic.ui.colorconfiguraiton.process.ImageReader;
 import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 import de.automatic.ui.colorconfiguraiton.visualisation.HierarchicalPaletteShower;
@@ -25,7 +27,7 @@ public class Main {
 	static int k = 7;
 	static int maxK = 15;
 	static int attempts = 3;
-	static String file = "resources/bay.png";
+	static String file = "resources/lockitup.png";
 
 	public static double greyCylinder = 0.1;
 	public static double weightFactor = 5.0;
@@ -39,6 +41,13 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		double lumSum = 0;
+		for(Sample s : hsiSamples) {
+			RgbSample rgb = ConversionService.toRgb(s);
+			lumSum += ContrastUtils.calculateLuminance((int) rgb.getC1(), (int) rgb.getC2(),(int) rgb.getC3()) * (double) s.getCount();
+		}
+		double meanLuminance = lumSum / (double) hsiSamples.getCountOfPixels();
 		
 		hsiSamples = (new GreyCylinderFilterer()).filterGreyCylinder(hsiSamples, greyCylinder);
 
@@ -57,7 +66,7 @@ public class Main {
 		new PaletteShower(ConversionService.toSampleList(clusters1), "K-Means after Segmentation Palette", 0, 300);	
 		
 		System.out.println("------------------------");
-		Solver.solve(hieraPalette.getColorVars());
+		Solver.solve(hieraPalette.getColorVars(), meanLuminance);
 
 		// try {
 		// new ThreeDimHistogramVisualizer(listoForAcopa, clusters1);
