@@ -14,12 +14,15 @@ import com.analog.lyric.dimple.model.variables.Discrete;
 import com.analog.lyric.dimple.options.BPOptions;
 import com.analog.lyric.dimple.solvers.junctiontree.JunctionTreeSolver;
 
+import de.automatic.ui.colorconfiguraiton.entities.GetCountOfLastOrderChildrenVisitor;
+import de.automatic.ui.colorconfiguraiton.entities.HsiSample;
+import de.automatic.ui.colorconfiguraiton.entities.RgbSample;
 import de.automatic.ui.colorconfiguraiton.services.ConversionService;
 import de.automatic.ui.colorconfiguraiton.visualisation.ColorVarShower;
 
 public class Solver {
 
-	public static final double contrastRatioThreshold = 2.2;
+	public static final double contrastRatioThreshold = 4;
 
 	public static class DifferentValueFactor extends FactorFunction {
 		@Override
@@ -151,7 +154,6 @@ public class Solver {
 		graph.setOption(BPOptions.iterations, 50);
 		graph.setSolverFactory(new JunctionTreeSolver());
 
-		
 		ColorVar[] domain = new ColorVar[vars.size()];
 		for (int i = 0; i < vars.size(); i++) {
 			printInfo(vars.get(i));
@@ -164,9 +166,47 @@ public class Solver {
 		Discrete accent = new Discrete(domainWrapper);
 		Discrete interaction = new Discrete(domainWrapper);
 
+		if (countOfHueGroups == 1) {
+			
+			System.out.println("--------- Case: 1 Hue Group ---------");
 
+			graph.addFactor(new PrimaryColorFactor(), primary);
+			graph.addFactor(new SecondaryColorFactor(), primary, secondary);
 
-		if (countOfHueGroups == 2) {
+			graph.solve();
+
+			ColorVar primaryColor = (ColorVar) primary.getValue();
+
+			HsiSample compl = new HsiSample(primaryColor.getH(), primaryColor.getS(), primaryColor.getI(), 1);
+			compl.setC1((compl.getC1() + 180.0) % 360.0);
+
+			RgbSample rgb = ConversionService.toRgb(compl);
+			ColorVar complColor = new ColorVar();
+			complColor.setR((int) rgb.getC1());
+			complColor.setG((int) rgb.getC2());
+			complColor.setB((int) rgb.getC3());
+
+			double delta = ContrastUtils.calculateLuminance(primaryColor.getR(), primaryColor.getG(),
+					primaryColor.getB()) < 0.4 ? 0.05 : -0.05;
+
+			do {
+				System.out.println("move by " + delta);
+				compl.setC3(compl.getC3() + delta);
+				rgb = ConversionService.toRgb(compl);
+				complColor.setR((int) rgb.getC1());
+				complColor.setG((int) rgb.getC2());
+				complColor.setB((int) rgb.getC3());
+
+			} while (getContrastRatio(primaryColor, complColor) < contrastRatioThreshold);
+			
+			System.out.println("Compl Color: " + ConversionService.toHex(complColor.getR(), complColor.getG(), complColor.getB()));
+
+			new ColorVarShower((ColorVar) primary.getValue(), "Primary", 300, 500);
+			new ColorVarShower((ColorVar) secondary.getValue(), "Secondary", 500, 500);
+			new ColorVarShower(complColor, "Accent", 700, 500);
+			new ColorVarShower(complColor, "Interaction", 900, 500);
+
+		} else if (countOfHueGroups == 2) {
 
 			System.out.println("--------- Case: 2 Hue Groups ---------");
 
@@ -178,7 +218,8 @@ public class Solver {
 
 			graph.addFactor(new InteractionColorFactor(), interaction);
 
-//			graph.addFactor(new DifferentHueGroupFactor(), accent, interaction);
+			// graph.addFactor(new DifferentHueGroupFactor(), accent,
+			// interaction);
 			graph.addFactor(new ContrastRatioFactor(), primary, interaction);
 			graph.addFactor(new DifferentValueFactor(), primary, accent, interaction);
 
@@ -192,10 +233,15 @@ public class Solver {
 				System.err.println("UNSAT");
 			}
 
+			new ColorVarShower((ColorVar) primary.getValue(), "Primary", 300, 500);
+			new ColorVarShower((ColorVar) secondary.getValue(), "Secondary", 500, 500);
+			new ColorVarShower((ColorVar) accent.getValue(), "Accent", 700, 500);
+			new ColorVarShower((ColorVar) interaction.getValue(), "Interaction", 900, 500);
+
 		} else {
 
 			System.out.println("--------- Case: 3 Hue Groups ---------");
-			
+
 			graph.addFactor(new PrimaryColorFactor(), primary);
 
 			graph.addFactor(new AccentColorFactor(), accent);
@@ -214,19 +260,15 @@ public class Solver {
 				System.err.println("UNSAT at Secondary");
 			}
 
+			new ColorVarShower((ColorVar) primary.getValue(), "Primary", 300, 500);
+			new ColorVarShower((ColorVar) secondary.getValue(), "Secondary", 500, 500);
+			new ColorVarShower((ColorVar) accent.getValue(), "Accent", 700, 500);
+			new ColorVarShower((ColorVar) interaction.getValue(), "Interaction", 900, 500);
+
 		}
 
-		System.out.println("Primary: " + Arrays.toString(primary.getBelief()));
-		System.out.println("Secondary: " + Arrays.toString(secondary.getBelief()));
-		System.out.println("Accent: " + Arrays.toString(accent.getBelief()));
-		System.out.println("Interaction: " + Arrays.toString(interaction.getBelief()));
-		new ColorVarShower((ColorVar) primary.getValue(), "Primary", 300, 500);
-		new ColorVarShower((ColorVar) secondary.getValue(), "Secondary", 500, 500);
-		new ColorVarShower((ColorVar) accent.getValue(), "Accent", 700, 500);
-		new ColorVarShower((ColorVar) interaction.getValue(), "Interaction", 900, 500);
-		
 		ColorVar background = new ColorVar();
-		if(meanLuminance <= 0.2) {
+		if (meanLuminance <= 0.2) {
 			background.setR(0);
 			background.setG(0);
 			background.setB(0);
@@ -235,10 +277,8 @@ public class Solver {
 			background.setG(255);
 			background.setB(255);
 		}
-
 		new ColorVarShower(background, "Background", 1100, 500);
 
-		
 	}
 
 	private static void setByRank(int rank, Discrete y, ColorVar[] domain) {
@@ -256,5 +296,13 @@ public class Solver {
 	private static void printInfo(ColorVar c) {
 		System.out.println(ConversionService.toHex(c.getR(), c.getG(), c.getB()) + " | Rel. Chroma: "
 				+ c.getRelativeChroma() + " | Saturation: " + c.getS());
+	}
+
+	private static Double getContrastRatio(ColorVar state1, ColorVar state2) {
+		Double lum1 = ContrastUtils.calculateLuminance(state1.getR(), state1.getG(), state1.getB());
+		Double lum2 = ContrastUtils.calculateLuminance(state2.getR(), state2.getG(), state2.getB());
+
+		Double contrastRatio = ContrastUtils.calculateContrastRatio(lum1, lum2);
+		return contrastRatio;
 	}
 }
